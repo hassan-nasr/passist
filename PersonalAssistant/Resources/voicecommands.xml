@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.0">
+
+  <CommandSet xml:lang="en-us" Name="myEnglishCommands">
+
+    <CommandPrefix>Bebin</CommandPrefix>
+
+    <Example>about time</Example>
+
+    <Command Name="time">
+      <Example>Tell Me the Time</Example>
+      <ListenFor>[Tell Me] [About] [the] time {*}</ListenFor>
+      <ListenFor> what time is it?</ListenFor>
+      <Feedback>Yes Time. I'll check it</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+
+    <Command Name="date">
+      <Example>Tell me today's date</Example>
+      <ListenFor>{*} [About] [the] Date [in] {CalType}</ListenFor>
+      <ListenFor>[Tell me] whats today's date in {CalType}</ListenFor>
+      <Feedback> {CalType} Date! Just a second please</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+    <Command Name="date2">
+      <Example>Tell me the date</Example>
+      <ListenFor>[Tell me]  [About] [the] Date </ListenFor>
+      <ListenFor>[Tell me] whats today's date</ListenFor>
+      <Feedback> Yes Date! Just a second please</Feedback>
+      <Navigate Target="MainPage.xaml?CalType=Gregorian"/>
+    </Command>
+
+    <Command Name="battery">
+      <Example>tell me  Battery</Example>
+      <ListenFor>[tell me] [the] Battery [remaining] </ListenFor>
+      <Feedback>Yess Battery! Just a moment!</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+    <Command Name="localWeather">
+      <Example>about weather</Example>
+      <ListenFor>[Tell me] [about] [local] weather [on] {day}</ListenFor>
+      <Feedback>Yes! forcast for {day} </Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    
+    <Command Name="weather">
+      <Example>Tell me about weather</Example>
+      <ListenFor>[Tell me] [about] weather [on] {day} in {place}</ListenFor>
+      <ListenFor>[Tell me] [about] weather in {place} [on] {day} </ListenFor>
+      <Feedback>Oho! Yes! forcast for {day} in {place}</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+    <Command Name="appointments">
+      <Example>Tell meMy next appointments </Example>
+      <ListenFor>[Tell me] My [next] appointments</ListenFor>
+      <Feedback>Yes your appointments..., let me check</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+<!--    <Command Name="alarmTimeSet">-->
+<!--      <Example>Set an alarm to 7:30 am.</Example>-->
+<!--      <ListenFor>Set [an] alarm to {hour} {minute} {ampm}</ListenFor>-->
+<!--~1~      <ListenFor>Set [an] alarm to {hour} {minute} </ListenFor>@1@-->
+<!--~1~      <ListenFor>{alarmf} at {hour} {minute} </ListenFor>@1@-->
+<!--~1~      <ListenFor>{alarmf} at {hour} {minute} {ampm} </ListenFor>@1@-->
+<!--      <Feedback>Setting the alarm clock for {hour} {minute} {ampa}</Feedback>-->
+<!--      <Navigate Target="MainPage.xaml"/>-->
+<!--    </Command>-->
+    <Command Name="relativeAlarmTimeSetHourMinute">
+      <Example>wake me up in 2 hour and 3 minutes</Example>
+      <ListenFor> {alarmf}  in {number} hours and {number2} minutes</ListenFor>
+      <Feedback>Sure! Setting the alarm clock for {number} hours and {number2} minutes</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    <Command Name="relativeAlarmTimeSetMinute">
+      <Example>notify me in 40 minutes</Example>
+      <ListenFor> {alarmf}  in {number2} minutes </ListenFor>
+      <Feedback>Sure! Setting the alarm clock for {number2} minute</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+    <Command Name="relativeAlarmTimeSetHour">
+      <Example>alarm me in half an hour</Example>
+      <ListenFor> {alarmf}  in {number} hours </ListenFor>
+      <Feedback>Sure! Setting the alarm clock for {number} hour</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+    <PhraseList Label="alarmf">
+      <Item>alarm me</Item>
+      <Item>alarm </Item>
+      <Item>notify me</Item>
+      <Item>notify </Item>
+      <Item>wake me up</Item>
+    </PhraseList>
+
+      <PhraseList Label="day">
+      <Item>today</Item>
+      <Item>tomorrow</Item>
+      <Item>Saturday</Item>
+      <Item>Sunday</Item>
+      <Item>Monday</Item>
+      <Item>Tuseday</Item>
+      <Item>Wednesday</Item>
+      <Item>Thursday</Item>
+      <Item>Friday</Item>
+    </PhraseList>
+
+    <PhraseList Label="place">
+      <Item>Tehran</Item>
+      <Item>Paris</Item>
+    </PhraseList>
+
+
+    <PhraseList Label="CalType">
+      <Item>Gregorian</Item>
+      <Item>Hejri</Item>
+      <Item>UmAlQura</Item>
+    </PhraseList>
+
+<!--
+    <PhraseList Label="hour">
+      <Item>1</Item>
+      <Item>2</Item>
+      <Item>3</Item>
+      <Item>4</Item>
+      <Item>5</Item>
+      <Item>6</Item>
+      <Item>7</Item>
+      <Item>8</Item>
+      <Item>9</Item>
+      <Item>10</Item>
+      <Item>11</Item>
+      <Item>12</Item>
+    </PhraseList>
+    <PhraseList Label="minute">
+      <Item>o clock</Item>
+      <Item>0</Item>
+      <Item>1</Item>
+      <Item>2</Item>
+      <Item>3</Item>
+      <Item>4</Item>
+      <Item>5</Item>
+      <Item>6</Item>
+      <Item>7</Item>
+      <Item>8</Item>
+      <Item>9</Item>
+      <Item>10</Item>
+      <Item>11</Item>
+      <Item>12</Item>
+      <Item>13</Item>
+      <Item>14</Item>
+      <Item>15</Item>
+      <Item>16</Item>
+      <Item>17</Item>
+      <Item>18</Item>
+      <Item>19</Item>
+      <Item>20</Item>
+      <Item>21</Item>
+      <Item>22</Item>
+      <Item>23</Item>
+      <Item>24</Item>
+      <Item>25</Item>
+      <Item>26</Item>
+      <Item>27</Item>
+      <Item>28</Item>
+      <Item>29</Item>
+      <Item>30</Item>
+      <Item>31</Item>
+      <Item>32</Item>
+      <Item>33</Item>
+      <Item>34</Item>
+      <Item>35</Item>
+      <Item>36</Item>
+      <Item>37</Item>
+      <Item>38</Item>
+      <Item>39</Item>
+      <Item>40</Item>
+      <Item>41</Item>
+      <Item>42</Item>
+      <Item>43</Item>
+      <Item>44</Item>
+      <Item>45</Item>
+      <Item>46</Item>
+      <Item>47</Item>
+      <Item>48</Item>
+      <Item>49</Item>
+      <Item>50</Item>
+      <Item>51</Item>
+      <Item>52</Item>
+      <Item>53</Item>
+      <Item>54</Item>
+      <Item>55</Item>
+      <Item>56</Item>
+      <Item>57</Item>
+      <Item>58</Item>
+      <Item>59</Item>
+    </PhraseList>
+    <PhraseList Label="ampm">
+      <Item>a.m.</Item>
+      <Item>p.m.</Item>
+    </PhraseList>
+ -->   
+    <PhraseList Label="number2">
+      <Item>an</Item>
+      <Item>a</Item>
+      <Item>half</Item>
+      <Item>0</Item>
+      <Item>1</Item>
+      <Item>2</Item>
+      <Item>3</Item>
+      <Item>4</Item>
+      <Item>5</Item>
+      <Item>6</Item>
+      <Item>7</Item>
+      <Item>8</Item>
+      <Item>9</Item>
+      <Item>10</Item>
+      <Item>11</Item>
+      <Item>12</Item>
+      <Item>13</Item>
+      <Item>14</Item>
+      <Item>15</Item>
+      <Item>16</Item>
+      <Item>17</Item>
+      <Item>18</Item>
+      <Item>19</Item>
+      <Item>20</Item>
+      <Item>21</Item>
+      <Item>22</Item>
+      <Item>23</Item>
+      <Item>24</Item>
+      <Item>25</Item>
+      <Item>26</Item>
+      <Item>27</Item>
+      <Item>28</Item>
+      <Item>29</Item>
+      <Item>30</Item>
+      <Item>31</Item>
+      <Item>32</Item>
+      <Item>33</Item>
+      <Item>34</Item>
+      <Item>35</Item>
+      <Item>36</Item>
+      <Item>37</Item>
+      <Item>38</Item>
+      <Item>39</Item>
+      <Item>40</Item>
+      <Item>41</Item>
+      <Item>42</Item>
+      <Item>43</Item>
+      <Item>44</Item>
+      <Item>45</Item>
+      <Item>46</Item>
+      <Item>47</Item>
+      <Item>48</Item>
+      <Item>49</Item>
+      <Item>50</Item>
+      <Item>51</Item>
+      <Item>52</Item>
+      <Item>53</Item>
+      <Item>54</Item>
+      <Item>55</Item>
+      <Item>56</Item>
+      <Item>57</Item>
+      <Item>58</Item>
+      <Item>59</Item>
+      <Item>60</Item>
+      <Item>61</Item>
+      <Item>62</Item>
+      <Item>63</Item>
+      <Item>64</Item>
+      <Item>65</Item>
+      <Item>66</Item>
+      <Item>57</Item>
+      <Item>68</Item>
+      <Item>69</Item>
+      <Item>70</Item>
+      <Item>71</Item>
+      <Item>72</Item>
+      <Item>73</Item>
+      <Item>74</Item>
+      <Item>75</Item>
+      <Item>76</Item>
+      <Item>77</Item>
+      <Item>78</Item>
+      <Item>79</Item>
+      <Item>80</Item>
+      <Item>81</Item>
+      <Item>82</Item>
+      <Item>83</Item>
+      <Item>84</Item>
+      <Item>85</Item>
+      <Item>86</Item>
+      <Item>87</Item>
+      <Item>88</Item>
+      <Item>89</Item>
+      <Item>90</Item>
+      <Item>91</Item>
+      <Item>92</Item>
+      <Item>93</Item>
+      <Item>94</Item>
+      <Item>95</Item>
+      <Item>96</Item>
+      <Item>97</Item>
+      <Item>98</Item>
+      <Item>99</Item>
+      <Item>100</Item>
+    </PhraseList>    
+    <PhraseList Label="number">
+      <Item>an</Item>
+      <Item>a</Item>
+      <Item>half</Item>
+      <Item>0</Item>
+      <Item>1</Item>
+      <Item>2</Item>
+      <Item>3</Item>
+      <Item>4</Item>
+      <Item>5</Item>
+      <Item>6</Item>
+      <Item>7</Item>
+      <Item>8</Item>
+      <Item>9</Item>
+      <Item>10</Item>
+      <Item>11</Item>
+      <Item>12</Item>
+      <Item>13</Item>
+      <Item>14</Item>
+      <Item>15</Item>
+      <Item>16</Item>
+      <Item>17</Item>
+      <Item>18</Item>
+      <Item>19</Item>
+      <Item>20</Item>
+      <Item>21</Item>
+      <Item>22</Item>
+      <Item>23</Item>
+      <Item>24</Item>
+      <Item>25</Item>
+      <Item>26</Item>
+      <Item>27</Item>
+      <Item>28</Item>
+      <Item>29</Item>
+      <Item>30</Item>
+      <Item>31</Item>
+      <Item>32</Item>
+      <Item>33</Item>
+      <Item>34</Item>
+      <Item>35</Item>
+      <Item>36</Item>
+      <Item>37</Item>
+      <Item>38</Item>
+      <Item>39</Item>
+      <Item>40</Item>
+      <Item>41</Item>
+      <Item>42</Item>
+      <Item>43</Item>
+      <Item>44</Item>
+      <Item>45</Item>
+      <Item>46</Item>
+      <Item>47</Item>
+      <Item>48</Item>
+      <Item>49</Item>
+      <Item>50</Item>
+      <Item>51</Item>
+      <Item>52</Item>
+      <Item>53</Item>
+      <Item>54</Item>
+      <Item>55</Item>
+      <Item>56</Item>
+      <Item>57</Item>
+      <Item>58</Item>
+      <Item>59</Item>
+      <Item>60</Item>
+      <Item>61</Item>
+      <Item>62</Item>
+      <Item>63</Item>
+      <Item>64</Item>
+      <Item>65</Item>
+      <Item>66</Item>
+      <Item>57</Item>
+      <Item>68</Item>
+      <Item>69</Item>
+      <Item>70</Item>
+      <Item>71</Item>
+      <Item>72</Item>
+      <Item>73</Item>
+      <Item>74</Item>
+      <Item>75</Item>
+      <Item>76</Item>
+      <Item>77</Item>
+      <Item>78</Item>
+      <Item>79</Item>
+      <Item>80</Item>
+      <Item>81</Item>
+      <Item>82</Item>
+      <Item>83</Item>
+      <Item>84</Item>
+      <Item>85</Item>
+      <Item>86</Item>
+      <Item>87</Item>
+      <Item>88</Item>
+      <Item>89</Item>
+      <Item>90</Item>
+      <Item>91</Item>
+      <Item>92</Item>
+      <Item>93</Item>
+      <Item>94</Item>
+      <Item>95</Item>
+      <Item>96</Item>
+      <Item>97</Item>
+      <Item>98</Item>
+      <Item>99</Item>
+      <Item>100</Item>
+    </PhraseList>
+
+  </CommandSet>
+  
+  
+  
+</VoiceCommands>

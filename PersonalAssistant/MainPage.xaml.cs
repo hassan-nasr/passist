@@ -48,6 +48,7 @@ namespace PersonalAssistant
                 }
                 catch (Exception error)
                 {
+                    System.Diagnostics.Debug.WriteLine(error.ToString());
                     MessageBox.Show(error.ToString() + "\r\nVoice Commands failed to initialize.");
 
                 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Windows.Phone.Devices.Power;
 using Windows.Phone.Speech.Synthesis;
+using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.UserData;
 using PersonalAssistant.Service.Weather;
 using PersonalAssistant.Service.Weather.LocalWeather;
@@ -38,6 +39,11 @@ namespace PersonalAssistant.Service
                     SayDate(type,  DateTime.Now);
                     //       Exit();
                     break;
+                case "date2":
+                    type = "Gregorian";
+                    SayDate(type,  DateTime.Now);
+                    //       Exit();
+                    break;
                 case "battery":
                     SayBattery(null, null);
                     //       Exit();
@@ -59,10 +65,106 @@ namespace PersonalAssistant.Service
                         combineAndSayWeather(day, place);
                     }
                     break;
+                case "alarmTimeSet":
+                    {
+                        int hourInt,minuteInt;
+                        String hour = queryString["hour"];
+                        hourInt = int.Parse(hour);
+                        String minute = queryString["minute"];
+                        if (minute.Equals("o clock"))
+                            minuteInt = 0;
+                        else
+                        {
+                            minuteInt = int.Parse(minute);
+                        }
+                        string notify = queryString["alarmf"];
+                        String ampm = queryString["ampm"];
+                        if (ampm.Equals("p.m."))
+                            hourInt += 12;
+                        SetAlarmAt(hourInt, minuteInt , notify);
+                    }
+                    break;
+                case "relativeAlarmTimeSetHourMinute":
+                case "relativeAlarmTimeSetHour":
+                case "relativeAlarmTimeSetMinute":
+                {
+                    int hourInt,minuteInt;
+                        String hour = queryString.ContainsKey("number") ? queryString["number"] : "0";
+                        String minute = queryString.ContainsKey("number2") ? queryString["number2"] : "0";
+                        switch (minute)
+                        {
+                            case "a":
+                            case "an":
+                                minuteInt = 1;
+                                break;
+                            case"half an":
+                                minuteInt = 1;
+                                break;
+                            default:
+                                minuteInt = int.Parse(minute);
+                                break;
+                        }
+                        switch (hour)
+                        {
+                            case "a":
+                            case "an":
+                                hourInt = 1;
+                                break;
+                            case "half an":
+                                hourInt = 0;
+                                minuteInt = 30;
+                                break;
+                            default:
+                                hourInt = int.Parse(hour);
+                                break;
+                        }
+                        
+                        string notify = queryString["alarmf"];
+                        System.Diagnostics.Debug.WriteLine(hourInt + " : " + minuteInt);
+                        System.Diagnostics.Debug.WriteLine(hour + " : " + minute);
+                        SetAlarmIn(hourInt, minuteInt , notify);
+                    }
+                    break;
                 default:
                     break;
             }
 
+        }
+
+        private async void SetAlarmAt(int hour, int minute , string notification)
+        {
+            DateTime dateTime = DateTime.Now;
+            if (dateTime.Hour > hour || (dateTime.Hour == hour && dateTime.Minute > minute))
+                dateTime = dateTime.AddDays(1);
+            dateTime =new DateTime(dateTime.Year,dateTime.Month,dateTime.Day,hour,minute,0);
+            await createAlarm(notification, dateTime);
+        }
+        private async void SetAlarmIn(int hour, int minute , string notification)
+        {
+            DateTime dateTime = DateTime.Now;
+            dateTime = dateTime.AddHours(hour);
+            dateTime = dateTime.AddMinutes(minute);
+            await createAlarm(notification, dateTime);
+        }
+
+        private async Task createAlarm(string notification, DateTime dateTime)
+        {
+            Alarm alarm = new Alarm(Settings.ApplicationName+DateTime.Now);
+            alarm.Content = notification;
+            alarm.BeginTime = dateTime;
+            alarm.ExpirationTime = alarm.BeginTime.AddSeconds(5.0);
+            alarm.RecurrenceType = RecurrenceInterval.None;
+            ScheduledActionService.Add(alarm);
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            int battery = Battery.GetDefault().RemainingChargePercent;
+            String sentence = "alarm created for " + dateTime.ToShortTimeString();
+            if (notification.Equals("wake me up"))
+                sentence += ". Have a good sleep!";
+            String detailsString = "alarm created for " + dateTime.ToString();
+            RecentItem = new ResponseItem(AlarmImageUri, detailsString, sentence);
+            sendViewableResult.Invoke(new Task(o => { }, RecentItem));
+            await synth.SpeakTextAsync(sentence);
+            onFinish.Invoke(new Task(o => { }, "Have Fun"));
         }
 
         private void combineAndSayWeather(String day, String place)
@@ -71,7 +173,6 @@ namespace PersonalAssistant.Service
             now = goToNextValidDate(now, day);
             SayWeather(now, place, day);
         }
-
         private DateTime goToNextValidDate(DateTime now, string day)
         {
             if (day == "today")
@@ -83,7 +184,6 @@ namespace PersonalAssistant.Service
             return now;
 
         }
-
         private async void SayWeather(DateTime date, string place, String orginalDateString)
         {
             WeatherDataManager weatherDataManager = new WeatherDataManager();
@@ -122,15 +222,15 @@ namespace PersonalAssistant.Service
                 {
 
                     responseSentence = "it's " + weatherToShow.weatherDesc[0].value + " at " + place + " on " +
-                                       dateString + " , the Minimum of  Temperature is " +
+                                       dateString + " the Minimum of  Temperature is " +
                                        weatherToShow.tempMinC + " and the Maximum is " + weatherToShow.tempMaxC +
                                        " degrees of Celsius.";
                     detailsString = "Location : " + place
-                                    + "\r\n Description: " + weatherToShow.weatherDesc[0].value
-                                    + "\r\n Min Temp.: " + weatherToShow.tempMinC + "*C"
-                                    + "\r\n Max Temp.: " + weatherToShow.tempMaxC + "*C"
-                                    + "\r\n Wind Speed: " + weatherToShow.windspeedKmph + "Km/h"
-                                    + "\r\n Wind Degree: " + weatherToShow.winddirDegree;
+                                    + "\r\nDescription: " + weatherToShow.weatherDesc[0].value
+                                    + "\r\nMin Temp.: " + weatherToShow.tempMinC + " °C"
+                                    + "\r\nMax Temp.: " + weatherToShow.tempMaxC + " °C"
+                                    + "\r\nWind Speed: " + weatherToShow.windspeedKmph + " Km/h"
+                                    + "\r\nWind Degree: " + weatherToShow.winddirDegree;
 
                 }
             }
@@ -141,9 +241,9 @@ namespace PersonalAssistant.Service
             onFinish.Invoke(new Task(o=>{},"Have Fun"));
 
         }
-
         public String WeatherImageUri ="/Images/feature.search.png";
         public String TimeImageUri ="/Images/feature.alarm.png";
+        public String AlarmImageUri ="/Images/feature.alarm.png";
         public String DateImageUri ="/Images/feature.calendar.png";
         public String AppointmentImageUri ="/Images/feature.calendar.png";
         public String BatteryImageUri = "/Images/feature.settings.png";
@@ -176,7 +276,7 @@ namespace PersonalAssistant.Service
             switch (type)
             {
                 case "Gregorian":
-                    sentence = "it's " + date.ToShortDateString();
+                    sentence = "it's " + date.ToLongDateString();
                     detailsString = date.ToLongDateString();
                     break;
                 case "Hejri":
@@ -207,7 +307,6 @@ namespace PersonalAssistant.Service
             await synth.SpeakTextAsync(sentence);
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
         }
-
         private async void SayAppintments()
         {
             Appointments appo = new Appointments();
@@ -222,7 +321,7 @@ namespace PersonalAssistant.Service
             String detailsString, response;
             if (appointments.Count == 0)
             {
-                response = ("you have no appointments in next weak! have fun.");
+                response = ("You have no appointments in next weak! have fun.");
                 detailsString = "no appointments in next weak";
             }
             else
@@ -241,7 +340,7 @@ namespace PersonalAssistant.Service
                 }
                 if (!app.IsPrivate)
                 {
-                    response = "you have an appointment about " + app.Subject + " " + TimeString;
+                    response = "You have an appointment about " + app.Subject + " " + TimeString;
                     if (app.Location != null)
                         response += " in " + app.Location;
                     detailsString = "Subject: " + app.Subject
@@ -274,5 +373,16 @@ namespace PersonalAssistant.Service
             }
         }
 
+    }
+
+    class Settings
+    {
+        static Settings()
+        {
+            ApplicationName = "BeBin";
+        }
+
+        public static string ApplicationName { get; set; }
+        public static string UsersApplicationName { get; set; }
     }
 }
