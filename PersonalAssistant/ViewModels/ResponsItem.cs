@@ -10,8 +10,29 @@ using System.Windows.Media.Animation;
 
 namespace PersonalAssistant.ViewModels
 {
-    public class RecentItem : INotifyPropertyChanged
+
+    public class ResponseItem : INotifyPropertyChanged
     {
+        public ResponseItem()
+        {
+        }
+
+        public ResponseItem(string imageUri, string detailString, string responseString, DateTime dateTime)
+        {
+            _detailString = detailString;
+            _imageUri = imageUri;
+            _responseString = responseString;
+            _dateTime = dateTime;
+        }
+
+        public ResponseItem(string imageUri, string detailString, string responseString)
+        {
+            _imageUri = imageUri;
+            _detailString = detailString;
+            _responseString = responseString;
+            _dateTime = DateTime.Now;
+        }
+
         private string _id;
         /// <summary>
         /// Sample ViewModel property; this property is used to identify the object.
@@ -92,6 +113,26 @@ namespace PersonalAssistant.ViewModels
                 {
                     _responseString = value;
                     NotifyPropertyChanged("ResponseString");
+                }
+            }
+        }
+        private DateTime _dateTime;
+        /// <summary>
+        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
+        /// </summary>
+        /// <returns></returns>
+        public DateTime DateTime
+        {
+            get
+            {
+                return _dateTime;
+            }
+            set
+            {
+                if (value != _dateTime)
+                {
+                    _dateTime = value;
+                    NotifyPropertyChanged("DateTime");
                 }
             }
         }

@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Navigation;
-using Windows.Foundation;
 using Windows.Phone.Devices.Power;
 using Windows.Phone.Speech.Synthesis;
-using Windows.UI.Input;
 using Microsoft.Phone.UserData;
 using PersonalAssistant.Service.Weather;
 using PersonalAssistant.Service.Weather.LocalWeather;
 using PersonalAssistant.ViewModels;
 
-namespace Inform_Me.src
+namespace PersonalAssistant.Service
 {
     class RecognitionEngin
     {
         private AsyncCallback onFinish;
         private AsyncCallback sendViewableResult;
-        RecentItem RecentItem = new RecentItem();
+        ResponseItem RecentItem  = null;
         public void RespondToQuery(IDictionary<string, string> queryString, AsyncCallback onFinishIn, AsyncCallback sendViewableResult)
         {
             this.onFinish = onFinishIn;
@@ -39,7 +35,7 @@ namespace Inform_Me.src
                     break;
                 case "date":
                     String type = queryString["CalType"];
-                    SayDate(type, new DateTime());
+                    SayDate(type,  DateTime.Now);
                     //       Exit();
                     break;
                 case "battery":
@@ -93,18 +89,20 @@ namespace Inform_Me.src
             WeatherDataManager weatherDataManager = new WeatherDataManager();
 
             String responseSentence = "";
+            String detailsString = "";
             LocalWeather localWeather = weatherDataManager.getWeather(place);
             if (localWeather == null)
             {
                 responseSentence = "sorry! but weather data for " + place + " is not available. please add " + place +
                                    " to your weather checkout list";
+                detailsString = "Sorry! No data :[";
             }
             else
             {
-                Weather weatherToShow = null;
+                Weather.LocalWeather.Weather weatherToShow = null;
                 for (int i = 0; i < localWeather.data.weather.Count; i++)
                 {
-                    Weather weather = localWeather.data.weather[i];
+                    Weather.LocalWeather.Weather weather = localWeather.data.weather[i];
                     if (weather.date.Date.Equals(date.Date))
                     {
                         weatherToShow = weather;
@@ -118,6 +116,7 @@ namespace Inform_Me.src
                 {
                     responseSentence = "sorry! but weather data for " + place + " on " + dateString +
                                        " is not available";
+                    detailsString = "Sorry! No data :[";
                 }
                 else
                 {
@@ -126,10 +125,16 @@ namespace Inform_Me.src
                                        dateString + " , the Minimum of  Temperature is " +
                                        weatherToShow.tempMinC + " and the Maximum is " + weatherToShow.tempMaxC +
                                        " degrees of Celsius.";
+                    detailsString = "Location : " + place
+                                    + "\r\n Description: " + weatherToShow.weatherDesc[0].value
+                                    + "\r\n Min Temp.: " + weatherToShow.tempMinC + "*C"
+                                    + "\r\n Max Temp.: " + weatherToShow.tempMaxC + "*C"
+                                    + "\r\n Wind Speed: " + weatherToShow.windspeedKmph + "Km/h"
+                                    + "\r\n Wind Degree: " + weatherToShow.winddirDegree;
+
                 }
             }
-            RecentItem.ImageUri = WeatherImageUri;
-            RecentItem.ResponseString = responseSentence;
+            RecentItem = new ResponseItem(WeatherImageUri,detailsString,responseSentence);
             sendViewableResult.Invoke(new Task(o => { },RecentItem));
             SpeechSynthesizer synth = new SpeechSynthesizer();
             await synth.SpeakTextAsync(responseSentence);
@@ -157,8 +162,8 @@ namespace Inform_Me.src
                 timeToSay = "it's " + time.Hour % 12 + " o clock in the " + (time.Hour / 12 > 1 ? "evening" : "morning");
             else
                 timeToSay = "it's " + (time.Hour % 12 + (time.Hour == 12 ? 1 : 0) * 12) + " " + time.Minute + " in the " + (time.Hour / 12.0 >= 1 ? "evening" : "morning");
-            RecentItem.ImageUri = TimeImageUri;
-            RecentItem.ResponseString = timeToSay;
+            string detailsString = time.ToLongTimeString();
+            RecentItem= new ResponseItem(TimeImageUri,detailsString,timeToSay);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
             await synth.SpeakTextAsync(timeToSay);
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
@@ -167,10 +172,12 @@ namespace Inform_Me.src
         {
             SpeechSynthesizer synth = new SpeechSynthesizer();
             String sentence = "";
+            String detailsString = "";
             switch (type)
             {
                 case "Gregorian":
                     sentence = "it's " + date.ToShortDateString();
+                    detailsString = date.ToLongDateString();
                     break;
                 case "Hejri":
                     //                    System.Globalization.PersianCalendar p = new System.Globalization.PersianCalendar();
@@ -182,8 +189,8 @@ namespace Inform_Me.src
                     break;
 
             }
-            RecentItem.ImageUri = DateImageUri;
-            RecentItem.ResponseString = sentence;
+            
+            RecentItem = new ResponseItem(DateImageUri, detailsString, sentence);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
             await synth.SpeakTextAsync(sentence);
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
@@ -194,8 +201,8 @@ namespace Inform_Me.src
             SpeechSynthesizer synth = new SpeechSynthesizer();
             int battery = Battery.GetDefault().RemainingChargePercent;
             String sentence = "you phone has " + battery + "% of battery remaining.";
-            RecentItem.ImageUri = BatteryImageUri;
-            RecentItem.ResponseString = sentence;
+            String detailsString = battery + "% remaining" ;
+            RecentItem = new ResponseItem(BatteryImageUri, detailsString, sentence);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
             await synth.SpeakTextAsync(sentence);
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
@@ -212,14 +219,15 @@ namespace Inform_Me.src
         {
             List<Appointment> appointments = e.Results.ToList();
             SpeechSynthesizer synth = new SpeechSynthesizer();
+            String detailsString, response;
             if (appointments.Count == 0)
             {
-                await synth.SpeakTextAsync("you have no appointments in next weak! have fun.");
+                response = ("you have no appointments in next weak! have fun.");
+                detailsString = "no appointments in next weak";
             }
             else
             {
                 Appointment app = appointments[0];
-                string response;
                 string TimeString;
                 if (app.StartTime.Date.Equals(DateTime.Now.Date))
                     TimeString = "today";
@@ -236,11 +244,26 @@ namespace Inform_Me.src
                     response = "you have an appointment about " + app.Subject + " " + TimeString;
                     if (app.Location != null)
                         response += " in " + app.Location;
+                    detailsString = "Subject: " + app.Subject
+                                    + "\r\n From: " + app.StartTime.ToLongDateString() + "," +
+                                    app.StartTime.ToLongTimeString()
+                                    + "\r\n To: " + app.EndTime.ToLongDateString() + "," +
+                                    app.EndTime.ToLongTimeString()
+                                    + "\r\n Location: " + app.Location
+                                    + "\r\n Details:" + app.Details;
                 }
                 else
+                {
                     response = "you have a private appointment " + TimeString;
-                RecentItem.ImageUri = BatteryImageUri;
-                RecentItem.ResponseString = response;
+                    detailsString = "Subject: private"
+                                    + "\r\n From: " + app.StartTime.ToLongDateString() + "," +
+                                    app.StartTime.ToLongTimeString()
+                                    + "\r\n To: " + app.EndTime.ToLongDateString() + "," +
+                                    app.EndTime.ToLongTimeString()
+                                    + "\r\n Location: private "
+                                    + "\r\n Details: private";
+                }
+                RecentItem = new ResponseItem(AppointmentImageUri, detailsString, response);
                 sendViewableResult.Invoke(new Task(o => { }, RecentItem));
                 await synth.SpeakTextAsync(response);
                 onFinish.Invoke(new Task(o => { }, "Have Fun"));

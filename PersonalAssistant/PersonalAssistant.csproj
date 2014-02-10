@@ -116,7 +116,7 @@
     <Compile Include="Service\Weather\RequestHandler.cs" />
     <Compile Include="Service\Weather\TimeZone.cs" />
     <Compile Include="Service\Weather\WeatherDataManager.cs" />
-    <Compile Include="ViewModels\RecentItem.cs" />
+    <Compile Include="ViewModels\ResponsItem.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
   </ItemGroup>
@@ -177,6 +177,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\safoora.JPG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\sync.png" />
+    <Content Include="Resources\VCD1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\voicecommands.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
