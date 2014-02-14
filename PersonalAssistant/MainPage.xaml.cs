@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -59,6 +60,8 @@ namespace PersonalAssistant
         // Load data for the ViewModel Items
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+
+            promptForLocation();
             if (!App.ViewModel.IsDataLoaded)
             {
                 App.ViewModel.LoadData();
@@ -91,6 +94,34 @@ namespace PersonalAssistant
                 }
             }
         }
+
+        private void promptForLocation()
+        {
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
+            {
+                // User has opted in or out of Location
+                return;
+            }
+            else
+            {
+                MessageBoxResult result =
+                    MessageBox.Show("This app accesses your phone's location. Is that ok?",
+                    "Location",
+                    MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+                }
+                else
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+                }
+
+                IsolatedStorageSettings.ApplicationSettings.Save();
+            }
+        }
+
         private void SentViewableResult(IAsyncResult ar)
         {
             ResponseItem result = (ResponseItem)ar.AsyncState;
@@ -178,7 +209,11 @@ namespace PersonalAssistant
                 progressIndicator.Text = message;
             });
         }
-       
+
+        private void GoToPlaces(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/PlacesPage.xaml", UriKind.Relative));
+        }
     }
 
 //    class FinishUpdateDataCalss

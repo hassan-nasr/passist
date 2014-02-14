@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 
 namespace PersonalAssistant.Service
 {
@@ -10,3 +11,4 @@ namespace PersonalAssistant.Service
         public String MoreInfoNavigation { get; set; }
     }
 }
+*/

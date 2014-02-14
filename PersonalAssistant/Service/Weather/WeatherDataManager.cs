@@ -1,17 +1,109 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
+using Windows.Phone.Speech.VoiceCommands;
+using Windows.Security.Authentication.OnlineId;
 using Newtonsoft.Json;
+using PersonalAssistant.Annotations;
 using PersonalAssistant.Service.Weather.LocalWeather;
 
 namespace PersonalAssistant.Service.Weather
 {
     public class WeatherDataManager
     {
+        private static WeatherDataManager _weatherDataManager;
+
+        public static WeatherDataManager GetInstance()
+        {
+            if(_weatherDataManager == null)
+                _weatherDataManager = new WeatherDataManager();
+            return _weatherDataManager;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void SavePlaces()
+        {
+            try
+            {
+                // Get the local folder.
+                System.IO.IsolatedStorage.IsolatedStorageFile local =
+                    System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+
+                // Create a new folder named DataFolder.
+                if (!local.DirectoryExists("WeatherFolder"))
+                    local.CreateDirectory("WeatherFolder");
+                using (var isoFileStream = new System.IO.IsolatedStorage.IsolatedStorageFileStream(
+                    "Places.txt",
+                    System.IO.FileMode.Create,
+                    local))
+                {
+                    using (var isoFileWriter = new System.IO.StreamWriter(isoFileStream))
+                    {
+                        string serializedPlaces = JsonConvert.SerializeObject(places);
+                        System.Diagnostics.Debug.WriteLine(serializedPlaces);
+                        System.Diagnostics.Debug.WriteLine("CurrentCommandLangs: "+VoiceCommandService.InstalledCommandSets.ToString());
+                      
+                        VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
+                        widgetVcs.UpdatePhraseListAsync("place",places.Keys);
+
+                        isoFileWriter.Write(serializedPlaces);
+                        isoFileWriter.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.StackTrace);
+            }
+            
+        }
+        public void LoadPlaces()
+        {
+            System.Diagnostics.Debug.WriteLine("loading places ----------");
+            System.IO.IsolatedStorage.IsolatedStorageFile local =
+                System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+            try
+            {
+                using (var isoFileStream = new System.IO.IsolatedStorage.IsolatedStorageFileStream(
+                    "Places.txt",
+                    System.IO.FileMode.Open,
+                    local))
+                {
+                    // Write the data from the textbox.
+                    using (var isoFileReader = new System.IO.StreamReader(isoFileStream))
+                    {
+                        places = JsonConvert.DeserializeObject<Dictionary<String, Place> >(isoFileReader.ReadToEnd());
+                        isoFileReader.Close();
+                        
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.StackTrace);
+            }
+            if (places == null)
+                places = new Dictionary<string, Place>();
+            if (places.Count == 0)
+            {
+                places.Add("Tehran", new Place("Tehran"));
+                places.Add("Paris", new Place("Paris"));
+            }
+        }
+
+        private WeatherDataManager()
+        {
+            LoadPlaces();
+        }
+
         private Dictionary<String,Place> places = new Dictionary<string, Place>(); 
         public void AddPlace(Place place)
         {
-            places.Add(place.name,place);
+            places.Add(place.Name,place);
         }
 
         public Dictionary<String, Place> getPlaces()
@@ -19,20 +111,34 @@ namespace PersonalAssistant.Service.Weather
             return places;
         }
 
-        public void updateRequierdData(int days, AsyncCallback callback, AsyncCallback failCallback)
+        public void SetPlaces(ICollection<Place> newPlaces)
         {
+            places = new Dictionary<string, Place>();
+            foreach (Place newPlace in newPlaces)
+            {
+                places.Add(newPlace.Name, newPlace);
+            }
+        }
+
+        public async void updateRequierdData(int days, AsyncCallback callback, AsyncCallback failCallback)
+        {
+            
             DateTime today=  DateTime.Now;
             LocalWeatherInput weatherInput = new LocalWeatherInput();
             weatherInput.num_of_days = days.ToString();
             foreach (KeyValuePair<string, Place> dictionaryEntry in places)
             {
-                string key = dictionaryEntry.Key;
-                Place value =  dictionaryEntry.Value;
-                weatherInput.query = value.name;
-                SaveWeatherDataClass saver = new SaveWeatherDataClass(value.name,callback);
+                Place place =  dictionaryEntry.Value;
+                if (place.LastUpdateTime > DateTime.Now.AddHours(-2))
+                    continue;
+                weatherInput.query = place.Name;
+                SaveWeatherDataClass saver = new SaveWeatherDataClass(place.Name,callback);
                 new FreeAPI().GetLocalWeather(weatherInput,saver.SaveWeatherData, failCallback);
+                Thread.Sleep(1000);
             }
+            
         }
+        
 
         private class SaveWeatherDataClass
         {
@@ -74,6 +180,8 @@ namespace PersonalAssistant.Service.Weather
                             string serializedWeather = JsonConvert.SerializeObject(localWeather);
                             isoFileWriter.Write(serializedWeather);
                             isoFileWriter.Close();
+                            GetInstance().getPlaces()[placeName].LastUpdateTime = DateTime.Now;
+                            GetInstance().SavePlaces();
                             callBackMessage = "weather updated for " + placeName;
 //                        MessageBox.Show(serializedWeather);
                         }
@@ -119,22 +227,97 @@ namespace PersonalAssistant.Service.Weather
     }
 
 
-    public class Place
+    public class Place :INotifyPropertyChanged
     {
+        
+        public Boolean _useName { get; set; }
+        private DateTime _lastUpdateTime;
+        private Boolean _isLocal = false;
+        private Double _latitude=0.0;
+        private Double _longitude=0.0;
+        private String _name="";
+        public Place()
+        {
+        }
+
+        public bool IsLocal
+        {
+            get { return _isLocal; }
+            set
+            {
+                if (value.Equals(_isLocal)) return;
+                _isLocal = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public double Longitude
+        {
+            get { return _longitude; }
+            set
+            {
+                if (value.Equals(_longitude)) return;
+                _longitude = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged("Lonitude");
+            }
+        }
+
+        public DateTime LastUpdateTime
+        {
+            get { return _lastUpdateTime; }
+            set
+            {
+                if (value.Equals(_lastUpdateTime)) return;
+                _lastUpdateTime = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public Place(string name)
         {
-            this.name = name;
+            _name = name;
+            _useName = true;
+            _latitude = _longitude = 0.0;
         }
 
         public Place(string name, double latitude, double longitude)
         {
-            this.name = name;
-            this.latitude = latitude;
-            this.longitude = longitude;
+            _name = name;
+            _useName = false;
+            _latitude = latitude;
+            _longitude = longitude;
         }
 
-        public String name { get; set; }
-        public double latitude { get; set; }
-        public double longitude { get; set; }
+        public double Latitude
+        {
+            get { return _latitude; }
+            set
+            {
+                if (value.Equals(_latitude)) return;
+                _latitude = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (value == _name) return;
+                _name = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

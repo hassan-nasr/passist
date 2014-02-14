@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,7 +55,7 @@ namespace PersonalAssistant.Service
                 case "localWeather":
                     {
                         String day = queryString["day"];
-                        String place = "Tehran";
+                        String place = "[current]";
                         combineAndSayWeather(day, place);
                     }
                     break;
@@ -62,6 +63,20 @@ namespace PersonalAssistant.Service
                     {
                         String day = queryString["day"];
                         String place = queryString["place"];
+                        combineAndSayWeather(day, place);
+                    }
+                    break;
+                case "currentWeather":
+                    {
+                        String day = "today";
+                        String place = queryString["place"];
+                        combineAndSayWeather(day, place);
+                    }
+                    break;
+                case "currentLocalWeather":
+                    {
+                        String day = "today";
+                        String place = "[current]";
                         combineAndSayWeather(day, place);
                     }
                     break;
@@ -98,6 +113,10 @@ namespace PersonalAssistant.Service
                                 minuteInt = 1;
                                 break;
                             case"half an":
+                            case"halfan":
+                            case"halfa":
+                            case"half a":
+                            case"half":
                                 minuteInt = 1;
                                 break;
                             default:
@@ -111,6 +130,10 @@ namespace PersonalAssistant.Service
                                 hourInt = 1;
                                 break;
                             case "half an":
+                            case "halfan":
+                            case "halfa":
+                            case "half a":
+                            case "half":
                                 hourInt = 0;
                                 minuteInt = 30;
                                 break;
@@ -186,8 +209,24 @@ namespace PersonalAssistant.Service
         }
         private async void SayWeather(DateTime date, string place, String orginalDateString)
         {
-            WeatherDataManager weatherDataManager = new WeatherDataManager();
+            WeatherDataManager weatherDataManager = WeatherDataManager.GetInstance();
+            if (place == "[current]")
+            {
+                Dictionary<string, Place> dictionaryEntries = WeatherDataManager.GetInstance().getPlaces();
+                if (dictionaryEntries.Count != 0)
+                {
+                    place = dictionaryEntries.GetEnumerator().Current.Key;
 
+                    foreach (KeyValuePair<string, Place> dictionaryEntry in dictionaryEntries)
+                    {
+                        string key = (string)dictionaryEntry.Key;
+                        Place value = dictionaryEntry.Value;
+                        if (value.IsLocal)
+                            place = key;
+                    }    
+                }
+                
+            }
             String responseSentence = "";
             String detailsString = "";
             LocalWeather localWeather = weatherDataManager.getWeather(place);
@@ -336,7 +375,8 @@ namespace PersonalAssistant.Service
                     TimeString = "on " + app.StartTime.DayOfWeek.ToString();
                 if (!app.IsAllDayEvent)
                 {
-                    TimeString += " at " + app.StartTime.ToShortTimeString();
+                    if (!app.StartTime.Equals(DateTime.Now.Date) || !app.EndTime.Equals(DateTime.Now.Date.AddDays(1)))
+                        TimeString += " at " + app.StartTime.ToShortTimeString();
                 }
                 if (!app.IsPrivate)
                 {
@@ -344,23 +384,23 @@ namespace PersonalAssistant.Service
                     if (app.Location != null)
                         response += " in " + app.Location;
                     detailsString = "Subject: " + app.Subject
-                                    + "\r\n From: " + app.StartTime.ToLongDateString() + "," +
+                                    + "\r\nFrom: " + app.StartTime.ToLongDateString() + "," +
                                     app.StartTime.ToLongTimeString()
-                                    + "\r\n To: " + app.EndTime.ToLongDateString() + "," +
+                                    + "\r\nTo: " + app.EndTime.ToLongDateString() + "," +
                                     app.EndTime.ToLongTimeString()
-                                    + "\r\n Location: " + app.Location
-                                    + "\r\n Details:" + app.Details;
+                                    + "\r\nLocation: " + app.Location
+                                    + "\r\nDetails:" + app.Details;
                 }
                 else
                 {
                     response = "you have a private appointment " + TimeString;
                     detailsString = "Subject: private"
-                                    + "\r\n From: " + app.StartTime.ToLongDateString() + "," +
+                                    + "\r\nFrom: " + app.StartTime.ToLongDateString() + "," +
                                     app.StartTime.ToLongTimeString()
-                                    + "\r\n To: " + app.EndTime.ToLongDateString() + "," +
+                                    + "\r\nTo: " + app.EndTime.ToLongDateString() + "," +
                                     app.EndTime.ToLongTimeString()
-                                    + "\r\n Location: private "
-                                    + "\r\n Details: private";
+                                    + "\r\nLocation: private "
+                                    + "\r\nDetails: private";
                 }
                 RecentItem = new ResponseItem(AppointmentImageUri, detailsString, response);
                 sendViewableResult.Invoke(new Task(o => { }, RecentItem));

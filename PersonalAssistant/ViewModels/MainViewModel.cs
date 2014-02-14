@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -8,42 +9,25 @@ using System.Windows.Threading;
 using Newtonsoft.Json;
 using PersonalAssistant.Resources;
 using PersonalAssistant.Service.Weather;
+using PersonalAssistant.Service.Weather.LocalWeather;
 
 namespace PersonalAssistant.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private WeatherDataManager weatherDataManager;
         public MainViewModel()
         {
+            weatherDataManager = WeatherDataManager.GetInstance();
             this.RecentItems = new ObservableCollection<ResponseItem>();
+            this.Places = new ObservableCollection<Place>();
         }
 
         /// <summary>
         /// A collection for ItemViewModel objects.
         /// </summary>
         public ObservableCollection<ResponseItem> RecentItems { get; set; }
-
-        ObservableCollection<ResponseItem> _lastFirstRecentItems;
-        public ObservableCollection<ResponseItem> LastFirstRecentItems
-        {
-            get
-            {
-                RecentItems.CollectionChanged+=RecentItems_CollectionChanged;
-                _lastFirstRecentItems = new ObservableCollection<ResponseItem>();
-                for (int i = RecentItems.Count-1; i >=0 ; i--)
-                {
-                    var responseItem = RecentItems[i];
-                    _lastFirstRecentItems.Add(responseItem);
-                }
-                return _lastFirstRecentItems;
-            }
-        }
-
-        private void RecentItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-             
-        }
-
+        public ObservableCollection<Place> Places { get; set; } 
         public bool IsDataLoaded
         {
             get;
@@ -56,7 +40,13 @@ namespace PersonalAssistant.ViewModels
         public void LoadData()
         {
             // Sample data; replace with real data
-              LoadRecentItems();
+            LoadRecentItems();
+            foreach (KeyValuePair<string, Place> dictionaryEntry in weatherDataManager.getPlaces())
+            {
+                String key = (String) dictionaryEntry.Key;
+                Place value = (Place) dictionaryEntry.Value;
+                Places.Add(value);
+            }
 //            RecentItems = new ObservableCollection<ResponseItem>
 //            {
 //                new ResponseItem()
@@ -74,6 +64,13 @@ namespace PersonalAssistant.ViewModels
         {
             // Sample data; replace with real data
             PersistRecentItems();
+            PersistPlaces();
+        }
+
+        private void PersistPlaces()
+        {
+            weatherDataManager.SetPlaces(Places);
+            weatherDataManager.SavePlaces();
         }
 
 
