@@ -110,7 +110,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service\Appointments\AppointmentsManager.cs" />
+    <Compile Include="Service\appointment\AppointmentsManager.cs" />
     <Compile Include="Service\BackGroundJob.cs" />
     <Compile Include="Service\RecognitionEngin.cs" />
     <Compile Include="Service\ResponseElement.cs" />

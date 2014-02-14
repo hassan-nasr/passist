@@ -12,6 +12,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using PersonalAssistant.Resources;
 using PersonalAssistant.Service;
+using PersonalAssistant.Service.appointment;
 using PersonalAssistant.ViewModels;
 
 namespace PersonalAssistant
@@ -45,6 +46,7 @@ namespace PersonalAssistant
                     Uri uri = new Uri("ms-appx:///Resources/voicecommands.xml", UriKind.Absolute);
                     await Windows.Phone.Speech.VoiceCommands.VoiceCommandService.InstallCommandSetsFromFileAsync(uri);
 
+                    new AppointmentsManager().FillSpeachDataWithAppointments();
                     this.voiceCommandInitialized = true;
                 }
                 catch (Exception error)

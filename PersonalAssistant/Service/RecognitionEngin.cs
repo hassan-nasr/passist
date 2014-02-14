@@ -8,6 +8,7 @@ using Windows.Phone.Devices.Power;
 using Windows.Phone.Speech.Synthesis;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.UserData;
+using PersonalAssistant.Service.appointment;
 using PersonalAssistant.Service.Weather;
 using PersonalAssistant.Service.Weather.LocalWeather;
 using PersonalAssistant.ViewModels;
@@ -51,6 +52,11 @@ namespace PersonalAssistant.Service
                     break;
                 case "appointments":
                     SayAppintments();
+                    break;
+                case "findAppointments":
+                    String subject = queryString["appointment"];
+                    new AppointmentsManager().FindAppointmentByName(subject, SayFoundAppointment);
+                    ;
                     break;
                 case "localWeather":
                     {
@@ -356,16 +362,25 @@ namespace PersonalAssistant.Service
         private async void finishSearch(object sender, AppointmentsSearchEventArgs e)
         {
             List<Appointment> appointments = e.Results.ToList();
+
+            Appointment app=null;
+            if(appointments.Count>0)
+                app = appointments[0];
+
+            await SayAppointment(app);
+        }
+
+        private async Task SayAppointment(Appointment app)
+        {
             SpeechSynthesizer synth = new SpeechSynthesizer();
             String detailsString, response;
-            if (appointments.Count == 0)
+            if (app == null)
             {
                 response = ("You have no appointments in next weak! have fun.");
                 detailsString = "no appointments in next weak";
             }
             else
             {
-                Appointment app = appointments[0];
                 string TimeString;
                 if (app.StartTime.Date.Equals(DateTime.Now.Date))
                     TimeString = "today";
@@ -409,9 +424,58 @@ namespace PersonalAssistant.Service
             }
             if (onFinish != null)
             {
-                onFinish.Invoke(new Task(o => { },null));
+                onFinish.Invoke(new Task(o => { }, null));
             }
         }
+
+        private async void SayFoundAppointment(IAsyncResult result)
+        {
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            String detailsString = "", response="";
+            Appointment app = result.AsyncState as Appointment;
+            if (app == null)
+            {
+                response = ("You have no such appointment or event in next Year.");
+                detailsString = "no appointment maches";
+            }
+            else
+            {
+                string TimeString;
+                if (app.StartTime.Date.Equals(DateTime.Now.Date))
+                    TimeString = "today";
+                else if (app.StartTime.Date.Equals(DateTime.Now.Add(new TimeSpan(1, 0, 0, 0)).Date))
+                    TimeString = "tomarow";
+                else
+                    TimeString = "on " + app.StartTime.ToShortDateString();
+                if (!app.IsAllDayEvent)
+                {
+                    if (!app.StartTime.Equals(DateTime.Now.Date) || !app.EndTime.Equals(DateTime.Now.Date.AddDays(1)))
+                        TimeString += " at " + app.StartTime.ToShortTimeString();
+                }
+                if (!app.IsPrivate)
+                {
+                    response = "You appointment about " + app.Subject + " is " + TimeString;
+                    if (app.Location != null)
+                        response += " in " + app.Location;
+                    detailsString = "Subject: " + app.Subject
+                                    + "\r\nFrom: " + app.StartTime.ToLongDateString() + "," +
+                                    app.StartTime.ToLongTimeString()
+                                    + "\r\nTo: " + app.EndTime.ToLongDateString() + "," +
+                                    app.EndTime.ToLongTimeString()
+                                    + "\r\nLocation: " + app.Location
+                                    + "\r\nDetails:" + app.Details;
+                }
+                RecentItem = new ResponseItem(AppointmentImageUri, detailsString, response);
+                sendViewableResult.Invoke(new Task(o => { }, RecentItem));
+                await synth.SpeakTextAsync(response);
+                onFinish.Invoke(new Task(o => { }, "Have Fun"));
+            }
+            if (onFinish != null)
+            {
+                onFinish.Invoke(new Task(o => { }, null));
+            }
+        }
+
 
     }
 

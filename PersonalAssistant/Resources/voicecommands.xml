@@ -74,6 +74,12 @@
       <Feedback>Yes your appointments..., let me check</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
+      <Command Name="findAppointments">
+      <Example>Tell me when is my birthday </Example>
+      <ListenFor>[Tell me] when is {appointment}</ListenFor>
+      <Feedback>Yes {appointment}. let me check</Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
 
 <!--    <Command Name="alarmTimeSet">-->
 <!--      <Example>Set an alarm to 7:30 am.</Example>-->
@@ -103,6 +109,10 @@
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
+    <PhraseList Label="appointment">
+      <Item>My birthday</Item>
+    </PhraseList>
+    
     <PhraseList Label="alarmf">
       <Item>alarm me</Item>
       <Item>alarm </Item>
