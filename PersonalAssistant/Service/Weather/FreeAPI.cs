@@ -4,6 +4,7 @@ using System.Linq;
 using System.Configuration;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PersonalAssistant;
 using PersonalAssistant.Service.Weather;
 using PersonalAssistant.Service.Weather.LocalWeather;
 
@@ -14,6 +15,13 @@ public class FreeAPI
 {
     public string ApiBaseURL = "http://api.worldweatheronline.com/free/v1/";
     public string FreeAPIKey = "pehqskn6dr4hx4chhtgmrn2k";
+
+    public FreeAPI()
+    {
+        if (Settings.GetInstance().APIKey.Any())
+            FreeAPIKey = Settings.GetInstance().APIKey;
+    }
+
     private AsyncCallback successCallback = null;
     private AsyncCallback failCallback = null;
     public void GetLocalWeather(LocalWeatherInput input, AsyncCallback success, AsyncCallback fail)

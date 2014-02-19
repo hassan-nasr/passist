@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Windows.Phone.Speech.VoiceCommands;
 using Windows.Security.Authentication.OnlineId;
 using Newtonsoft.Json;
@@ -17,6 +20,16 @@ namespace PersonalAssistant.Service.Weather
     {
         private static WeatherDataManager _weatherDataManager;
 
+        private static string weatherfolderPath = "WeatherFolder";
+        private static string placesFilePath = "Places.txt";
+        private static string weatherIconPath = weatherfolderPath + "\\" + "Icons";
+
+        public static String getLocalWeatherIconUri(String url)
+        {
+            String ret=  weatherIconPath + "\\" + (url.Substring(url.LastIndexOf("/") + 1));
+            ret = ret.Replace('\\','/');
+            return ret;
+        }
         public static WeatherDataManager GetInstance()
         {
             if(_weatherDataManager == null)
@@ -27,6 +40,8 @@ namespace PersonalAssistant.Service.Weather
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void SavePlaces()
         {
+
+//            MessageBox.Show("start saving places");
             try
             {
                 // Get the local folder.
@@ -34,31 +49,36 @@ namespace PersonalAssistant.Service.Weather
                     System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
 
                 // Create a new folder named DataFolder.
-                if (!local.DirectoryExists("WeatherFolder"))
-                    local.CreateDirectory("WeatherFolder");
+                if (!local.DirectoryExists(weatherfolderPath))
+                    local.CreateDirectory(weatherfolderPath);
                 using (var isoFileStream = new System.IO.IsolatedStorage.IsolatedStorageFileStream(
-                    "Places.txt",
+                    placesFilePath,
                     System.IO.FileMode.Create,
                     local))
                 {
                     using (var isoFileWriter = new System.IO.StreamWriter(isoFileStream))
                     {
                         string serializedPlaces = JsonConvert.SerializeObject(places);
+                        System.Diagnostics.Debug.WriteLine("saving places");
                         System.Diagnostics.Debug.WriteLine(serializedPlaces);
-                        System.Diagnostics.Debug.WriteLine("CurrentCommandLangs: "+VoiceCommandService.InstalledCommandSets.ToString());
                       
                         VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-                        widgetVcs.UpdatePhraseListAsync("place",places.Keys);
+//                        widgetVcs.UpdatePhraseListAsync("place",places.Keys);
 
                         isoFileWriter.Write(serializedPlaces);
                         isoFileWriter.Close();
+//                        MessageBox.Show("done saving places");
+//                        System.Diagnostics.Debug.WriteLine("done writing places");
                     }
                 }
             }
             catch (Exception e)
             {
+                BugReporter.GetInstance().report(e);
+//                throw e;
                 System.Diagnostics.Debug.WriteLine(e.StackTrace);
             }
+            
             
         }
         public void LoadPlaces()
@@ -69,7 +89,7 @@ namespace PersonalAssistant.Service.Weather
             try
             {
                 using (var isoFileStream = new System.IO.IsolatedStorage.IsolatedStorageFileStream(
-                    "Places.txt",
+                    placesFilePath,
                     System.IO.FileMode.Open,
                     local))
                 {
@@ -129,9 +149,12 @@ namespace PersonalAssistant.Service.Weather
             foreach (KeyValuePair<string, Place> dictionaryEntry in places)
             {
                 Place place =  dictionaryEntry.Value;
-                if (place.LastUpdateTime > DateTime.Now.AddHours(-2))
-                    continue;
-                weatherInput.query = place.Name;
+                if (place.LastUpdateTime > DateTime.Now.AddHours(-2) && !Settings.GetInstance().APIKey.Any())
+                    callback.Invoke(new Task((object obj) => { }, "current weather data for " + place.Name + " is not outdated yet!"));
+                if (place._useName)
+                    weatherInput.query = place.Name;
+                else
+                    weatherInput.query = place.Latitude + "," + place.Longitude;
                 SaveWeatherDataClass saver = new SaveWeatherDataClass(place.Name,callback);
                 new FreeAPI().GetLocalWeather(weatherInput,saver.SaveWeatherData, failCallback);
                 Thread.Sleep(1000);
@@ -162,38 +185,61 @@ namespace PersonalAssistant.Service.Weather
                 try
                 {
                     LocalWeather.LocalWeather localWeather = result.AsyncState as LocalWeather.LocalWeather;
-                    // Get the local folder.
-                    System.IO.IsolatedStorage.IsolatedStorageFile local =
-                        System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
-
-                    // Create a new folder named DataFolder.
-                    if (!local.DirectoryExists("WeatherFolder"))
-                        local.CreateDirectory("WeatherFolder");
-                    using (var isoFileStream = new System.IO.IsolatedStorage.IsolatedStorageFileStream(
-                        "WeatherFolder\\" + placeName + ".txt",
-                        System.IO.FileMode.Create,
-                        local))
+                    if (localWeather.data == null || localWeather.data.request == null)
+                        callBackMessage = "" + placeName + " - location not found.";
+                    else
                     {
-                        // Write the data from the textbox.
-                        using (var isoFileWriter = new System.IO.StreamWriter(isoFileStream))
+                        // Get the local folder.
+                        System.IO.IsolatedStorage.IsolatedStorageFile local =
+                            System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+
+                        // Create a new folder named DataFolder.
+                        if (!local.DirectoryExists(weatherfolderPath))
+                            local.CreateDirectory(weatherfolderPath);
+                        using (var isoFileStream = new System.IO.IsolatedStorage.IsolatedStorageFileStream(
+                            weatherfolderPath+"\\" + placeName + ".txt",
+                            System.IO.FileMode.Create,
+                            local))
                         {
-                            string serializedWeather = JsonConvert.SerializeObject(localWeather);
-                            isoFileWriter.Write(serializedWeather);
-                            isoFileWriter.Close();
-                            GetInstance().getPlaces()[placeName].LastUpdateTime = DateTime.Now;
-                            GetInstance().SavePlaces();
-                            callBackMessage = "weather updated for " + placeName;
+                            // Write the data from the textbox.
+                            using (var isoFileWriter = new System.IO.StreamWriter(isoFileStream))
+                            {
+                                string serializedWeather = JsonConvert.SerializeObject(localWeather);
+                                isoFileWriter.Write(serializedWeather);
+                                isoFileWriter.Close();
+                                Place place = GetInstance().getPlaces()[placeName];
+                                place.enableNotify = false;
+                                place.LastUpdateTime = DateTime.Now;
+                                place.enableNotify = true;
+                                loadRequiredWeatherImages(localWeather);
+                                GetInstance().SavePlaces();
+                                callBackMessage = "weather updated for " + placeName;
 //                        MessageBox.Show(serializedWeather);
+                            }
                         }
                     }
                 }
                 catch (Exception e)
                 {
+                    BugReporter.GetInstance().report(e);
                     callBackMessage = "update Failed For " + placeName;
                 }
                 if(callback!=null)
                     callback.Invoke(new Task(o => { },callBackMessage));
             }
+
+            private void loadRequiredWeatherImages(LocalWeather.LocalWeather localWeather)
+            {
+                for (int i = 0; i < localWeather.data.current_Condition.Count; i++)
+                {
+                    WebRequestManager.GetInstance().loadIfNotExist(localWeather.data.current_Condition[i].weatherIconUrl[0].value, weatherIconPath);
+                }
+                for (int i = 0; i < localWeather.data.weather.Count; i++)
+                {
+                    WebRequestManager.GetInstance().loadIfNotExist(localWeather.data.weather[i].weatherIconUrl[0].value, weatherIconPath);
+                }
+            }
+
         }
 
         public LocalWeather.LocalWeather getWeather(String place)
@@ -316,8 +362,12 @@ namespace PersonalAssistant.Service.Weather
         [NotifyPropertyChangedInvocator]
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
+            if (enableNotify == false)
+                return;
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public Boolean enableNotify = true;
     }
 }

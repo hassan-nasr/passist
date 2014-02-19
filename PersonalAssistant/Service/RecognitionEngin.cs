@@ -216,6 +216,7 @@ namespace PersonalAssistant.Service
         private async void SayWeather(DateTime date, string place, String orginalDateString)
         {
             WeatherDataManager weatherDataManager = WeatherDataManager.GetInstance();
+            String imageuri = WeatherImageUri;
             if (place == "[current]")
             {
                 Dictionary<string, Place> dictionaryEntries = WeatherDataManager.GetInstance().getPlaces();
@@ -231,6 +232,13 @@ namespace PersonalAssistant.Service
                             place = key;
                     }    
                 }
+                if (place == "[current]")
+                {
+                    SpeechSynthesizer synth2 = new SpeechSynthesizer();
+                    await synth2.SpeakTextAsync("please set you local location in settings page");
+                    return;
+                }
+
                 
             }
             String responseSentence = "";
@@ -268,18 +276,22 @@ namespace PersonalAssistant.Service
 
                     responseSentence = "it's " + weatherToShow.weatherDesc[0].value + " at " + place + " on " +
                                        dateString + " the Minimum of  Temperature is " +
-                                       weatherToShow.tempMinC + " and the Maximum is " + weatherToShow.tempMaxC +
-                                       " degrees of Celsius.";
+                                       GetTemp(weatherToShow.tempMinC, "none") + " and the Maximum is " +
+                                       GetTemp(weatherToShow.tempMaxC, "long") +
+                                       ".";
                     detailsString = "Location : " + place
                                     + "\r\nDescription: " + weatherToShow.weatherDesc[0].value
-                                    + "\r\nMin Temp.: " + weatherToShow.tempMinC + " °C"
-                                    + "\r\nMax Temp.: " + weatherToShow.tempMaxC + " °C"
+                                    + "\r\nMin Temp.: " + GetTemp(weatherToShow.tempMinC ,"short")
+                                    + "\r\nMax Temp.: " + GetTemp(weatherToShow.tempMaxC, "short")
                                     + "\r\nWind Speed: " + weatherToShow.windspeedKmph + " Km/h"
                                     + "\r\nWind Degree: " + weatherToShow.winddirDegree;
 
                 }
+
+                imageuri = WeatherDataManager.getLocalWeatherIconUri(weatherToShow.weatherIconUrl[0].value);
+
             }
-            RecentItem = new ResponseItem(WeatherImageUri,detailsString,responseSentence);
+            RecentItem = new ResponseItem(imageuri,detailsString,responseSentence);
             sendViewableResult.Invoke(new Task(o => { },RecentItem));
             SpeechSynthesizer synth = new SpeechSynthesizer();
             await synth.SpeakTextAsync(responseSentence);
@@ -476,17 +488,34 @@ namespace PersonalAssistant.Service
             }
         }
 
-
-    }
-
-    class Settings
-    {
-        static Settings()
+        private static String GetTemp(int incels, String type)
         {
-            ApplicationName = "BeBin";
+            if (Settings.GetInstance().MetricTemp == "Fahrenheit")
+            {
+                int inFaren = (int) (incels*9.0/5 + 32);
+
+                if (type == "none")
+                {
+                    return "" + inFaren;
+                }
+                if (type == "short")
+                {
+                    return "" + inFaren + " °F";
+                }
+                return "" + incels + "degrees of Fahrenheit";
+            }
+            if (type == "none")
+            {
+                return "" + incels;
+            }
+            if (type == "short")
+            {
+                return "" + incels  +" °C";
+            }
+            return "" + incels + "degrees of Celsius";
         }
 
-        public static string ApplicationName { get; set; }
-        public static string UsersApplicationName { get; set; }
     }
+
+
 }

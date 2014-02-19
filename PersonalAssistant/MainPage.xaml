@@ -58,7 +58,7 @@
                             <Border Background="BlanchedAlmond">
                                 <TextBlock Text="{Binding ResponseString}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Black"/>
                             </Border>
-                            <Border Background="BlueViolet"><TextBlock Text="Asked On: " TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Black"/></Border>
+                            <Border Background="BlueViolet"><TextBlock Text="Asked On: " TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" /></Border>
                             <Border Background="BlueViolet"><TextBlock Text="{Binding DateTime}" TextWrapping="Wrap" Margin="112,-27,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/></Border>
                       </StackPanel>
                     </DataTemplate>

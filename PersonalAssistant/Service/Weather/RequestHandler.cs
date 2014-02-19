@@ -23,7 +23,7 @@ namespace PersonalAssistant.Service.Weather
         {
             this.successCallback = succCallback;
             this.failCallback = failCallback;
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)System.Net.WebRequest.Create(url);
             request.BeginGetResponse(GetUrlCallback, request);
 
         }

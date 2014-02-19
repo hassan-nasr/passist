@@ -93,12 +93,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IsChecked.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PivotPage1.xaml.cs">
+      <DependentUpon>PivotPage1.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlacesPage.xaml.cs">
       <DependentUpon>PlacesPage.xaml</DependentUpon>
@@ -114,6 +118,7 @@
     <Compile Include="Service\BackGroundJob.cs" />
     <Compile Include="Service\RecognitionEngin.cs" />
     <Compile Include="Service\ResponseElement.cs" />
+    <Compile Include="Service\BugReporter.cs" />
     <Compile Include="Service\Weather\FreeAPI.cs" />
     <Compile Include="Service\Weather\LocalWeather.cs" />
     <Compile Include="Service\Weather\LocationSearch.cs" />
@@ -121,6 +126,8 @@
     <Compile Include="Service\Weather\RequestHandler.cs" />
     <Compile Include="Service\Weather\TimeZone.cs" />
     <Compile Include="Service\Weather\WeatherDataManager.cs" />
+    <Compile Include="Service\Settings.cs" />
+    <Compile Include="Service\WebRequest.cs" />
     <Compile Include="ViewModels\ResponsItem.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -142,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignData>
+    <Page Include="PivotPage1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PlacesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -212,6 +223,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
