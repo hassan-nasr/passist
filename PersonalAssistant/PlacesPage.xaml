@@ -16,11 +16,16 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" Background="Orange">
 
     <!--Data context is set to sample data above and LayoutRoot contains the root grid where all other page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <phone:Pivot Title="Mosi">
+    <Grid x:Name="LayoutRoot" Background="#FF04DBFD">
+        <StackPanel Grid.Row="0" Margin="0,0,0,0">
+            <Border Background="Coral">
+                <TextBlock Text="MOSI" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+        </StackPanel>
+        <phone:Pivot>
 
             <!--Pivot item two-->
             <phone:PivotItem Header="Settings">
@@ -44,10 +49,10 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Text="{Binding ElementName=PlacesPage1, Path=apiKey, Mode=TwoWay}"></TextBox>
-                        <Button Grid.Column="1" Content="(?)" Click="HelpAPIKey"></Button>
+                        <Button Grid.Column="1" Content="(?)" Click="HelpAPIKey" BorderBrush="Coral" Background="Coral" ></Button>
                     </Grid>
-                    <HyperlinkButton Grid.Row="5" HorizontalAlignment="Right" Content="1- Register for Weather" Click="GoToWeatherOnline"></HyperlinkButton>
-                    <HyperlinkButton Grid.Row="6" HorizontalAlignment="Right" Content="2- Get Weather API key here" Click="GoToWeatherOnlineGetAPI"></HyperlinkButton>
+                    <HyperlinkButton Grid.Row="5" HorizontalAlignment="Right" Content="1- Register for Weather" Click="GoToWeatherOnline" Foreground="Coral"></HyperlinkButton>
+                    <HyperlinkButton Grid.Row="6" HorizontalAlignment="Right" Content="2- Get Weather API key here" Click="GoToWeatherOnlineGetAPI" Foreground="Coral"></HyperlinkButton>
                 </Grid>
             </phone:PivotItem>
 
@@ -99,22 +104,28 @@
                                             <!--                            <Image Height="100" HorizontalAlignment="left" Source="{Binding ImageUri}"></Image>-->
                                             <!--                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap"  Margin="10,0,12,10" Style="{StaticResource PhoneTextLargeStyle}"  />-->
                                             <RadioButton IsChecked="{Binding IsLocal}"  Content="{Binding Name}" GroupName="places" Checked="SetAsDefault" />
+                                            <Grid Column="3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                                    <ColumnDefinition Width="129"></ColumnDefinition>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border Background="Coral">
+                                                    <TextBlock Text="{Binding Latitude}" TextWrapping="Wrap" Margin="12,0,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Black"/>
+                                                </Border>
+                                                <Border Grid.Column="1" Background="Coral">
+                                                    <TextBlock Text="{Binding Longitude}" TextWrapping="Wrap" Margin="12,0,12,0" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+                                                </Border>
 
-                                            <Border Background="BlueViolet">
-                                                <TextBlock Text="{Binding Latitude}" TextWrapping="Wrap" Margin="12,0,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Black"/>
-                                            </Border>
-                                            <Border Background="BlueViolet">
-                                                <TextBlock Text="{Binding Longitude}" TextWrapping="Wrap" Margin="112,-27,12,0" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
-                                            </Border>
+                                                <Border Grid.Column="2" Background="Coral">
+                                                    <TextBlock Text="{Binding LastUpdateTime}" TextWrapping="Wrap" HorizontalAlignment="Right" Margin="0,0,0,0" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+                                                </Border>
 
-
-                                            <Border Background="BlueViolet">
-                                                <TextBlock Text="{Binding LastUpdateTime}" TextWrapping="Wrap" Margin="212,-27,12,0" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
-                                            </Border>
+                                            </Grid>
                                             <toolkit:ContextMenuService.ContextMenu>
                                                 <toolkit:ContextMenu >
                                                     <toolkit:MenuItem Header="delete" Click="DeleteItem" />
-<!--                                                    <toolkit:MenuItem Header="set as default" Click="SetAsDefault" />-->
+                                                    <!--                                                    <toolkit:MenuItem Header="set as default" Click="SetAsDefault" />-->
                                                 </toolkit:ContextMenu>
                                             </toolkit:ContextMenuService.ContextMenu>
                                         </StackPanel>
@@ -126,7 +137,7 @@
 
                             <Grid Grid.Column="4" Margin="10,0">
                                 <TextBlock Grid.Column="0" Text="Add new Place: " HorizontalAlignment="Center" Margin="90,2,68,2" Width="139"/>
-                                <HyperlinkButton Grid.Column="0" Content="Help"  HorizontalAlignment="Right" Click="ShowAddHelp" ></HyperlinkButton>
+                                <HyperlinkButton Grid.Column="0" Content="Help"  HorizontalAlignment="Right" Click="ShowAddHelp" Foreground="Coral" ></HyperlinkButton>
                             </Grid>
                             <Grid Grid.Column="3" Margin="10,0">
                                 <Grid.ColumnDefinitions>
@@ -148,9 +159,9 @@
                                 <TextBlock Grid.Column="0" Text="Position:" VerticalAlignment="Center"></TextBlock>
                                 <TextBox Grid.Column="1" InputScope="Number" Name="LatitudeBox" ></TextBox>
                                 <TextBox Grid.Column="2" InputScope="Number" Name="LongitudeBox" ></TextBox>
-                                <Button Grid.Column="3" Click="FillLocalPlaceInfo" Content="Local"></Button>
+                                <Button Grid.Column="3" Click="FillLocalPlaceInfo" Content="Local" Background="Coral" BorderBrush="Transparent"></Button>
                             </Grid>
-                            <Button  Click="AddNewPlace" Content="Add"></Button>
+                            <Button  Click="AddNewPlace" Content="Add" Background="Coral" BorderBrush="Transparent"></Button>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -169,13 +180,13 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="Hi"></TextBlock>
                     <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="Thank you for using my little app and I hope it can help you in your daily life. As you see this app lacks a lot of features which I'm working on it. during the development this app will be completely free and even ad-free so I appreciate it if you share your experience with me and your friends. "></TextBlock>
-                    <TextBlock Grid.Row="2" Text="-------" HorizontalAlignment="Right">  </TextBlock>
-                    <HyperlinkButton Grid.Row="3"  HorizontalAlignment="Right" Content="Thanks. HaNa." Click="SendFeedBack" Foreground="#FFE992F7">  </HyperlinkButton>
-                    <HyperlinkButton Grid.Row="4" Content="Contact Me" HorizontalAlignment="Right" Click="SendFeedBack" Foreground="#FFE992F7" >  </HyperlinkButton>
+                    <TextBlock Grid.Row="2" Text="-------" HorizontalAlignment="Right"></TextBlock>
+                    <HyperlinkButton Grid.Row="3"  HorizontalAlignment="Right" Content="Thanks. HaNa." Click="SendFeedBack" Foreground="Coral"></HyperlinkButton>
+                    <HyperlinkButton Grid.Row="4" Content="Contact Me" HorizontalAlignment="Right" Click="SendFeedBack" Foreground="Coral" ></HyperlinkButton>
 
                     <TextBlock Grid.Row="5" TextWrapping="Wrap" Text="Oh! by the way do you know what's the story behind the name and logo of this app? Mosi (the person) is my best friend and I wish you have one of those in you life! maybe Mosi (the app) can be one those!"></TextBlock>
                     <TextBlock Grid.Row="6" TextWrapping="Wrap" Text="If you like this app please like Mosis scooter page hare at Facebook:"></TextBlock>
-                    <HyperlinkButton Grid.Row="7" Content="Like Mosis Scooter" HorizontalAlignment="Right" Foreground="#FFE992F7" Click="GoToMosiPage"  ></HyperlinkButton>
+                    <HyperlinkButton Grid.Row="7" Content="Like Mosis Scooter" HorizontalAlignment="Right" Foreground="Coral" Click="GoToMosiPage"  ></HyperlinkButton>
 
                 </Grid>
             </phone:PivotItem>

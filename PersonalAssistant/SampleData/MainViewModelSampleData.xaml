@@ -13,12 +13,12 @@
         <weather:Place Name="design six"  Latitude="1.2" Longitude="1.232"/>
     </vm:MainViewModel.Places>
     <vm:MainViewModel.RecentItems >
-        <vm:ResponseItem ID="0" DetailString="design one"  ResponseString="Maecenas praesent accumsan bibendum" DateTime="1:10"/>
-        <vm:ResponseItem ID="1" DetailString="design two"  ResponseString="Dictumst eleifend facilisi faucibus" DateTime="1:10"/>
-        <vm:ResponseItem ID="2" DetailString="design three" ResponseString="Habitant inceptos interdum lobortis" DateTime="1:10"/>
-        <vm:ResponseItem ID="3" DetailString="design four" ResponseString="Nascetur pharetra placerat pulvinar" DateTime="1:10"/>
-        <vm:ResponseItem ID="4" DetailString="design five" ResponseString="Sagittis senectus sociosqu suscipit" DateTime="1:10"/>
-        <vm:ResponseItem ID="5" DetailString="design six"  ResponseString="Torquent ultrices vehicula volutpat" DateTime="1:10"/>
+        <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="0" DetailString="dendesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\ndesign one\r\n"  ResponseString="Maecenas praesent accumsan bibendum" DateTime="1:10"/>
+        <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="1" DetailString="design two"  ResponseString="Dictumst eleifend facilisi faucibus" DateTime="1:10"/>
+        <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="2" DetailString="design three" ResponseString="Habitant inceptos interdum lobortis" DateTime="1:10"/>
+        <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="3" DetailString="design four" ResponseString="Nascetur pharetra placerat pulvinar" DateTime="1:10"/>
+        <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="4" DetailString="design five" ResponseString="Sagittis senectus sociosqu suscipit" DateTime="1:10"/>
+        <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="5" DetailString="design six"  ResponseString="Torquent ultrices vehicula volutpat" DateTime="1:10"/>
     </vm:MainViewModel.RecentItems>
     
 

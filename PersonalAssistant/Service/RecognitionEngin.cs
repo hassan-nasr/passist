@@ -288,7 +288,7 @@ namespace PersonalAssistant.Service
 
                 }
 
-                imageuri = WeatherDataManager.getLocalWeatherIconUri(weatherToShow.weatherIconUrl[0].value);
+                imageuri =(WeatherImageUri+"/"+weatherToShow.weatherCode+".png");
 
             }
             RecentItem = new ResponseItem(imageuri,detailsString,responseSentence);
@@ -298,7 +298,7 @@ namespace PersonalAssistant.Service
             onFinish.Invoke(new Task(o=>{},"Have Fun"));
 
         }
-        public String WeatherImageUri ="/Images/feature.search.png";
+        public String WeatherImageUri ="/Images/WeatherIcon";
         public String TimeImageUri ="/Images/feature.alarm.png";
         public String AlarmImageUri ="/Images/feature.alarm.png";
         public String DateImageUri ="/Images/feature.calendar.png";
@@ -502,7 +502,7 @@ namespace PersonalAssistant.Service
                 {
                     return "" + inFaren + " °F";
                 }
-                return "" + incels + "degrees of Fahrenheit";
+                return "" + inFaren + " degrees of Fahrenheit";
             }
             if (type == "none")
             {
@@ -512,7 +512,7 @@ namespace PersonalAssistant.Service
             {
                 return "" + incels  +" °C";
             }
-            return "" + incels + "degrees of Celsius";
+            return "" + incels + " degrees of Celsius";
         }
 
     }

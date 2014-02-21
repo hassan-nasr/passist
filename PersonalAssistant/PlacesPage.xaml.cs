@@ -22,6 +22,7 @@ namespace PersonalAssistant
     {
         // Constructor
         private Settings settings;
+        private ProgressIndicator progressIndicator;
         public PlacesPage()
         {
             InitializeComponent();
@@ -81,7 +82,8 @@ namespace PersonalAssistant
                 App.ViewModel.LoadData();
             }
             System.Diagnostics.Debug.WriteLine(App.ViewModel.Places.Count + " is places count");
-            
+            SystemTray.SetBackgroundColor(this, Colors.Orange);
+            SystemTray.SetForegroundColor(this, Colors.Black);
         }
 
         private void MyContextMenu_Opened(object sender, RoutedEventArgs e)
@@ -155,17 +157,23 @@ namespace PersonalAssistant
             }
 
             Geolocator geolocator = new Geolocator();
+
             geolocator.DesiredAccuracyInMeters = 50;
 
             try
             {
+                progressIndicator = new ProgressIndicator();
+                progressIndicator.Text = "Looking for your position";
+                progressIndicator.IsVisible = true;
+                progressIndicator.IsIndeterminate = true;
+                SystemTray.SetProgressIndicator(this,progressIndicator);
                 Geoposition geoposition = await geolocator.GetGeopositionAsync(
                     maximumAge: TimeSpan.FromMinutes(5),
                     timeout: TimeSpan.FromSeconds(10)
                     );
-
                 LatitudeBox.Text = geoposition.Coordinate.Latitude.ToString("0.000");
                 LongitudeBox.Text = geoposition.Coordinate.Longitude.ToString("0.000");
+                progressIndicator.IsVisible =false;
             }
             catch (Exception ex)
             {

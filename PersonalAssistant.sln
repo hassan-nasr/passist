@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalAssistant", "PersonalAssistant\PersonalAssistant.csproj", "{AAD91E41-CDFC-4E24-AC87-EE6BFFF84216}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduledTaskAgent1", "ScheduledTaskAgent1\ScheduledTaskAgent1.csproj", "{B86F73A9-6DDB-4A92-8823-4C49B50861A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,18 @@ Global
 		{AAD91E41-CDFC-4E24-AC87-EE6BFFF84216}.Release|x86.ActiveCfg = Release|x86
 		{AAD91E41-CDFC-4E24-AC87-EE6BFFF84216}.Release|x86.Build.0 = Release|x86
 		{AAD91E41-CDFC-4E24-AC87-EE6BFFF84216}.Release|x86.Deploy.0 = Release|x86
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Debug|ARM.ActiveCfg = Debug|ARM
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Debug|ARM.Build.0 = Debug|ARM
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Debug|x86.ActiveCfg = Debug|x86
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Debug|x86.Build.0 = Debug|x86
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Release|ARM.ActiveCfg = Release|ARM
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Release|ARM.Build.0 = Release|ARM
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Release|x86.ActiveCfg = Release|x86
+		{B86F73A9-6DDB-4A92-8823-4C49B50861A9}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

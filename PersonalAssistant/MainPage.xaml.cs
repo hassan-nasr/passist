@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using Microsoft.Phone.Controls;
@@ -77,7 +80,7 @@ namespace PersonalAssistant
                 SystemTray.SetIsVisible(this, true);
 
                 SystemTray.SetOpacity(this, 1);
-                SystemTray.SetBackgroundColor(this, Colors.Magenta);
+                SystemTray.SetBackgroundColor(this, Colors.Orange);
                 SystemTray.SetForegroundColor(this, Colors.Black);
 
                 progressIndicator = new ProgressIndicator();
@@ -97,6 +100,15 @@ namespace PersonalAssistant
             }
         }
 
+        public void FakeCommand(object sender, EventArgs eventArgs)
+        {
+            Dictionary<String,String > dic= new Dictionary<string, string>();
+            dic.Add("voiceCommandName", "currentLocalWeather");
+
+            RecognitionEngin engin = new RecognitionEngin();
+            engin.RespondToQuery(dic, FinishResponseSimple, SentViewableResult);
+        }
+
         private void promptForLocation()
         {
             if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
@@ -108,8 +120,8 @@ namespace PersonalAssistant
             {
                 MessageBoxResult result =
                     MessageBox.Show("This app accesses your phone's location. Is that ok?",
-                    "Location",
-                    MessageBoxButton.OKCancel);
+                        "Location",
+                        MessageBoxButton.OKCancel);
 
                 if (result == MessageBoxResult.OK)
                 {
@@ -126,7 +138,7 @@ namespace PersonalAssistant
 
         private void SentViewableResult(IAsyncResult ar)
         {
-            ResponseItem result = (ResponseItem)ar.AsyncState;
+            ResponseItem result = (ResponseItem) ar.AsyncState;
             if (result == null)
                 return;
             System.Diagnostics.Debug.WriteLine("Recent List Size Befor: " + App.ViewModel.RecentItems.Count);
@@ -134,8 +146,9 @@ namespace PersonalAssistant
             {
                 App.ViewModel.RecentItems.Insert(0, result);
                 App.ViewModel.PersistData();
-
+                var a = MainLongListSelector.ItemsSource[0];
                 System.Diagnostics.Debug.WriteLine("Recent List Size After: " + App.ViewModel.RecentItems.Count);
+//                if(result.ImageUri.StartsWith("isostore:/"))
             });
 
 
@@ -143,7 +156,7 @@ namespace PersonalAssistant
 
         public void FinishResponseSimple(IAsyncResult result)
         {
-            String message = (string)result.AsyncState;
+            String message = (string) result.AsyncState;
             System.Diagnostics.Debug.WriteLine(message);
             Dispatcher.BeginInvoke(() =>
             {
@@ -158,10 +171,10 @@ namespace PersonalAssistant
         {
             return;
             // If selected item is null (no selection) do nothing
-            if (MainLongListSelector.SelectedItem == null )
+            if (MainLongListSelector.SelectedItem == null)
                 return;
 
-            
+
             // Reset selected item to null (no selection)
             MainLongListSelector.SelectedItem = null;
         }
@@ -200,9 +213,10 @@ namespace PersonalAssistant
         }
 
         private ProgressIndicator progressIndicator;
+
         public void FinishUpdateData(IAsyncResult result)
         {
-            String message = (string)result.AsyncState;
+            String message = (string) result.AsyncState;
             System.Diagnostics.Debug.WriteLine(message);
             Application application = null;
             Dispatcher.BeginInvoke(() =>
@@ -215,6 +229,58 @@ namespace PersonalAssistant
         private void GoToPlaces(object sender, EventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/PlacesPage.xaml", UriKind.Relative));
+        }
+
+
+        private void LoadImageFromIsolatedStorage(String strImageName, Image image)
+        {
+            // The image will be read from isolated storage into the following byte array
+            byte[] data;
+
+            // Read the entire image in one go into a byte array
+            try
+            {
+                using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    // Open the file - error handling omitted for brevity
+                    // Note: If the image does not exist in isolated storage the following exception will be generated:
+                    // System.IO.IsolatedStorage.IsolatedStorageException was unhandled 
+                    // Message=Operation not permitted on IsolatedStorageFileStream 
+                    using (IsolatedStorageFileStream isfs = isf.OpenFile(strImageName, FileMode.Open, FileAccess.Read))
+                    {
+                        // Allocate an array large enough for the entire file
+                        data = new byte[isfs.Length];
+
+                        // Read the entire file and then close it
+                        isfs.Read(data, 0, data.Length);
+                        isfs.Close();
+                    }
+                }
+
+                // Create memory stream and bitmap
+                MemoryStream ms = new MemoryStream(data);
+                BitmapImage bi = new BitmapImage();
+
+                // Set bitmap source to memory stream
+                bi.SetSource(ms);
+
+                // Create an image UI element – Note: this could be declared in the XAML instead
+
+                // Set size of image to bitmap size for this demonstration
+//                image.Height = bi.PixelHeight;
+//                image.Width = bi.PixelWidth;
+
+                // Assign the bitmap image to the image’s source
+                image.Source = bi;
+
+                // Add the image to the grid in order to display the bit map
+//                ContentPanel.Children.Add(image);
+            }
+            catch (Exception e)
+            {
+                // handle the exception
+                Debug.WriteLine(e.Message);
+            }
         }
     }
 
