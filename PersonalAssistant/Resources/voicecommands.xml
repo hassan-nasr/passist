@@ -5,7 +5,7 @@
 
     <CommandPrefix>Mosi</CommandPrefix>
 
-    <Example>Tell me my next appointments</Example>
+    <Example>Tell me my next appointment</Example>
 
     <Command Name="time">
       <Example>Tell Me the Time</Example>
@@ -40,14 +40,14 @@
     </Command>
 
     <Command Name="localWeather">
-      <Example>about weather</Example>
+      <Example>tell me local weather on tommorw</Example>
       <ListenFor>[Tell me] [about] [local] weather [on] {day}</ListenFor>
       <Feedback>Yes! forcast for {day} </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentLocalWeather">
-      <Example>about weather</Example>
+      <Example>Tell me about weather</Example>
       <ListenFor>[Tell me] [about] [local] weather </ListenFor>
       <Feedback>Yes! current weather condition </Feedback>
       <Navigate Target="MainPage.xaml"/>
@@ -57,14 +57,14 @@
       <Example>Tell me about weather in Tehran on Monday</Example>
       <ListenFor>[Tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
       <ListenFor>[Tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
-      <Feedback>Oho! Yes! forcast for {day} in {place}</Feedback>
+      <Feedback>aha! forcast for {day} in {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentWeather">
       <Example>Tell me about weather in Paris</Example>
       <ListenFor>[Tell me] [about] [the] weather in {place}</ListenFor>
-      <Feedback>Yeap! forcast for {place}</Feedback>
+      <Feedback>Yap! forcast for {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 

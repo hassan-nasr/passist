@@ -146,11 +146,18 @@ namespace PersonalAssistant.Service.Weather
             DateTime today=  DateTime.Now;
             LocalWeatherInput weatherInput = new LocalWeatherInput();
             weatherInput.num_of_days = days.ToString();
+            callback.Invoke(new Task((object obj) => { },
+                        " " + places.Count + " place will be upfated!"));
             foreach (KeyValuePair<string, Place> dictionaryEntry in places)
             {
                 Place place =  dictionaryEntry.Value;
+                System.Diagnostics.Debug.WriteLine(place.Name);
                 if (place.LastUpdateTime > DateTime.Now.AddHours(-2) && !Settings.GetInstance().APIKey.Any())
-                    callback.Invoke(new Task((object obj) => { }, "current weather data for " + place.Name + " is not outdated yet!"));
+                {
+                    callback.Invoke(new Task((object obj) => { },
+                        "current weather data for " + place.Name + " is not outdated yet!"));
+                    continue;
+                }
                 if (place._useName)
                     weatherInput.query = place.Name;
                 else
@@ -158,6 +165,8 @@ namespace PersonalAssistant.Service.Weather
                 SaveWeatherDataClass saver = new SaveWeatherDataClass(place.Name,callback);
                 new FreeAPI().GetLocalWeather(weatherInput,saver.SaveWeatherData, failCallback);
                 Thread.Sleep(1000);
+
+                System.Diagnostics.Debug.WriteLine("after sleep");
             }
             
         }
@@ -182,6 +191,7 @@ namespace PersonalAssistant.Service.Weather
             public void SaveWeatherData(IAsyncResult result)
             {
                 String callBackMessage = "unknownResult";
+                System.Diagnostics.Debug.WriteLine("saving weather data ---------------------------");
                 try
                 {
                     LocalWeather.LocalWeather localWeather = result.AsyncState as LocalWeather.LocalWeather;
@@ -211,7 +221,7 @@ namespace PersonalAssistant.Service.Weather
                                 place.enableNotify = false;
                                 place.LastUpdateTime = DateTime.Now;
                                 place.enableNotify = true;
-                                loadRequiredWeatherImages(localWeather);
+//                                loadRequiredWeatherImages(localWeather);
                                 GetInstance().SavePlaces();
                                 callBackMessage = "weather updated for " + placeName;
 //                        MessageBox.Show(serializedWeather);

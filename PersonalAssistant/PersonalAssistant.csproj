@@ -116,9 +116,10 @@
     </Compile>
     <Compile Include="Service\appointment\AppointmentsManager.cs" />
     <Compile Include="Service\BackGroundJob.cs" />
+    <Compile Include="Service\BugReporter.cs" />
     <Compile Include="Service\RecognitionEngin.cs" />
     <Compile Include="Service\ResponseElement.cs" />
-    <Compile Include="Service\BugReporter.cs" />
+    <Compile Include="Service\Settings.cs" />
     <Compile Include="Service\Weather\FreeAPI.cs" />
     <Compile Include="Service\Weather\LocalWeather.cs" />
     <Compile Include="Service\Weather\LocationSearch.cs" />
@@ -126,7 +127,6 @@
     <Compile Include="Service\Weather\RequestHandler.cs" />
     <Compile Include="Service\Weather\TimeZone.cs" />
     <Compile Include="Service\Weather\WeatherDataManager.cs" />
-    <Compile Include="Service\Settings.cs" />
     <Compile Include="Service\WebRequest.cs" />
     <Compile Include="ViewModels\ResponsItem.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />

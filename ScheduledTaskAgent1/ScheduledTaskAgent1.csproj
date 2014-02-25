@@ -84,8 +84,53 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\PersonalAssistant\Properties\Annotations.cs">
+      <Link>Annotations.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\appointment\AppointmentsManager.cs">
+      <Link>Service\appointment\AppointmentsManager.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\BackGroundJob.cs">
+      <Link>Service\BackGroundJob.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\BugReporter.cs">
+      <Link>Service\BugReporter.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Settings.cs">
+      <Link>Service\Settings.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Weather\FreeAPI.cs">
+      <Link>Service\Weather\FreeAPI.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Weather\LocalWeather.cs">
+      <Link>Service\Weather\LocalWeather.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Weather\LocationSearch.cs">
+      <Link>Service\Weather\LocationSearch.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Weather\MarineWeather.cs">
+      <Link>Service\Weather\MarineWeather.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Weather\RequestHandler.cs">
+      <Link>Service\Weather\RequestHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Weather\TimeZone.cs">
+      <Link>Service\Weather\TimeZone.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\Weather\WeatherDataManager.cs">
+      <Link>Service\Weather\WeatherDataManager.cs</Link>
+    </Compile>
+    <Compile Include="..\PersonalAssistant\Service\WebRequest.cs">
+      <Link>Service\WebRequest.cs</Link>
+    </Compile>
     <Compile Include="ScheduledAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Inform Me\Inform Me\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

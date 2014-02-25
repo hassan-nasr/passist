@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 using PersonalAssistant.Resources;
 using PersonalAssistant.Service;
@@ -22,11 +24,16 @@ namespace PersonalAssistant
 {
     public partial class MainPage : PhoneApplicationPage
     {
+
+        PeriodicTask periodicTask;
+        ResourceIntensiveTask resourceIntensiveTask;
+
+        string periodicTaskName = "MosiPeriodicTask";
+        public bool agentsAreEnabled = true;
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-
             // Set the data context of the LongListSelector control to the sample data
             DataContext = App.ViewModel;
             this.onLoadedEventHandler = new RoutedEventHandler(OnLoaded);
@@ -34,7 +41,10 @@ namespace PersonalAssistant
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
+            StartPeriodicAgent();
         }
+
+
 
         private Boolean voiceCommandInitialized = false;
         private RoutedEventHandler onLoadedEventHandler;
@@ -49,7 +59,6 @@ namespace PersonalAssistant
                     Uri uri = new Uri("ms-appx:///Resources/voicecommands.xml", UriKind.Absolute);
                     await Windows.Phone.Speech.VoiceCommands.VoiceCommandService.InstallCommandSetsFromFileAsync(uri);
 
-                    new AppointmentsManager().FillSpeachDataWithAppointments();
                     this.voiceCommandInitialized = true;
                 }
                 catch (Exception error)
@@ -74,7 +83,7 @@ namespace PersonalAssistant
             // Is this a new activation or a resurrection from tombstone?
             if (e.NavigationMode == System.Windows.Navigation.NavigationMode.New)
             {
-
+                
                 InitializeComponent();
 
                 SystemTray.SetIsVisible(this, true);
@@ -97,6 +106,66 @@ namespace PersonalAssistant
                     RecognitionEngin engin = new RecognitionEngin();
                     engin.RespondToQuery(NavigationContext.QueryString, FinishResponseSimple, SentViewableResult);
                 }
+                UpdateUserData(true);
+            }
+        }
+
+        private async void StartPeriodicAgent()
+        {
+            // Variable for tracking enabled status of background agents for this app.
+            agentsAreEnabled = true;
+
+            // Obtain a reference to the period task, if one exists
+            periodicTask = ScheduledActionService.Find(periodicTaskName) as PeriodicTask;
+
+            // If the task already exists and background agents are enabled for the
+            // application, you must remove the task and then add it again to update 
+            // the schedule
+            if (periodicTask != null)
+            {
+                RemoveAgent(periodicTaskName);
+            }
+
+            periodicTask = new PeriodicTask(periodicTaskName);
+            
+            // The description is required for periodic agents. This is the string that the user
+            // will see in the background services Settings page on the device.
+            periodicTask.Description = "this background job updates weather data and/or appointment data every few hours.";
+
+            // Place the call to Add in a try block in case the user has disabled agents.
+            try
+            {
+                ScheduledActionService.Add(periodicTask);
+
+                // If debugging is enabled, use LaunchForTest to launch the agent in one minute.
+#if(DEBUG_AGENT)
+    ScheduledActionService.LaunchForTest(periodicTaskName, TimeSpan.FromSeconds(5));
+#endif
+            }
+            catch (InvalidOperationException exception)
+            {
+                if (exception.Message.Contains("BNS Error: The action is disabled"))
+                {
+                    MessageBox.Show("Background agents for this application have been disabled by the user.");
+                }
+
+                if (exception.Message.Contains("BNS Error: The maximum number of ScheduledActions of this type have already been added."))
+                {
+                }
+            }
+            catch (SchedulerServiceException)
+            {
+            }
+        }
+
+        private void RemoveAgent(string name)
+        {
+            try
+            {
+                ScheduledActionService.Remove(name);
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -196,24 +265,63 @@ namespace PersonalAssistant
         //}
         private void UpdateData(object sender, EventArgs e)
         {
-            SystemTray.SetIsVisible(this, true);
+            UpdateUserData(false);
+        }
 
-            ProgressIndicator prog;
-            SystemTray.SetOpacity(this, 1);
-            SystemTray.SetBackgroundColor(this, Colors.Magenta);
-            SystemTray.SetForegroundColor(this, Colors.Black);
+        private void UpdateUserData(Boolean silent)
+        {
 
-            prog = new ProgressIndicator();
-            prog.IsVisible = true;
-            prog.IsIndeterminate = true;
-            prog.Text = "Updating data...";
-            SystemTray.SetProgressIndicator(this, prog);
-            progressIndicator = prog;
-            new BackGroundJob().doJobs(FinishUpdateData);
+            if (silent == false)
+            {
+                SystemTray.SetIsVisible(this, true);
+                ProgressIndicator prog;
+                SystemTray.SetOpacity(this, 1);
+                SystemTray.SetBackgroundColor(this, Colors.Orange);
+                SystemTray.SetForegroundColor(this, Colors.Black);
+
+                prog = new ProgressIndicator();
+                prog.IsVisible = true;
+                prog.IsIndeterminate = true;
+                prog.Text = "Updating data...";
+                SystemTray.SetProgressIndicator(this, prog);
+                progressIndicator = prog;
+                BackGroundJob.GetInstance().doJobs(FinishUpdateData);
+            }
+            else
+            {
+                BackGroundJob.GetInstance().doJobs(FinishUpdateDataSilent);
+            }
         }
 
         private ProgressIndicator progressIndicator;
 
+        public void FinishUpdateDataSilent(IAsyncResult result)
+        {
+            String message = (string) result.AsyncState;
+            System.Diagnostics.Debug.WriteLine(message);
+            Application application = null;
+            if (message.Contains("Error:") || message.Contains("Warning:"))
+            {
+
+                Dispatcher.BeginInvoke(() =>
+                {
+                    SystemTray.SetIsVisible(this, true);
+                    ProgressIndicator prog;
+                    SystemTray.SetOpacity(this, 1);
+                    SystemTray.SetBackgroundColor(this, Colors.Orange);
+                    SystemTray.SetForegroundColor(this, Colors.Black);
+
+                    prog = new ProgressIndicator();
+                    prog.IsVisible = true;
+                    prog.IsIndeterminate = true;
+                    SystemTray.SetProgressIndicator(this, prog);
+                    progressIndicator = prog;
+                    progressIndicator.IsIndeterminate = false;
+                    progressIndicator.Text = message;
+
+                });
+            }
+        }
         public void FinishUpdateData(IAsyncResult result)
         {
             String message = (string) result.AsyncState;
@@ -223,7 +331,7 @@ namespace PersonalAssistant
             {
                 progressIndicator.IsIndeterminate = false;
                 progressIndicator.Text = message;
-            });
+            }); 
         }
 
         private void GoToPlaces(object sender, EventArgs e)

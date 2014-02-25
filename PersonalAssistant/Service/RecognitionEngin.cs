@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -330,27 +331,43 @@ namespace PersonalAssistant.Service
             SpeechSynthesizer synth = new SpeechSynthesizer();
             String sentence = "";
             String detailsString = "";
+            CultureInfo responseCultureInfo = new CultureInfo("fa-IR");
+//            date.ToString("D",)
+            String dateString = " an unsupported calendar type. sorry!";
             switch (type)
             {
                 case "Gregorian":
-                    sentence = "it's " + date.ToLongDateString();
-                    detailsString = date.ToLongDateString();
+                    dateString = date.ToLongDateString();
                     break;
                 case "Hejri":
+
+                    dateString = GetDateString(date, new CultureInfo("en-US"));
                     //                    System.Globalization.PersianCalendar p = new System.Globalization.PersianCalendar();
                     //                    string cal = hc.ToString();
-                    sentence = ("it's um please wait for next version!");
+//                    sentence = ("it's um please wait for next version!");
                     //                    MessageBox.Show(cal);
                     break;
                 default:
                     break;
 
             }
+            sentence = "it's " + dateString;
+            detailsString = dateString;
             
             RecentItem = new ResponseItem(DateImageUri, detailsString, sentence);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
             await synth.SpeakTextAsync(sentence);
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
+        }
+
+        public String GetDateString(DateTime d, CultureInfo cultureInfo)
+        {
+            Calendar calendar = cultureInfo.Calendar;
+            int year =calendar.GetYear(d);
+            int month = calendar.GetMonth(d);
+            int day = calendar.GetDayOfMonth(d);
+            String s = "" + day + " " + cultureInfo.DateTimeFormat.GetMonthName(month) + " " + year;
+            return s;
         }
 
         private async void SayBattery(object sender, RoutedEventArgs e)
