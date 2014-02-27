@@ -106,7 +106,8 @@ namespace PersonalAssistant
                     RecognitionEngin engin = new RecognitionEngin();
                     engin.RespondToQuery(NavigationContext.QueryString, FinishResponseSimple, SentViewableResult);
                 }
-                UpdateUserData(true);
+                else
+                    UpdateUserData(true);
             }
         }
 

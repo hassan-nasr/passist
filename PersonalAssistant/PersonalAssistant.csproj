@@ -117,6 +117,7 @@
     <Compile Include="Service\appointment\AppointmentsManager.cs" />
     <Compile Include="Service\BackGroundJob.cs" />
     <Compile Include="Service\BugReporter.cs" />
+    <Compile Include="Service\contact\ContactManager.cs" />
     <Compile Include="Service\RecognitionEngin.cs" />
     <Compile Include="Service\ResponseElement.cs" />
     <Compile Include="Service\Settings.cs" />

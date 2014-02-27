@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Audio;
 using PersonalAssistant.Service.appointment;
+using PersonalAssistant.Service.contact;
 using PersonalAssistant.Service.Weather;
 
 namespace PersonalAssistant.Service
@@ -27,6 +28,7 @@ namespace PersonalAssistant.Service
             weatherDataManager.updateRequierdData(5,callback, callback);
 
             new AppointmentsManager().FillSpeachDataWithAppointments();
+            new ContactManager().FillNames();
         }
     }
 }

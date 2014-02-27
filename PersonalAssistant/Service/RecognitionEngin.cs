@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Windows.Phone.Devices.Power;
 using Windows.Phone.Speech.Synthesis;
+using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.UserData;
 using PersonalAssistant.Service.appointment;
@@ -155,10 +156,106 @@ namespace PersonalAssistant.Service
                         SetAlarmIn(hourInt, minuteInt , notify);
                     }
                     break;
+                case "actionReminder_contact_day_dayPart":
+                    {
+                        String reminderAction = queryString["reminderAction"];
+                        String contactName = queryString["contactLoos"];
+                        String day = queryString.ContainsKey("day")?queryString["day"]:"today";
+                        String dayPart = queryString.ContainsKey("dayPart")?queryString["dayPart"]:"morning";
+                        createReminder(reminderAction, contactName, day, dayPart);
+                    }
+                    break;
+                case "actionReminder_contact_date":
+                    {
+                        String reminderAction = queryString["reminderAction"];
+                        String contactName = queryString["contactLoos"];
+                        String month = queryString.ContainsKey("month")?queryString["month"]:DateTime.Now.ToString("MMMM");
+                        String day = queryString.ContainsKey("number") ? queryString["number"] : "1";
+                        String dayPart = queryString.ContainsKey("dayPart") ? queryString["dayPart"] : "morning";
+                        createReminderByMonth(reminderAction, contactName, month, day,dayPart);
+                    }
+                    break;
                 default:
                     break;
             }
 
+        }
+
+        private async void createReminder(string reminderAction, string contactName, string day, string dayPart)
+        {
+            DateTime reminderTime = goToNextValidDate(DateTime.Now, day);
+            reminderTime = reminderTime.Date;
+            reminderTime = addNotAcurateDayTime(reminderTime, dayPart);
+            await CreateReminderAndRespond(reminderAction, contactName, reminderTime);
+        }
+        private async void createReminderByMonth(string reminderAction, string contactName, string month, string day,string dayPart)
+        {
+            DateTime reminderTime = DateTime.Parse(month + " " + day + ", " + DateTime.Now.Year);
+            reminderTime = addNotAcurateDayTime(reminderTime, dayPart);
+            if (reminderTime.Ticks < DateTime.Now.AddMinutes(2).Ticks)
+                reminderTime = reminderTime.AddYears(1);
+            await CreateReminderAndRespond(reminderAction, contactName, reminderTime);
+        }
+
+        private async Task CreateReminderAndRespond(string reminderAction, string contactName, DateTime reminderTime)
+        {
+            SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer();
+            if (reminderTime.Ticks < DateTime.Now.AddMinutes(2).Ticks)
+            {
+                speechSynthesizer.SpeakTextAsync(
+                    "sorry. the reminder should be at least in one minuets from now!");
+                onFinish.Invoke(new Task(o => { }, "Have Fun"));
+                return;
+            }
+            String reminderContent = reminderAction + " " + contactName;
+            try
+            {
+                createReminder("reminder", reminderAction + " " + contactName, reminderTime);
+            }
+            catch (Exception e)
+            {
+                speechSynthesizer.SpeakTextAsync(
+                    "sorry. couldn't create the reminder! please check if you have disabled background agenst or maybe I have reached the number of allowd reminder and or alerts!");
+                onFinish.Invoke(new Task(o => { }, "Have Fun"));
+                return;
+            }
+            String response = "reminder created for " + reminderTime.DayOfWeek + " " + SayTime(reminderTime);
+            String detailsString = "remindier: " + reminderAction + " " + contactName + "\n\r" + "Date: " +
+                                   reminderTime.ToLongDateString()
+                                   + "\n\r" + "Time: " + reminderTime.ToLongTimeString();
+            RecentItem = new ResponseItem(ReminderImageUri, detailsString, response);
+            sendViewableResult.Invoke(new Task(o => { }, RecentItem));
+            await speechSynthesizer.SpeakTextAsync(response);
+            onFinish.Invoke(new Task(o => { }, "Have Fun"));
+        }
+
+        private String createReminder(string title, string content, DateTime reminderTime)
+        {
+            Reminder reminder = new Reminder(content + reminderTime.Ticks);
+            reminder.BeginTime = reminderTime;
+            reminder.Title = title;
+            reminder.Content = content;
+            ScheduledActionService.Add(reminder);
+            return reminder.Name;
+        }
+
+        private DateTime addNotAcurateDayTime(DateTime reminderTime, string dayPart)
+        {
+            switch (dayPart)
+            {
+                case "morning":
+                    return reminderTime.AddHours(8);
+                case "noon":
+                    return reminderTime.AddHours(12);
+                case "afternoon":
+                    return reminderTime.AddHours(16);
+                case "evening":
+                    return reminderTime.AddHours(20);
+                case "midnight":
+                    return reminderTime.AddHours(24);
+                default:
+                    return reminderTime.AddHours(12);
+            }
         }
 
         private async void SetAlarmAt(int hour, int minute , string notification)
@@ -302,6 +399,7 @@ namespace PersonalAssistant.Service
         public String WeatherImageUri ="/Images/WeatherIcon";
         public String TimeImageUri ="/Images/feature.alarm.png";
         public String AlarmImageUri ="/Images/feature.alarm.png";
+        public String ReminderImageUri = "/Images/feature.alarm.png";
         public String DateImageUri ="/Images/feature.calendar.png";
         public String AppointmentImageUri ="/Images/feature.calendar.png";
         public String BatteryImageUri = "/Images/feature.settings.png";
@@ -309,7 +407,7 @@ namespace PersonalAssistant.Service
         private async void Saytime(DateTime time)
         {
             SpeechSynthesizer synth = new SpeechSynthesizer();
-            String timeToSay = SayTime(time);
+            String timeToSay = "it's "+SayTime(time);
             string detailsString = time.ToLongTimeString();
             RecentItem= new ResponseItem(TimeImageUri,detailsString,timeToSay);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
@@ -321,15 +419,15 @@ namespace PersonalAssistant.Service
         {
             String timeToSay = "";
             if (time.Hour == 0 && time.Minute == 0)
-                timeToSay = "it's exactly midnight";
+                timeToSay = "exactly midnight";
             else if (time.Hour == 0 && time.Minute <= 30)
-                timeToSay = "it's " + time.Minute + " minutes past Midnight";
+                timeToSay = "" + time.Minute + " minutes past Midnight";
             else if (time.Hour == 23 && time.Minute > 30)
-                timeToSay = "it's " + (60 - time.Minute) + " minutes to Midnight";
+                timeToSay = "" + (60 - time.Minute) + " minutes to Midnight";
             else if (time.Minute == 0)
-                timeToSay = "it's " + time.Hour%12 + " o clock in the " + (time.Hour/12 > 1 ? "evening" : "morning");
+                timeToSay = "" + time.Hour%12 + " o clock in the " + (time.Hour/12.0 > 1 ? "evening" : "morning");
             else
-                timeToSay = "it's " + (time.Hour%12 + (time.Hour == 12 ? 1 : 0)*12) + " " + time.Minute + " in the " +
+                timeToSay = "" + (time.Hour%12 + (time.Hour == 12 ? 1 : 0)*12) + " " + time.Minute + " in the " +
                             (time.Hour/12.0 >= 1 ? "evening" : "morning");
             return timeToSay;
         }

@@ -96,6 +96,9 @@
     <Compile Include="..\PersonalAssistant\Service\BugReporter.cs">
       <Link>Service\BugReporter.cs</Link>
     </Compile>
+    <Compile Include="..\PersonalAssistant\Service\contact\ContactManager.cs">
+      <Link>Service\contact\ContactManager.cs</Link>
+    </Compile>
     <Compile Include="..\PersonalAssistant\Service\Settings.cs">
       <Link>Service\Settings.cs</Link>
     </Compile>

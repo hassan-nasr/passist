@@ -16,13 +16,13 @@
     </Command>
 
 
-    <Command Name="date">
-      <Example>Tell me today's date</Example>
-      <ListenFor>{*} [About] [the] Date [in] {CalType}</ListenFor>
-      <ListenFor>[Tell me] whats today's date in {CalType}</ListenFor>
-      <Feedback> {CalType} Date! Just a second please</Feedback>
-      <Navigate Target="MainPage.xaml"/>
-    </Command>
+<!--    <Command Name="date">-->
+<!--      <Example>Tell me today's date</Example>-->
+<!--      <ListenFor>{*} [About] [the] Date [in] {CalType}</ListenFor>-->
+<!--      <ListenFor>[Tell me] whats today's date in {CalType}</ListenFor>-->
+<!--      <Feedback> {CalType} Date! Just a second please</Feedback>-->
+<!--      <Navigate Target="MainPage.xaml"/>-->
+<!--    </Command>-->
 
     <Command Name="date2">
       <Example>Tell me the date</Example>
@@ -109,9 +109,73 @@
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
+    <Command Name="actionReminder_contact_day_dayPart">
+      <Example>remind me to call mom on tomorow afternoon</Example>
+      <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {day} {dayPart} </ListenFor>
+      <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {day} </ListenFor>
+<!--      <ListenFor> reminde me to {reminderAction} {contactLoos} {timeProp} {dayPart} </ListenFor>-->
+      <Feedback>Sure! I'll remind you to {reminderAction} {contactLoos} on {day} </Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
+    <Command Name="actionReminder_contact_date">
+      <Example>remind me to call mom on tomorow afternoon</Example>
+      <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {month} {number} {dayPart} </ListenFor>
+      <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {number} [of] {month} [in the] {dayPart}</ListenFor>
+      <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {month} {number} </ListenFor>
+      <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {number} [of] {month} </ListenFor>
+      <Feedback>Sure! I'll remind you to {reminderAction} {contactLoos} on {month} {number} </Feedback>
+      <Navigate Target="MainPage.xaml"/>
+    </Command>
+
     <PhraseList Label="appointment">
       <Item>My birthday</Item>
     </PhraseList>
+
+    <PhraseList Label="month">
+      <Item>January</Item>
+      <Item>February</Item>
+      <Item>March</Item>
+      <Item>April</Item>
+      <Item>May</Item>
+      <Item>June</Item>
+      <Item>July</Item>
+      <Item>August</Item>
+      <Item>September</Item>
+      <Item>October</Item>
+      <Item>November</Item>
+      <Item>December</Item>
+    </PhraseList>
+    
+<!--    <PhraseList Label="timeProp">-->
+<!--      <Item>in the</Item>-->
+<!--      <Item>on</Item>-->
+<!--      <Item>at</Item>-->
+<!--      <Item>in</Item>-->
+<!--    </PhraseList>-->
+<!--    -->
+    <PhraseList Label="reminderAction">
+      <Item>call</Item>
+      <Item>text</Item>
+      <Item>mail</Item>
+      <Item>email</Item>
+      <Item>contact</Item>
+      <Item>notify</Item>
+    </PhraseList>
+    
+    <PhraseList Label="contactLoos" Disambiguate="true">
+      <Item>mom</Item>
+      <Item>dad</Item>
+    </PhraseList>
+    
+    <PhraseList Label="dayPart">
+      <Item>morning</Item>
+      <Item>noon</Item>
+      <Item>afternoon</Item>
+      <Item>evening</Item>
+      <Item>midnight</Item>
+    </PhraseList>
+    
     
     <PhraseList Label="alarmf">
       <Item>alarm me</Item>
@@ -139,95 +203,12 @@
     </PhraseList>
 
 
-    <PhraseList Label="CalType">
-      <Item>Gregorian</Item>
-      <Item>Hejri</Item>
-      <Item>UmAlQura</Item>
-    </PhraseList>
+<!--    <PhraseList Label="CalType">-->
+<!--      <Item>Gregorian</Item>-->
+<!--      <Item>Hejri</Item>-->
+<!--      <Item>UmAlQura</Item>-->
+<!--    </PhraseList>-->
 
-<!--
-    <PhraseList Label="hour">
-      <Item>1</Item>
-      <Item>2</Item>
-      <Item>3</Item>
-      <Item>4</Item>
-      <Item>5</Item>
-      <Item>6</Item>
-      <Item>7</Item>
-      <Item>8</Item>
-      <Item>9</Item>
-      <Item>10</Item>
-      <Item>11</Item>
-      <Item>12</Item>
-    </PhraseList>
-    <PhraseList Label="minute">
-      <Item>o clock</Item>
-      <Item>0</Item>
-      <Item>1</Item>
-      <Item>2</Item>
-      <Item>3</Item>
-      <Item>4</Item>
-      <Item>5</Item>
-      <Item>6</Item>
-      <Item>7</Item>
-      <Item>8</Item>
-      <Item>9</Item>
-      <Item>10</Item>
-      <Item>11</Item>
-      <Item>12</Item>
-      <Item>13</Item>
-      <Item>14</Item>
-      <Item>15</Item>
-      <Item>16</Item>
-      <Item>17</Item>
-      <Item>18</Item>
-      <Item>19</Item>
-      <Item>20</Item>
-      <Item>21</Item>
-      <Item>22</Item>
-      <Item>23</Item>
-      <Item>24</Item>
-      <Item>25</Item>
-      <Item>26</Item>
-      <Item>27</Item>
-      <Item>28</Item>
-      <Item>29</Item>
-      <Item>30</Item>
-      <Item>31</Item>
-      <Item>32</Item>
-      <Item>33</Item>
-      <Item>34</Item>
-      <Item>35</Item>
-      <Item>36</Item>
-      <Item>37</Item>
-      <Item>38</Item>
-      <Item>39</Item>
-      <Item>40</Item>
-      <Item>41</Item>
-      <Item>42</Item>
-      <Item>43</Item>
-      <Item>44</Item>
-      <Item>45</Item>
-      <Item>46</Item>
-      <Item>47</Item>
-      <Item>48</Item>
-      <Item>49</Item>
-      <Item>50</Item>
-      <Item>51</Item>
-      <Item>52</Item>
-      <Item>53</Item>
-      <Item>54</Item>
-      <Item>55</Item>
-      <Item>56</Item>
-      <Item>57</Item>
-      <Item>58</Item>
-      <Item>59</Item>
-    </PhraseList>
-    <PhraseList Label="ampm">
-      <Item>a.m.</Item>
-      <Item>p.m.</Item>
-    </PhraseList>
- -->   
     <PhraseList Label="number2">
       <Item>an</Item>
       <Item>a</Item>
