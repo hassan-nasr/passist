@@ -67,7 +67,7 @@ namespace ScheduledTaskAgent1
             ShellToast toast = new ShellToast();
             toast.Title = "Mosi";
             toast.Content = toastMessage;
-            toast.Show();
+//            toast.Show();
             BackGroundJob backGroundJob =  BackGroundJob.GetInstance();
 
             System.Diagnostics.Debug.WriteLine("in Scheduled Agent");
@@ -78,7 +78,7 @@ namespace ScheduledTaskAgent1
             toast = new ShellToast();
             toast.Title = "Msoi";
             toast.Content = toastMessage;
-            toast.Show();
+//            toast.Show();
 
 
             // If debugging is enabled, launch the agent again in one minute.
@@ -97,7 +97,7 @@ namespace ScheduledTaskAgent1
             System.Diagnostics.Debug.WriteLine(message);
             toast.Title = "Mosi";
             toast.Content = message;
-            toast.Show();
+//            toast.Show();
         }
     }
 }

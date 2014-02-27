@@ -187,7 +187,7 @@ namespace PersonalAssistant.Service
             ScheduledActionService.Add(alarm);
             SpeechSynthesizer synth = new SpeechSynthesizer();
             int battery = Battery.GetDefault().RemainingChargePercent;
-            String sentence = "alarm created for " + dateTime.ToShortTimeString();
+            String sentence = "alarm created for " + SayTime(dateTime);
             if (notification.Equals("wake me up"))
                 sentence += ". Have a good sleep!";
             String detailsString = "alarm created for " + dateTime.ToString();
@@ -309,6 +309,16 @@ namespace PersonalAssistant.Service
         private async void Saytime(DateTime time)
         {
             SpeechSynthesizer synth = new SpeechSynthesizer();
+            String timeToSay = SayTime(time);
+            string detailsString = time.ToLongTimeString();
+            RecentItem= new ResponseItem(TimeImageUri,detailsString,timeToSay);
+            sendViewableResult.Invoke(new Task(o => { }, RecentItem));
+            await synth.SpeakTextAsync(timeToSay);
+            onFinish.Invoke(new Task(o => { }, "Have Fun"));
+        }
+
+        private static string SayTime(DateTime time)
+        {
             String timeToSay = "";
             if (time.Hour == 0 && time.Minute == 0)
                 timeToSay = "it's exactly midnight";
@@ -317,15 +327,13 @@ namespace PersonalAssistant.Service
             else if (time.Hour == 23 && time.Minute > 30)
                 timeToSay = "it's " + (60 - time.Minute) + " minutes to Midnight";
             else if (time.Minute == 0)
-                timeToSay = "it's " + time.Hour % 12 + " o clock in the " + (time.Hour / 12 > 1 ? "evening" : "morning");
+                timeToSay = "it's " + time.Hour%12 + " o clock in the " + (time.Hour/12 > 1 ? "evening" : "morning");
             else
-                timeToSay = "it's " + (time.Hour % 12 + (time.Hour == 12 ? 1 : 0) * 12) + " " + time.Minute + " in the " + (time.Hour / 12.0 >= 1 ? "evening" : "morning");
-            string detailsString = time.ToLongTimeString();
-            RecentItem= new ResponseItem(TimeImageUri,detailsString,timeToSay);
-            sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-            await synth.SpeakTextAsync(timeToSay);
-            onFinish.Invoke(new Task(o => { }, "Have Fun"));
+                timeToSay = "it's " + (time.Hour%12 + (time.Hour == 12 ? 1 : 0)*12) + " " + time.Minute + " in the " +
+                            (time.Hour/12.0 >= 1 ? "evening" : "morning");
+            return timeToSay;
         }
+
         private async void SayDate(String type, DateTime date)
         {
             SpeechSynthesizer synth = new SpeechSynthesizer();
