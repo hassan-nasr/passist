@@ -3,7 +3,7 @@
 
   <CommandSet xml:lang="en-us" Name="en-us-1">
 
-    <CommandPrefix>Mosi</CommandPrefix>
+    <CommandPrefix>mossi</CommandPrefix>
 
     <Example>Tell me my next appointment</Example>
 
