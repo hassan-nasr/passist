@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Windows.Threading;
 using Newtonsoft.Json;
 using PersonalAssistant.Resources;
+using PersonalAssistant.Service;
 using PersonalAssistant.Service.Weather;
 using PersonalAssistant.Service.Weather.LocalWeather;
 
@@ -15,19 +17,34 @@ namespace PersonalAssistant.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+
+        public void DoFirstTimeJobs()
+        {
+            RecentItems = new ObservableCollection<ResponseItem>();
+            PersistRecentItems();
+            WeatherDataManager.GetInstance().DoFirstTimeJobs();
+        }
+
         private WeatherDataManager weatherDataManager;
         public MainViewModel()
         {
+            if (!IsolatedStorageSettings.ApplicationSettings.Contains("notFirstTime"))
+            {
+                DoFirstTimeJobs();
+                IsolatedStorageSettings.ApplicationSettings["notFirstTime"] = true;
+            }
             weatherDataManager = WeatherDataManager.GetInstance();
             this.RecentItems = new ObservableCollection<ResponseItem>();
             this.Places = new ObservableCollection<Place>();
+            this.helpTopics = HelpTopic.CreateHelpList();
         }
 
         /// <summary>
         /// A collection for ItemViewModel objects.
         /// </summary>
         public ObservableCollection<ResponseItem> RecentItems { get; set; }
-        public ObservableCollection<Place> Places { get; set; } 
+        public ObservableCollection<Place> Places { get; set; }
+        public ObservableCollection<HelpTopic> helpTopics { get; set; } 
         public bool IsDataLoaded
         {
             get;
@@ -91,7 +108,7 @@ namespace PersonalAssistant.ViewModels
                     {
                         LoadedRecentItems = JsonConvert.DeserializeObject<ObservableCollection<ResponseItem> >(isoFileReader.ReadToEnd());
 
-                        System.Diagnostics.Debug.WriteLine("data loaded with " + LoadedRecentItems.Count + " items ");
+//                        System.Diagnostics.Debug.WriteLine("data loaded with " + LoadedRecentItems.Count + " items ");
                         isoFileReader.Close();
                         //                        MessageBox.Show(serializedWeather);
                     }
@@ -100,7 +117,7 @@ namespace PersonalAssistant.ViewModels
             catch (Exception e)
             {
                 LoadedRecentItems = new ObservableCollection<ResponseItem>();
-                System.Diagnostics.Debug.WriteLine(e.Message);
+                BugReporter.GetInstance().report(e);
             }
             
             foreach (ResponseItem loadedRecentItem in LoadedRecentItems)
@@ -127,16 +144,13 @@ namespace PersonalAssistant.ViewModels
 
                         isoFileWriter.Write(serialaized);
                         isoFileWriter.Close();
-
-                        System.Diagnostics.Debug.WriteLine("data persisted with " + RecentItems.Count + " items ");
                         //                        MessageBox.Show(serializedWeather);
                     }
                 }
             }
             catch (Exception e)
             {
-
-                System.Diagnostics.Debug.WriteLine(e.Message);
+                BugReporter.GetInstance().report(e);
             }
         }
 

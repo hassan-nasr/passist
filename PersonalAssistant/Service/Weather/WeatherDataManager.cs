@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define DEBUG
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,16 +60,16 @@ namespace PersonalAssistant.Service.Weather
                     using (var isoFileWriter = new System.IO.StreamWriter(isoFileStream))
                     {
                         string serializedPlaces = JsonConvert.SerializeObject(places);
-                        System.Diagnostics.Debug.WriteLine("saving places");
+#if DEBUG
                         System.Diagnostics.Debug.WriteLine(serializedPlaces);
-                      
-                        VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-//                        widgetVcs.UpdatePhraseListAsync("place",places.Keys);
-
+#endif
+                        if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1")) { 
+                            VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
+                            widgetVcs.UpdatePhraseListAsync("place",places.Keys);
+                        }
                         isoFileWriter.Write(serializedPlaces);
                         isoFileWriter.Close();
 //                        MessageBox.Show("done saving places");
-//                        System.Diagnostics.Debug.WriteLine("done writing places");
                     }
                 }
             }
@@ -76,18 +77,19 @@ namespace PersonalAssistant.Service.Weather
             {
                 BugReporter.GetInstance().report(e);
 //                throw e;
-                System.Diagnostics.Debug.WriteLine(e.StackTrace);
+//                System.Diagnostics.Debug.WriteLine(e.StackTrace);
             }
             
             
         }
         public void LoadPlaces()
         {
-            System.Diagnostics.Debug.WriteLine("loading places ----------");
             System.IO.IsolatedStorage.IsolatedStorageFile local =
                 System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
             try
             {
+                if (!IsolatedStorageFile.GetUserStoreForApplication().FileExists(placesFilePath))
+                    DoFirstTimeJobs();
                 using (var isoFileStream = new System.IO.IsolatedStorage.IsolatedStorageFileStream(
                     placesFilePath,
                     System.IO.FileMode.Open,
@@ -104,15 +106,10 @@ namespace PersonalAssistant.Service.Weather
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.StackTrace);
+                BugReporter.GetInstance().report(e);
             }
             if (places == null)
                 places = new Dictionary<string, Place>();
-            if (places.Count == 0)
-            {
-                places.Add("Tehran", new Place("Tehran"));
-                places.Add("Paris", new Place("Paris"));
-            }
         }
 
         private WeatherDataManager()
@@ -151,7 +148,6 @@ namespace PersonalAssistant.Service.Weather
             foreach (KeyValuePair<string, Place> dictionaryEntry in places)
             {
                 Place place =  dictionaryEntry.Value;
-                System.Diagnostics.Debug.WriteLine(place.Name);
                 if (place.LastUpdateTime > DateTime.Now.AddHours(-2) && !Settings.GetInstance().APIKey.Any())
                 {
                     callback.Invoke(new Task((object obj) => { },
@@ -165,8 +161,6 @@ namespace PersonalAssistant.Service.Weather
                 SaveWeatherDataClass saver = new SaveWeatherDataClass(place.Name,callback);
                 new FreeAPI().GetLocalWeather(weatherInput,saver.SaveWeatherData, failCallback);
                 Thread.Sleep(1000);
-
-                System.Diagnostics.Debug.WriteLine("after sleep");
             }
             
         }
@@ -191,7 +185,6 @@ namespace PersonalAssistant.Service.Weather
             public void SaveWeatherData(IAsyncResult result)
             {
                 String callBackMessage = "unknownResult";
-                System.Diagnostics.Debug.WriteLine("saving weather data ---------------------------");
                 try
                 {
                     LocalWeather.LocalWeather localWeather = result.AsyncState as LocalWeather.LocalWeather;
@@ -276,9 +269,21 @@ namespace PersonalAssistant.Service.Weather
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.Message);
+                BugReporter.GetInstance().report(e);
                 return null;
             }
+        }
+
+        public void DoFirstTimeJobs()
+        {
+            if (places.Count == 0)
+            {
+                places.Add("New York", new Place("New York"));
+                places.Add("Paris", new Place("Paris"));
+                places.Add("Tehran", new Place("Tehran"));
+                places["New York"].IsLocal = true;
+            }
+            SavePlaces();
         }
     }
 

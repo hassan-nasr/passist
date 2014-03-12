@@ -57,12 +57,14 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0">Metrics:</TextBlock>
                     <RadioButton Grid.Row="1" Name="TemRepSelectC" GroupName="TempSelect" Content="Celcius" IsChecked="{Binding ElementName=PlacesPage1, Path=IsCelsius, Mode=TwoWay}"></RadioButton>
                     <RadioButton Grid.Row="2" Name="TemRepSelectF" GroupName="TempSelect" Content="Farenhight" IsChecked="{Binding ElementName=PlacesPage1, Path=IsFahrenheit, Mode=TwoWay}"></RadioButton>
-                    <TextBlock Grid.Row="3"> Weather API key:</TextBlock>
-                    <Grid Grid.Row="4"  Grid.Column="2">
+                    <TextBlock Grid.Row="4"> Weather API key:</TextBlock>
+                    <HyperlinkButton Grid.Row="3" HorizontalAlignment="Center" Content="Weather date is provided by WorldWeatherOnline" Foreground="#FF020100" FontSize="19" Click="GoToWorldWeatherOnline"></HyperlinkButton>
+                    <Grid Grid.Row="5"  Grid.Column="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
@@ -70,8 +72,8 @@
                         <TextBox Grid.Column="0" Text="{Binding ElementName=PlacesPage1, Path=apiKey, Mode=TwoWay}"></TextBox>
                         <Button Grid.Column="1" Content="(?)" Click="HelpAPIKey" BorderBrush="Coral" Background="Coral" ></Button>
                     </Grid>
-                    <HyperlinkButton Grid.Row="5" HorizontalAlignment="Right" Content="1- Register for Weather" Click="GoToWeatherOnline" Foreground="Coral"></HyperlinkButton>
-                    <HyperlinkButton Grid.Row="6" HorizontalAlignment="Right" Content="2- Get Weather API key here" Click="GoToWeatherOnlineGetAPI" Foreground="Coral"></HyperlinkButton>
+                    <HyperlinkButton Grid.Row="6" HorizontalAlignment="Right" Content="1- Register for Weather" Click="GoToWeatherOnline" Foreground="Coral"></HyperlinkButton>
+                    <HyperlinkButton Grid.Row="7" HorizontalAlignment="Right" Content="2- Get Weather API key here" Click="GoToWeatherOnlineGetAPI" Foreground="Coral"></HyperlinkButton>
                 </Grid>
             </phone:PivotItem>
 

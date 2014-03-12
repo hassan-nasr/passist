@@ -75,7 +75,7 @@ namespace PersonalAssistant.Service
             request.DownloadLocation = downloadUri;
             request.TransferStatusChanged += request_TransferStatusChanged;
             BackgroundTransferService.Add(request);
-            System.Diagnostics.Debug.WriteLine("request created");
+//            System.Diagnostics.Debug.WriteLine("request created");
         }
 
         void request_TransferStatusChanged(object sender, BackgroundTransferEventArgs e)

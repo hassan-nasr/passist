@@ -21,7 +21,6 @@ namespace PersonalAssistant.Service
         }
         public async Task doJobs(AsyncCallback callback)
         {
-            System.Diagnostics.Debug.WriteLine("inJobs");
             WeatherDataManager weatherDataManager =  WeatherDataManager.GetInstance();
 //            weatherDataManager.AddPlace(new Place("Tehran"));
 //            weatherDataManager.AddPlace(new Place("Paris"));

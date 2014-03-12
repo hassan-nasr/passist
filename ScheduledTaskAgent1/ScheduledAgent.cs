@@ -1,4 +1,4 @@
-﻿#define DEBUG_AGENT
+﻿//#define DEBUG_AGENT
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
+using PersonalAssistant;
 using PersonalAssistant.Service;
 
 namespace ScheduledTaskAgent1
@@ -65,14 +66,12 @@ namespace ScheduledTaskAgent1
             // Launch a toast to show that the agent is running.
             // The toast will not be shown if the foreground application is running.
             ShellToast toast = new ShellToast();
-            toast.Title = "Mosi";
+            toast.Title = Settings.ApplicationName;
             toast.Content = toastMessage;
 //            toast.Show();
             BackGroundJob backGroundJob =  BackGroundJob.GetInstance();
 
-            System.Diagnostics.Debug.WriteLine("in Scheduled Agent");
             await backGroundJob.doJobs(handelResult);
-            System.Diagnostics.Debug.WriteLine("after waite");
 
             Thread.Sleep(20000);
             toast = new ShellToast();
@@ -94,7 +93,6 @@ namespace ScheduledTaskAgent1
         {
             String message = (string) result.AsyncState;
             ShellToast toast = new ShellToast();
-            System.Diagnostics.Debug.WriteLine(message);
             toast.Title = "Mosi";
             toast.Content = message;
 //            toast.Show();

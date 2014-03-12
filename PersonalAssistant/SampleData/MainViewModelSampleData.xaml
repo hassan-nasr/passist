@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="clr-namespace:PersonalAssistant.ViewModels"
-    xmlns:weather="clr-namespace:PersonalAssistant.Service.Weather">
+    xmlns:weather="clr-namespace:PersonalAssistant.Service.Weather"
+    xmlns:service="clr-namespace:PersonalAssistant.Service">
 
     <vm:MainViewModel.Places>
         <weather:Place Name="design one"  Latitude="1.2" Longitude="1.232"/>
@@ -20,6 +21,8 @@
         <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="4" DetailString="design five" ResponseString="Sagittis senectus sociosqu suscipit" DateTime="1:10"/>
         <vm:ResponseItem ImageUri="/Images/feature.alarm.png" ID="5" DetailString="design six"  ResponseString="Torquent ultrices vehicula volutpat" DateTime="1:10"/>
     </vm:MainViewModel.RecentItems>
-    
-
+    <vm:MainViewModel.helpTopics>
+        <service:HelpTopic ></service:HelpTopic>
+        <service:HelpTopic ></service:HelpTopic>
+    </vm:MainViewModel.helpTopics>
 </vm:MainViewModel>

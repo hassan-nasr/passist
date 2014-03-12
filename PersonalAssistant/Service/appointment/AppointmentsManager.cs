@@ -23,17 +23,18 @@ namespace PersonalAssistant.Service.appointment
             List<Appointment> appointments = e.Results.ToList();
             HashSet<String> appointmentsName= new HashSet<string>();
 
-            System.Diagnostics.Debug.WriteLine("------------------------");
             for (int i = 0; i < appointments.Count; i++)
             {
                 var appointment = appointments[i];
                 if(appointment.IsPrivate)
                     continue;
                 appointmentsName.Add(appointment.Subject);
-                System.Diagnostics.Debug.WriteLine(appointment.Subject);
             }
-            VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-            widgetVcs.UpdatePhraseListAsync("appointment", appointmentsName);
+            if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+            {
+                VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
+                widgetVcs.UpdatePhraseListAsync("appointment", appointmentsName);
+            }
         }
 
         public void FindAppointmentByName(String name,AsyncCallback callback)

@@ -151,8 +151,6 @@ namespace PersonalAssistant.Service
                         }
                         
                         string notify = queryString["alarmf"];
-                        System.Diagnostics.Debug.WriteLine(hourInt + " : " + minuteInt);
-                        System.Diagnostics.Debug.WriteLine(hour + " : " + minute);
                         SetAlarmIn(hourInt, minuteInt , notify);
                     }
                     break;
@@ -345,7 +343,7 @@ namespace PersonalAssistant.Service
             if (localWeather == null)
             {
                 responseSentence = "sorry! but weather data for " + place + " is not available. please add " + place +
-                                   " to your weather checkout list";
+                                   " to your weather checkout list and make sure you connect your phone to internet every few days";
                 detailsString = "Sorry! No data :[";
             }
             else

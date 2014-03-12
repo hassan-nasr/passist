@@ -1,0 +1,160 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="PersonalAssistant.HelpPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="0,0,0,0">
+            <Border Background="Coral">
+                <TextBlock Text="MOSI" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                <TextBlock Text="Help" Margin="9,-7,0,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle1Style}"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                <TextBlock Text="Here is what you can say to me: Mosi ... " Margin="9,-7,0,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}" FontSize="25"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                <TextBlock Text="[Words placed in brackets are optional]" Margin="9,-7,0,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}" FontSize="20" Foreground="#FFCCEBF1"/>
+            </Border>
+            <Border Background="Coral">
+                <TextBlock Text="Mosi ..." Margin="5,10,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" FontSize="50"/>
+            </Border>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Background="#FF00C1F9">
+        <!--ContentPanel - place additional content here-->
+        <!--ContentPanel contains LongListSelector and LongListSelector ItemTemplate. Place additional content here-->
+        <StackPanel x:Name="ContentPanel"  Margin="0,0,0,0">
+            <Border Background="#FF00C1F9">
+                <TextBlock Text="Time:" Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="What Time is it? " Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[tell me the] time." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                    <TextBlock Text="Date: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[Tell me] what's todays date? " Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                    <TextBlock Text="Battery: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[tell me] [the] Battery [remaining]." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                    <TextBlock Text="Weather: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[Tell me] [about] [local] weather." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[Tell me] [about] [local] weather [on] {day}." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[Tell me] [about] [the] weather in {place}." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[Tell me] [about] [the] weather [on] {day} in {place}." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="{}{day} can be today, tomorrow and week days." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="{}{place} can be any place you define in settings." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="You can swap place and day in your command." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                    <TextBlock Text="Appointments: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[Tell me] [my] [next] appointment." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="[Tell me] when is {appointment}?" Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="for instance: when is Saras birthday?" Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="Works only for public appointments." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="Ok I'll enhance it in next update:)." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                    <TextBlock Text="Alarms: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="Alarm me in 3 hours and 30 minutes." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="You can skip either of hour or minute parts." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="You can also say: 'Wake me up ...' or 'Notify me ...'." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF00C1F9">
+                    <TextBlock Text="Reminder: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </Border>
+            <Border Background="#FFF9AA00">
+                <TextBlock Text="Remind me to call mom on {day} {day part}." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="You can also say: 'Remind me to text/email/contact ...'." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="{}{day} can be today, tomorrow and week days." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+            <Border Background="#FF88F900">
+                <TextBlock Text="{}{day part} can be morning noon, afternoon, evening, midnight." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
+            </Border>
+
+        </StackPanel>
+        </ScrollViewer>
+    </Grid>
+
+</phone:PhoneApplicationPage>

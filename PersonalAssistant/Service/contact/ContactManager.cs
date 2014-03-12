@@ -33,10 +33,14 @@ namespace PersonalAssistant.Service.contact
                         allFoundNames.Add(s);
                 }
             }
-            VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-            widgetVcs.UpdatePhraseListAsync("contactLoos", allFoundNames);
-            
+            if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+            {
+                VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
+                widgetVcs.UpdatePhraseListAsync("contactLoos", allFoundNames);
+            }
+#if DEBUG            
             System.Diagnostics.Debug.WriteLine("unique found names: "+ allFoundNames.Count);
+#endif
         }
     }
 }

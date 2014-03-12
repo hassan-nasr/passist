@@ -127,6 +127,7 @@
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="Coral" Mode="Minimized">
             <shell:ApplicationBarIconButton IconUri="/Images/sync.png" Text="update data" Click="UpdateData"/>
             <shell:ApplicationBarIconButton IconUri="/Images/feature.settings.png" Text="settings" Click="GoToPlaces"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/questionmark.png" Text="help" Click="GoToHelp"/>
 <!--            <shell:ApplicationBarIconButton IconUri="/Images/feature.search.png" Text="places" Click="FakeCommand"/>-->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

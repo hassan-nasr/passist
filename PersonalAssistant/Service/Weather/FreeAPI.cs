@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define DEBUG
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Configuration;
@@ -30,7 +31,9 @@ public class FreeAPI
         failCallback = fail;
         // create URL based on input paramters
         string apiURL = ApiBaseURL + "weather.ashx?q=" + input.query + "&format=" + "json" + "&extra=" + input.extra + "&num_of_days=" + input.num_of_days + "&date=" + input.date + "&fx=" + input.fx + "&cc=" + input.cc + "&includelocation=" + input.includelocation + "&show_comments=" + input.show_comments + "&callback=" + input.callback + "&key="+FreeAPIKey;
+#if DEBUG
         System.Diagnostics.Debug.WriteLine(apiURL);
+#endif
         // get the web response
         RequestHandler rh = new RequestHandler(); 
         rh.Process(apiURL,GetLoaclWeatherCallback,fail);

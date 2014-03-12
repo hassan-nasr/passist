@@ -1,3 +1,4 @@
+//#define DEBUG
 using System;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -40,9 +41,12 @@ namespace PersonalAssistant.Service
         {
             var file = openDebugFile();
             var writer = new StreamWriter(file);
+            writer.Write(DateTime.Now + " :\r\n");
             writer.Write(e.StackTrace);
             writer.Close();
+#if DEBUG
             System.Diagnostics.Debug.WriteLine(e.StackTrace);
+#endif
         }
 
         public void clear()

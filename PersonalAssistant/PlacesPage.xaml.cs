@@ -81,7 +81,6 @@ namespace PersonalAssistant
             {
                 App.ViewModel.LoadData();
             }
-            System.Diagnostics.Debug.WriteLine(App.ViewModel.Places.Count + " is places count");
             SystemTray.SetBackgroundColor(this, Colors.Orange);
             SystemTray.SetForegroundColor(this, Colors.Black);
         }
@@ -101,8 +100,6 @@ namespace PersonalAssistant
                     if (firstOrDefault != null)
                         firstOrDefault.IsLocal = true;
             }
-            System.Diagnostics.Debug.WriteLine(selected);
-//            System.Diagnostics.Debug.WriteLine(selected.name);
         }
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
@@ -194,12 +191,11 @@ namespace PersonalAssistant
             var RadioButton = (sender as RadioButton);
             Place selected = RadioButton.DataContext as Place;
             selected.IsLocal = true;
-//            foreach (Place place in App.ViewModel.Places)
-//            {
-//                if(place!=selected)
-//                    place.IsLocal = false;
-//            }
-//            System.Diagnostics.Debug.WriteLine(selected);
+            foreach (Place place in App.ViewModel.Places)
+            {
+                if(place!=selected)
+                    place.IsLocal = false;
+            }
         }
 
         private void HelpAPIKey(object sender, RoutedEventArgs e)
@@ -241,6 +237,11 @@ namespace PersonalAssistant
         private void GoToMosiPage(object sender , RoutedEventArgs e)
         {
             Windows.System.Launcher.LaunchUriAsync(new Uri("https://www.facebook.com/pages/Salar/288872641128941"));
+        }
+
+        private void GoToWorldWeatherOnline(object sender, RoutedEventArgs e)
+        {
+            Windows.System.Launcher.LaunchUriAsync(new Uri("http://www.worldweatheronline.com"));
         }
     }
 }

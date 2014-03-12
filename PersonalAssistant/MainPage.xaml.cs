@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define DEBUG
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -63,7 +64,7 @@ namespace PersonalAssistant
                 }
                 catch (Exception error)
                 {
-                    System.Diagnostics.Debug.WriteLine(error.ToString());
+                    BugReporter.GetInstance().report(error);
                     MessageBox.Show(error.ToString() + "\r\nVoice Commands failed to initialize.");
 
                 }
@@ -106,8 +107,8 @@ namespace PersonalAssistant
                     RecognitionEngin engin = new RecognitionEngin();
                     engin.RespondToQuery(NavigationContext.QueryString, FinishResponseSimple, SentViewableResult);
                 }
-                else
-                    UpdateUserData(true);
+//                else
+//                    UpdateUserData(true);
             }
         }
 
@@ -139,8 +140,8 @@ namespace PersonalAssistant
                 ScheduledActionService.Add(periodicTask);
 
                 // If debugging is enabled, use LaunchForTest to launch the agent in one minute.
-#if(DEBUG_AGENT)
-    ScheduledActionService.LaunchForTest(periodicTaskName, TimeSpan.FromSeconds(5));
+#if(DEBUG)
+    ScheduledActionService.LaunchForTest(periodicTaskName, TimeSpan.FromSeconds(60));
 #endif
             }
             catch (InvalidOperationException exception)
@@ -211,13 +212,11 @@ namespace PersonalAssistant
             ResponseItem result = (ResponseItem) ar.AsyncState;
             if (result == null)
                 return;
-            System.Diagnostics.Debug.WriteLine("Recent List Size Befor: " + App.ViewModel.RecentItems.Count);
             Dispatcher.BeginInvoke(() =>
             {
                 App.ViewModel.RecentItems.Insert(0, result);
                 App.ViewModel.PersistData();
                 var a = MainLongListSelector.ItemsSource[0];
-                System.Diagnostics.Debug.WriteLine("Recent List Size After: " + App.ViewModel.RecentItems.Count);
 //                if(result.ImageUri.StartsWith("isostore:/"))
             });
 
@@ -227,7 +226,6 @@ namespace PersonalAssistant
         public void FinishResponseSimple(IAsyncResult result)
         {
             String message = (string) result.AsyncState;
-            System.Diagnostics.Debug.WriteLine(message);
             Dispatcher.BeginInvoke(() =>
             {
                 progressIndicator.IsIndeterminate = false;
@@ -269,7 +267,7 @@ namespace PersonalAssistant
             UpdateUserData(false);
         }
 
-        private void UpdateUserData(Boolean silent)
+        private async void UpdateUserData(Boolean silent)
         {
 
             if (silent == false)
@@ -299,7 +297,6 @@ namespace PersonalAssistant
         public void FinishUpdateDataSilent(IAsyncResult result)
         {
             String message = (string) result.AsyncState;
-            System.Diagnostics.Debug.WriteLine(message);
             Application application = null;
             if (message.Contains("Error:") || message.Contains("Warning:"))
             {
@@ -326,7 +323,6 @@ namespace PersonalAssistant
         public void FinishUpdateData(IAsyncResult result)
         {
             String message = (string) result.AsyncState;
-            System.Diagnostics.Debug.WriteLine(message);
             Application application = null;
             Dispatcher.BeginInvoke(() =>
             {
@@ -338,6 +334,11 @@ namespace PersonalAssistant
         private void GoToPlaces(object sender, EventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/PlacesPage.xaml", UriKind.Relative));
+        }
+
+        private void GoToHelp(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/HelpPage.xaml", UriKind.Relative));
         }
 
 
