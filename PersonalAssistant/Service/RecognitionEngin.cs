@@ -478,7 +478,7 @@ namespace PersonalAssistant.Service
         {
             SpeechSynthesizer synth = new SpeechSynthesizer();
             int battery = Battery.GetDefault().RemainingChargePercent;
-            String sentence = "you phone has " + battery + "% of battery remaining.";
+            String sentence = string.Format("your phone has {0}% of battery remaining.", battery);
             String detailsString = battery + "% remaining" ;
             RecentItem = new ResponseItem(BatteryImageUri, detailsString, sentence);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));

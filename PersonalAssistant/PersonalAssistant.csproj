@@ -213,9 +213,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\questionmark.png" />
-    <Content Include="Images\safoora.JPG">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\rate.png" />
     <Content Include="Images\sync.png" />
     <Content Include="Images\WeatherIcon\113.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

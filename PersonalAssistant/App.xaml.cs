@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO.IsolatedStorage;
 using System.Resources;
+using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
@@ -80,6 +82,8 @@ namespace PersonalAssistant
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
         }
+
+        
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched

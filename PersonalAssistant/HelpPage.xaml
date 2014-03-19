@@ -98,13 +98,13 @@
             <Border Background="#FFF9AA00">
                 <TextBlock Text="[Tell me] [about] [the] weather [on] {day} in {place}." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="{}{day} can be today, tomorrow and week days." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="{}{place} can be any place you define in settings." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="You can swap place and day in your command." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
             <Border Background="#FF00C1F9">
@@ -116,25 +116,25 @@
             <Border Background="#FFF9AA00">
                 <TextBlock Text="[Tell me] when is {appointment}?" Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="for instance: when is Saras birthday?" Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="Works only for public appointments." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="Ok I'll enhance it in next update:)." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
             <Border Background="#FF00C1F9">
-                    <TextBlock Text="Alarms: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
+                    <TextBlock Text="Alarms: " Margin="5,10,5,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}" Foreground="White"/>
             </Border>
             <Border Background="#FFF9AA00">
                 <TextBlock Text="Alarm me in 3 hours and 30 minutes." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="You can skip either of hour or minute parts." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="You can also say: 'Wake me up ...' or 'Notify me ...'." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
             <Border Background="#FF00C1F9">
@@ -143,13 +143,13 @@
             <Border Background="#FFF9AA00">
                 <TextBlock Text="Remind me to call mom on {day} {day part}." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="You can also say: 'Remind me to text/email/contact ...'." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="{}{day} can be today, tomorrow and week days." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
-            <Border Background="#FF88F900">
+            <Border Background="#FFF9E200">
                 <TextBlock Text="{}{day part} can be morning noon, afternoon, evening, midnight." Margin="5,0,5,0" HorizontalAlignment="Left" Style="{StaticResource PhoneTextNormalStyle}" Foreground="Black"/>
             </Border>
 

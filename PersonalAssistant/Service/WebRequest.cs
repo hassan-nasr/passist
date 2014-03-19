@@ -61,20 +61,20 @@ namespace PersonalAssistant.Service
         String savePlace = null;
         public void downloadFile(String url, string place,String name)
         {
-            if (BackgroundTransferService.Requests.Count() >= 25)
-                throw new Exception("no more background task");
-            BackgroundTransferRequest request = new BackgroundTransferRequest(new Uri(url,UriKind.Absolute));
-            request.Method = "GET";
-            if (name == null)
-            {
-                url.Substring(url.LastIndexOf("/") + 1);
-            }
-            savePlace = place;
-            savePlace += "\\" + name;
-            Uri downloadUri = new Uri("shared/transfers/" + name, UriKind.RelativeOrAbsolute);
-            request.DownloadLocation = downloadUri;
-            request.TransferStatusChanged += request_TransferStatusChanged;
-            BackgroundTransferService.Add(request);
+//            if (BackgroundTransferService.Requests.Count() >= 25)
+//                throw new Exception("no more background task");
+//            BackgroundTransferRequest request = new BackgroundTransferRequest(new Uri(url,UriKind.Absolute));
+//            request.Method = "GET";
+//            if (name == null)
+//            {
+//                url.Substring(url.LastIndexOf("/") + 1);
+//            }
+//            savePlace = place;
+//            savePlace += "\\" + name;
+//            Uri downloadUri = new Uri("shared/transfers/" + name, UriKind.RelativeOrAbsolute);
+//            request.DownloadLocation = downloadUri;
+//            request.TransferStatusChanged += request_TransferStatusChanged;
+//            BackgroundTransferService.Add(request);
 //            System.Diagnostics.Debug.WriteLine("request created");
         }
 

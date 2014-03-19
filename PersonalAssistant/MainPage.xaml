@@ -68,7 +68,7 @@
                 <TextBlock Text="MOSI" HorizontalAlignment="Center" Style="{StaticResource PhoneTextNormalStyle}"/>
             </Border>
             <Border Background="#FF00C1F9">
-                <TextBlock Text="Time Line" Margin="9,-7,0,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle1Style}"/>
+                <TextBlock Text="History" Margin="9,-7,0,0" HorizontalAlignment="Center" Style="{StaticResource PhoneTextTitle1Style}"/>
             </Border>
         </StackPanel>
 
@@ -128,6 +128,7 @@
             <shell:ApplicationBarIconButton IconUri="/Images/sync.png" Text="update data" Click="UpdateData"/>
             <shell:ApplicationBarIconButton IconUri="/Images/feature.settings.png" Text="settings" Click="GoToPlaces"/>
             <shell:ApplicationBarIconButton IconUri="/Images/questionmark.png" Text="help" Click="GoToHelp"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/rate.png" Text="rate" Click="GoToRate"/>
 <!--            <shell:ApplicationBarIconButton IconUri="/Images/feature.search.png" Text="places" Click="FakeCommand"/>-->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

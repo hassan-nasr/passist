@@ -35,20 +35,22 @@
     <Command Name="battery">
       <Example>tell me Battery</Example>
       <ListenFor>[tell me] [the] Battery [remaining] </ListenFor>
-      <Feedback>Yess Battery! Just a moment!</Feedback>
+      <Feedback>Yes Battery! Just a moment!</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
     <Command Name="localWeather">
       <Example>tell me local weather on tommorw</Example>
       <ListenFor>[Tell me] [about] [local] weather [on] {day}</ListenFor>
-      <Feedback>Yes! forcast for {day} </Feedback>
+      <ListenFor>how is the weather [on] {day}</ListenFor>
+      <Feedback>Yes! local weather for {day} </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentLocalWeather">
       <Example>Tell me about weather</Example>
-      <ListenFor>[Tell me] [about] [local] weather </ListenFor>
+      <ListenFor>[Tell me] [about] [local] weather [here]</ListenFor>
+      <ListenFor>how is the weather [here]</ListenFor>
       <Feedback>Yes! current weather condition </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
@@ -57,21 +59,24 @@
       <Example>Tell me about weather in Tehran on Monday</Example>
       <ListenFor>[Tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
       <ListenFor>[Tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
-      <Feedback>aha! forcast for {day} in {place}</Feedback>
+      <ListenFor>how is weather in {place} [on] {day} </ListenFor>
+      <Feedback>aha! weather for {day} in {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentWeather">
       <Example>Tell me about weather in Paris</Example>
       <ListenFor>[Tell me] [about] [the] weather in {place}</ListenFor>
-      <Feedback>Yap! forcast for {place}</Feedback>
+      <ListenFor>how is weather in {place}</ListenFor>
+      <Feedback>Yap! weather for {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
     <Command Name="appointments">
       <Example>Tell me My next appointments </Example>
-      <ListenFor>[Tell me] [My] [next] appointments</ListenFor>
-      <Feedback>Yes your appointments..., let me check</Feedback>
+      <ListenFor>[Tell me] [My] [next] appointment</ListenFor>
+      <ListenFor>what is [My] [next] appointment</ListenFor>
+      <Feedback>Yes, I'll check your appointments now</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
       <Command Name="findAppointments">

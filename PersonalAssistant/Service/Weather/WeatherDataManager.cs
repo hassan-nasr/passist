@@ -38,6 +38,12 @@ namespace PersonalAssistant.Service.Weather
             return _weatherDataManager;
         }
 
+        public void UpdatePlaces()
+        {
+            SavePlaces();
+            updateRequierdData(5, dummyCallBack, dummyCallBack);
+        }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void SavePlaces()
         {
@@ -63,14 +69,22 @@ namespace PersonalAssistant.Service.Weather
 #if DEBUG
                         System.Diagnostics.Debug.WriteLine(serializedPlaces);
 #endif
-                        if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1")) { 
-                            VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-                            widgetVcs.UpdatePhraseListAsync("place",places.Keys);
-                        }
                         isoFileWriter.Write(serializedPlaces);
                         isoFileWriter.Close();
 //                        MessageBox.Show("done saving places");
                     }
+                }
+                try
+                {
+                    if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+                    {
+                        VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
+                        widgetVcs.UpdatePhraseListAsync("place", places.Keys);
+                    }
+                }
+                catch (Exception e)
+                {
+                    BugReporter.GetInstance().report(e);
                 }
             }
             catch (Exception e)
@@ -82,6 +96,11 @@ namespace PersonalAssistant.Service.Weather
             
             
         }
+
+        private void dummyCallBack(IAsyncResult ar)
+        {
+        }
+
         public void LoadPlaces()
         {
             System.IO.IsolatedStorage.IsolatedStorageFile local =
@@ -144,7 +163,19 @@ namespace PersonalAssistant.Service.Weather
             LocalWeatherInput weatherInput = new LocalWeatherInput();
             weatherInput.num_of_days = days.ToString();
             callback.Invoke(new Task((object obj) => { },
-                        " " + places.Count + " place will be upfated!"));
+                        string.Format(" {0} place will be updated!", places.Count)));
+            try
+            {
+                if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+                {
+                    VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
+                    widgetVcs.UpdatePhraseListAsync("place", places.Keys);
+                }
+            }
+            catch (Exception e)
+            {
+                BugReporter.GetInstance().report(e);
+            }
             foreach (KeyValuePair<string, Place> dictionaryEntry in places)
             {
                 Place place =  dictionaryEntry.Value;
@@ -283,7 +314,7 @@ namespace PersonalAssistant.Service.Weather
                 places.Add("Tehran", new Place("Tehran"));
                 places["New York"].IsLocal = true;
             }
-            SavePlaces();
+            UpdatePlaces();
         }
     }
 

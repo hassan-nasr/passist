@@ -124,6 +124,11 @@ namespace PersonalAssistant.ViewModels
             {
                 RecentItems.Add(loadedRecentItem);
             }
+            if (RecentItems.Count == 0)
+            {
+
+                RecentItems.Add(new ResponseItem("/Images/questionmark.png", "Hi\r\n" + "Here you'll see my responces to your commands.\r\n" + "Please visit help page to see how I can help you. you'll find it in App Bar\r\n"+"good luck :)", "                                                       --Hassan"));
+            }
         }
         private void PersistRecentItems()
         {

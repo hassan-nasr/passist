@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using PersonalAssistant.Resources;
 using PersonalAssistant.Service;
 using PersonalAssistant.Service.appointment;
@@ -391,6 +392,13 @@ namespace PersonalAssistant
                 // handle the exception
                 Debug.WriteLine(e.Message);
             }
+        }
+
+        private void GoToRate(object sender, EventArgs e)
+        {
+            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
+
+            marketplaceReviewTask.Show();
         }
     }
 

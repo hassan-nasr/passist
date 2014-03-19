@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -20,10 +21,17 @@ namespace PersonalAssistant
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+
+            SystemTray.SetIsVisible(this, true);
+
+            SystemTray.SetOpacity(this, 1);
+            SystemTray.SetBackgroundColor(this, Colors.Orange);
+            SystemTray.SetForegroundColor(this, Colors.Black);
             if (!App.ViewModel.IsDataLoaded)
             {
                 App.ViewModel.LoadData();
             }
+
         }
     }
 
