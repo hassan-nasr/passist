@@ -104,7 +104,7 @@ namespace PersonalAssistant
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
             WeatherDataManager.GetInstance().SetPlaces(App.ViewModel.Places);
-            WeatherDataManager.GetInstance().UpdatePlaces();
+            WeatherDataManager.GetInstance().SavePlaces();
         }
 
         private void AddNewPlace(object sender, RoutedEventArgs e)

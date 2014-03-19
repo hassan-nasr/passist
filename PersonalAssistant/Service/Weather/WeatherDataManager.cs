@@ -38,7 +38,7 @@ namespace PersonalAssistant.Service.Weather
             return _weatherDataManager;
         }
 
-        public void UpdatePlaces()
+        public async void UpdatePlaces()
         {
             SavePlaces();
             updateRequierdData(5, dummyCallBack, dummyCallBack);
@@ -311,10 +311,9 @@ namespace PersonalAssistant.Service.Weather
             {
                 places.Add("New York", new Place("New York"));
                 places.Add("Paris", new Place("Paris"));
-                places.Add("Tehran", new Place("Tehran"));
                 places["New York"].IsLocal = true;
             }
-            UpdatePlaces();
+            SavePlaces();
         }
     }
 
