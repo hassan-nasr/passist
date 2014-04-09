@@ -41,6 +41,7 @@ namespace PersonalAssistant.Service
         {
             var file = openDebugFile();
             var writer = new StreamWriter(file);
+            writer.WriteLine(e);
             writer.WriteLine(DateTime.Now+":");
             writer.WriteLine(e.Message);
             writer.WriteLine(e.StackTrace);

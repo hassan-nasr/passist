@@ -212,6 +212,7 @@
     <Content Include="Images\feature.settings.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\icon.png" />
     <Content Include="Images\questionmark.png" />
     <Content Include="Images\rate.png" />
     <Content Include="Images\sync.png" />

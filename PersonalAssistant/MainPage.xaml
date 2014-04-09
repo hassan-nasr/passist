@@ -113,6 +113,7 @@
                     </DataTemplate>
                 </phone:LongListSelector.ItemTemplate>
             </phone:LongListSelector>
+            <Button x:Name="StopButton" Content="Stop" HorizontalAlignment="Left" Margin="154,399,0,0" VerticalAlignment="Top" Height="144" Width="165" Background="#FFC92828" Click="Button_Click"/>
         </Grid>
 
         <!--Uncomment to see an alignment grid to help ensure your controls are

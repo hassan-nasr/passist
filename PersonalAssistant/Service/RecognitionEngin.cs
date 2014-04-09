@@ -21,6 +21,7 @@ namespace PersonalAssistant.Service
     {
         private AsyncCallback onFinish;
         private AsyncCallback sendViewableResult;
+        public SpeechSynthesizer SpeechSynthesizer { get; set; }
         ResponseItem RecentItem  = null;
         public void RespondToQuery(IDictionary<string, string> queryString, AsyncCallback onFinishIn, AsyncCallback sendViewableResult)
         {
@@ -197,11 +198,16 @@ namespace PersonalAssistant.Service
 
         private async Task CreateReminderAndRespond(string reminderAction, string contactName, DateTime reminderTime)
         {
-            SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer();
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
+            string response;
             if (reminderTime.Ticks < DateTime.Now.AddMinutes(2).Ticks)
             {
-                speechSynthesizer.SpeakTextAsync(
-                    "sorry. the reminder should be at least in one minuets from now!");
+                response = "sorry. the reminder should be at least in one minuets from now!";
+                try
+                {
+                    await SpeechSynthesizer.SpeakTextAsync(response);
+                }
+                catch (TaskCanceledException) { }
                 onFinish.Invoke(new Task(o => { }, "Have Fun"));
                 return;
             }
@@ -212,18 +218,26 @@ namespace PersonalAssistant.Service
             }
             catch (Exception e)
             {
-                speechSynthesizer.SpeakTextAsync(
-                    "sorry. couldn't create the reminder! please check if you have disabled background agenst or maybe I have reached the number of allowd reminder and or alerts!");
+                response = "sorry. couldn't create the reminder! please check if you have disabled background agenst or maybe I have reached the number of allowd reminder and or alerts!";
+                try
+                {
+                    SpeechSynthesizer.SpeakTextAsync(response);
+                }
+                catch (TaskCanceledException) { }
                 onFinish.Invoke(new Task(o => { }, "Have Fun"));
                 return;
             }
-            String response = "reminder created for " + reminderTime.DayOfWeek + " " + SayTime(reminderTime);
+            response = "reminder created for " + reminderTime.DayOfWeek + " " + SayTime(reminderTime);
             String detailsString = "remindier: " + reminderAction + " " + contactName + "\n\r" + "Date: " +
                                    reminderTime.ToLongDateString()
                                    + "\n\r" + "Time: " + reminderTime.ToLongTimeString();
             RecentItem = new ResponseItem(ReminderImageUri, detailsString, response);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-            await speechSynthesizer.SpeakTextAsync(response);
+            try
+            {
+                await SpeechSynthesizer.SpeakTextAsync(response);
+            }
+            catch (TaskCanceledException) { }
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
         }
 
@@ -280,7 +294,7 @@ namespace PersonalAssistant.Service
             alarm.ExpirationTime = alarm.BeginTime.AddSeconds(5.0);
             alarm.RecurrenceType = RecurrenceInterval.None;
             ScheduledActionService.Add(alarm);
-            SpeechSynthesizer synth = new SpeechSynthesizer();
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
             int battery = Battery.GetDefault().RemainingChargePercent;
             String sentence = "alarm created for " + SayTime(dateTime);
             if (notification.Equals("wake me up"))
@@ -288,7 +302,7 @@ namespace PersonalAssistant.Service
             String detailsString = "alarm created for " + dateTime.ToString();
             RecentItem = new ResponseItem(AlarmImageUri, detailsString, sentence);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-            await synth.SpeakTextAsync(sentence);
+            await SpeechSynthesizer.SpeakTextAsync(sentence);
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
         }
 
@@ -330,8 +344,8 @@ namespace PersonalAssistant.Service
                 }
                 if (place == "[current]")
                 {
-                    SpeechSynthesizer synth2 = new SpeechSynthesizer();
-                    await synth2.SpeakTextAsync("please set you local location in settings page");
+//                    SpeechSynthesizer synth = new SpeechSynthesizer();
+                    await SpeechSynthesizer.SpeakTextAsync("please set your local location in settings page");
                     return;
                 }
 
@@ -342,9 +356,9 @@ namespace PersonalAssistant.Service
             LocalWeather localWeather = weatherDataManager.getWeather(place);
             if (localWeather == null)
             {
-                responseSentence = "sorry! but weather data for " + place + " is not available. please add " + place +
-                                   " to your weather checkout list and make sure you connect your phone to internet every few days";
-                detailsString = "Sorry! No data :[";
+                responseSentence = "sorry! but weather data for " + place + " is not available.";
+                detailsString = "Sorry! No data :[\r\n" + "please add " + place +
+                                   " to your weather checkout list and make sure you connect your phone to internet every few days you can Manually update weather data from App bar";
             }
             else
             {
@@ -359,7 +373,8 @@ namespace PersonalAssistant.Service
                     }
 
                 }
-                String dateString = weatherToShow.date.Date.ToLongDateString();
+
+                String dateString = date.ToLongDateString();
                 dateString = dateString.Substring(0, dateString.Length - 4);
                 if (weatherToShow == null)
                 {
@@ -369,6 +384,7 @@ namespace PersonalAssistant.Service
                 }
                 else
                 {
+
 
                     responseSentence = "it's " + weatherToShow.weatherDesc[0].value + " at " + place + " on " +
                                        dateString + " the Minimum of  Temperature is " +
@@ -389,8 +405,8 @@ namespace PersonalAssistant.Service
             }
             RecentItem = new ResponseItem(imageuri,detailsString,responseSentence);
             sendViewableResult.Invoke(new Task(o => { },RecentItem));
-            SpeechSynthesizer synth = new SpeechSynthesizer();
-            await synth.SpeakTextAsync(responseSentence);
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
+            await SpeechSynthesizer.SpeakTextAsync(responseSentence);
             onFinish.Invoke(new Task(o=>{},"Have Fun"));
 
         }
@@ -402,14 +418,23 @@ namespace PersonalAssistant.Service
         public String AppointmentImageUri ="/Images/feature.calendar.png";
         public String BatteryImageUri = "/Images/feature.settings.png";
 
+        public RecognitionEngin()
+        {
+            SpeechSynthesizer = new SpeechSynthesizer();
+        }
+
         private async void Saytime(DateTime time)
         {
-            SpeechSynthesizer synth = new SpeechSynthesizer();
-            String timeToSay = "it's "+SayTime(time);
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
+            String response = "it's "+SayTime(time);
             string detailsString = time.ToLongTimeString();
-            RecentItem= new ResponseItem(TimeImageUri,detailsString,timeToSay);
+            RecentItem= new ResponseItem(TimeImageUri,detailsString,response);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-            await synth.SpeakTextAsync(timeToSay);
+            try
+            {
+                await SpeechSynthesizer.SpeakTextAsync(response);
+            }
+            catch (TaskCanceledException) { }
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
         }
 
@@ -432,8 +457,8 @@ namespace PersonalAssistant.Service
 
         private async void SayDate(String type, DateTime date)
         {
-            SpeechSynthesizer synth = new SpeechSynthesizer();
-            String sentence = "";
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
+            String response = "";
             String detailsString = "";
             CultureInfo responseCultureInfo = new CultureInfo("fa-IR");
 //            date.ToString("D",)
@@ -455,12 +480,16 @@ namespace PersonalAssistant.Service
                     break;
 
             }
-            sentence = "it's " + dateString;
+            response = "it's " + dateString;
             detailsString = dateString;
             
-            RecentItem = new ResponseItem(DateImageUri, detailsString, sentence);
+            RecentItem = new ResponseItem(DateImageUri, detailsString, response);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-            await synth.SpeakTextAsync(sentence);
+            try
+            {
+                await SpeechSynthesizer.SpeakTextAsync(response);
+            }
+            catch (TaskCanceledException) { }
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
         }
 
@@ -476,13 +505,17 @@ namespace PersonalAssistant.Service
 
         private async void SayBattery(object sender, RoutedEventArgs e)
         {
-            SpeechSynthesizer synth = new SpeechSynthesizer();
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
             int battery = Battery.GetDefault().RemainingChargePercent;
             String sentence = string.Format("your phone has {0}% of battery remaining.", battery);
             String detailsString = battery + "% remaining" ;
             RecentItem = new ResponseItem(BatteryImageUri, detailsString, sentence);
             sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-            await synth.SpeakTextAsync(sentence);
+            try
+            {
+                await SpeechSynthesizer.SpeakTextAsync(sentence);
+            }
+            catch (TaskCanceledException){}
             onFinish.Invoke(new Task(o => { }, "Have Fun"));
         }
         private async void SayAppintments()
@@ -505,7 +538,7 @@ namespace PersonalAssistant.Service
 
         private async Task SayAppointment(Appointment app)
         {
-            SpeechSynthesizer synth = new SpeechSynthesizer();
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
             String detailsString, response;
             if (app == null)
             {
@@ -552,7 +585,11 @@ namespace PersonalAssistant.Service
                 }
                 RecentItem = new ResponseItem(AppointmentImageUri, detailsString, response);
                 sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-                await synth.SpeakTextAsync(response);
+                try
+                {
+                    await SpeechSynthesizer.SpeakTextAsync(response);
+                }
+                catch (TaskCanceledException) { }
                 onFinish.Invoke(new Task(o => { }, "Have Fun"));
             }
             if (onFinish != null)
@@ -563,7 +600,7 @@ namespace PersonalAssistant.Service
 
         private async void SayFoundAppointment(IAsyncResult result)
         {
-            SpeechSynthesizer synth = new SpeechSynthesizer();
+//            SpeechSynthesizer synth = new SpeechSynthesizer();
             String detailsString = "", response="";
             Appointment app = result.AsyncState as Appointment;
             if (app == null)
@@ -600,7 +637,11 @@ namespace PersonalAssistant.Service
                 }
                 RecentItem = new ResponseItem(AppointmentImageUri, detailsString, response);
                 sendViewableResult.Invoke(new Task(o => { }, RecentItem));
-                await synth.SpeakTextAsync(response);
+                try
+                {
+                    await SpeechSynthesizer.SpeakTextAsync(response);
+                }
+                catch (TaskCanceledException) { }
                 onFinish.Invoke(new Task(o => { }, "Have Fun"));
             }
             if (onFinish != null)

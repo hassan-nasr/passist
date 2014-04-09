@@ -29,7 +29,7 @@ namespace PersonalAssistant
 
         PeriodicTask periodicTask;
         ResourceIntensiveTask resourceIntensiveTask;
-
+        RecognitionEngin engin;
         string periodicTaskName = "MosiPeriodicTask";
         public bool agentsAreEnabled = true;
         // Constructor
@@ -105,11 +105,12 @@ namespace PersonalAssistant
                     progressIndicator.Text = "Responding...";
                     SystemTray.SetProgressIndicator(this, progressIndicator);
 
-                    RecognitionEngin engin = new RecognitionEngin();
+
+                    engin = new RecognitionEngin();
                     engin.RespondToQuery(NavigationContext.QueryString, FinishResponseSimple, SentViewableResult);
                 }
-//                else
-//                    UpdateUserData(true);
+                else
+                    StopButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -232,6 +233,7 @@ namespace PersonalAssistant
                 progressIndicator.IsIndeterminate = false;
                 progressIndicator.Text = message;
             });
+            StopButton.Visibility = Visibility.Collapsed;
         }
 
 
@@ -399,6 +401,12 @@ namespace PersonalAssistant
             MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
 
             marketplaceReviewTask.Show();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            engin.SpeechSynthesizer.CancelAll();
+            StopButton.Visibility = Visibility.Collapsed;
         }
     }
 
