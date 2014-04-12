@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Phone.Speech.VoiceCommands;
 using Microsoft.Phone.UserData;
+using PersonalAssistant.Service.voice;
 
 namespace PersonalAssistant.Service.contact
 {
@@ -33,10 +34,13 @@ namespace PersonalAssistant.Service.contact
                         allFoundNames.Add(s);
                 }
             }
-            if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+            foreach (string langName in VoiceCommandInfo.AvailableLanguages)
             {
-                VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-                widgetVcs.UpdatePhraseListAsync("contactLoos", allFoundNames);
+                if (VoiceCommandService.InstalledCommandSets.ContainsKey(langName))
+                {
+                    VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets[langName];
+                    widgetVcs.UpdatePhraseListAsync("contactLoos", allFoundNames);
+                }
             }
 #if DEBUG            
             System.Diagnostics.Debug.WriteLine("unique found names: "+ allFoundNames.Count);

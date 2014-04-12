@@ -125,6 +125,7 @@
     <Compile Include="Service\RecognitionEngin.cs" />
     <Compile Include="Service\ResponseElement.cs" />
     <Compile Include="Service\Settings.cs" />
+    <Compile Include="Service\voice\VoiceCommandInfo.cs" />
     <Compile Include="Service\Weather\FreeAPI.cs" />
     <Compile Include="Service\Weather\LocalWeather.cs" />
     <Compile Include="Service\Weather\LocationSearch.cs" />
@@ -200,6 +201,7 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="icon.png" />
     <Content Include="Images\feature.alarm.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -212,7 +214,6 @@
     <Content Include="Images\feature.settings.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\icon.png" />
     <Content Include="Images\questionmark.png" />
     <Content Include="Images\rate.png" />
     <Content Include="Images\sync.png" />

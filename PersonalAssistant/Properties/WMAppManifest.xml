@@ -2,7 +2,7 @@
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
   <App xmlns="" ProductID="{aad91e41-cdfc-4e24-ac87-ee6bfff84216}" Title="Mosi" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="PersonalAssistant author" Description="Mosi Personal Assistant" Publisher="PersonalAssistant" PublisherID="{d625c9c6-c4ee-41f0-9971-7b93ff1d1b94}">
-    <IconPath IsRelative="true" IsResource="false">Images\icon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">icon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
@@ -23,9 +23,9 @@
     <Tokens>
       <PrimaryToken TokenID="PersonalAssistantToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">Images\icon.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">icon.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Images\icon.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">icon.png</BackgroundImageURI>
           <Title>Mosi</Title>
           <BackContent>
           </BackContent>

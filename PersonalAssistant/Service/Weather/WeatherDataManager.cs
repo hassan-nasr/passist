@@ -13,6 +13,7 @@ using Windows.Phone.Speech.VoiceCommands;
 using Windows.Security.Authentication.OnlineId;
 using Newtonsoft.Json;
 using PersonalAssistant.Annotations;
+using PersonalAssistant.Service.voice;
 using PersonalAssistant.Service.Weather.LocalWeather;
 
 namespace PersonalAssistant.Service.Weather
@@ -76,10 +77,13 @@ namespace PersonalAssistant.Service.Weather
                 }
                 try
                 {
-                    if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+                    foreach (string langName in VoiceCommandInfo.AvailableLanguages)
                     {
-                        VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-                        widgetVcs.UpdatePhraseListAsync("place", places.Keys);
+                        if (VoiceCommandService.InstalledCommandSets.ContainsKey(langName))
+                        {
+                            VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets[langName];
+                            widgetVcs.UpdatePhraseListAsync("place", places.Keys);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -166,10 +170,14 @@ namespace PersonalAssistant.Service.Weather
                         string.Format(" {0} place will be updated!", places.Count)));
             try
             {
-                if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+                
+                foreach (string langName in VoiceCommandInfo.AvailableLanguages)
                 {
-                    VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-                    widgetVcs.UpdatePhraseListAsync("place", places.Keys);
+                    if (VoiceCommandService.InstalledCommandSets.ContainsKey(langName))
+                    {
+                        VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets[langName];
+                        widgetVcs.UpdatePhraseListAsync("place", places.Keys);
+                    }
                 }
             }
             catch (Exception e)

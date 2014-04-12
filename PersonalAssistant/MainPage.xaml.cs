@@ -66,7 +66,7 @@ namespace PersonalAssistant
                 catch (Exception error)
                 {
                     BugReporter.GetInstance().report(error);
-                    MessageBox.Show(error.ToString() + "\r\nVoice Commands failed to initialize.");
+                    MessageBox.Show("\r\nVoice Commands failed to initialize. please press and hold windows button to make sure windows voice commands is ready" );
 
                 }
             }
@@ -233,7 +233,7 @@ namespace PersonalAssistant
                 progressIndicator.IsIndeterminate = false;
                 progressIndicator.Text = message;
             });
-            StopButton.Visibility = Visibility.Collapsed;
+            StopButton.Visibility=Visibility.Collapsed;
         }
 
 

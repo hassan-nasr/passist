@@ -345,7 +345,14 @@ namespace PersonalAssistant.Service
                 if (place == "[current]")
                 {
 //                    SpeechSynthesizer synth = new SpeechSynthesizer();
-                    await SpeechSynthesizer.SpeakTextAsync("please set your local location in settings page");
+                    try
+                    {
+                        await SpeechSynthesizer.SpeakTextAsync("please set your local location in settings page");
+                    }
+                    catch (TaskCanceledException e)
+                    {
+                        
+                    }
                     return;
                 }
 
@@ -381,6 +388,7 @@ namespace PersonalAssistant.Service
                     responseSentence = "sorry! but weather data for " + place + " on " + dateString +
                                        " is not available";
                     detailsString = "Sorry! No data :[";
+                    imageuri = WeatherImageUri + "/" + "sync.png";
                 }
                 else
                 {
@@ -398,15 +406,19 @@ namespace PersonalAssistant.Service
                                     + "\r\nWind Speed: " + weatherToShow.windspeedKmph + " Km/h"
                                     + "\r\nWind Degree: " + weatherToShow.winddirDegree;
 
-                }
+                    imageuri = (WeatherImageUri + "/" + weatherToShow.weatherCode + ".png");
 
-                imageuri =(WeatherImageUri+"/"+weatherToShow.weatherCode+".png");
+                }
 
             }
             RecentItem = new ResponseItem(imageuri,detailsString,responseSentence);
             sendViewableResult.Invoke(new Task(o => { },RecentItem));
 //            SpeechSynthesizer synth = new SpeechSynthesizer();
-            await SpeechSynthesizer.SpeakTextAsync(responseSentence);
+            try
+            {
+                await SpeechSynthesizer.SpeakTextAsync(responseSentence);
+            }
+            catch (TaskCanceledException e) { }
             onFinish.Invoke(new Task(o=>{},"Have Fun"));
 
         }

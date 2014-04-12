@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.Phone.Speech.Synthesis;
 using Windows.Phone.Speech.VoiceCommands;
 using Microsoft.Phone.UserData;
+using PersonalAssistant.Service.voice;
 
 namespace PersonalAssistant.Service.appointment
 {
@@ -30,11 +31,15 @@ namespace PersonalAssistant.Service.appointment
                     continue;
                 appointmentsName.Add(appointment.Subject);
             }
-            if (VoiceCommandService.InstalledCommandSets.ContainsKey("en-us-1"))
+            foreach (string langName in VoiceCommandInfo.AvailableLanguages)
             {
-                VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets["en-us-1"];
-                widgetVcs.UpdatePhraseListAsync("appointment", appointmentsName);
+                if (VoiceCommandService.InstalledCommandSets.ContainsKey(langName))
+                {
+                    VoiceCommandSet widgetVcs = VoiceCommandService.InstalledCommandSets[langName];
+                    widgetVcs.UpdatePhraseListAsync("appointment", appointmentsName);
+                }   
             }
+            
         }
 
         public void FindAppointmentByName(String name,AsyncCallback callback)
