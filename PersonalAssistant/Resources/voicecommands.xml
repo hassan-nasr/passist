@@ -3,13 +3,13 @@
 
   <CommandSet xml:lang="en-us" Name="en-us-1">
 
-    <CommandPrefix>mossi</CommandPrefix>
+    <CommandPrefix>Mosi</CommandPrefix>
 
-    <Example>Tell me my next appointment</Example>
+    <Example>tell me my next appointment</Example>
 
     <Command Name="time">
-      <Example>Tell Me the Time</Example>
-      <ListenFor>[Tell Me] [About] [the] time {*}</ListenFor>
+      <Example>tell me the Time</Example>
+      <ListenFor>[tell me] [About] [the] time {*}</ListenFor>
       <ListenFor> what time is it?</ListenFor>
       <Feedback>Yes Time. I'll check it</Feedback>
       <Navigate Target="MainPage.xaml"/>
@@ -17,17 +17,17 @@
 
 
 <!--    <Command Name="date">-->
-<!--      <Example>Tell me today's date</Example>-->
+<!--      <Example>tell me today's date</Example>-->
 <!--      <ListenFor>{*} [About] [the] Date [in] {CalType}</ListenFor>-->
-<!--      <ListenFor>[Tell me] whats today's date in {CalType}</ListenFor>-->
+<!--      <ListenFor>[tell me] whats today's date in {CalType}</ListenFor>-->
 <!--      <Feedback> {CalType} Date! Just a second please</Feedback>-->
 <!--      <Navigate Target="MainPage.xaml"/>-->
 <!--    </Command>-->
 
     <Command Name="date2">
-      <Example>Tell me the date</Example>
-      <ListenFor>[Tell me]  [About] [the] Date </ListenFor>
-      <ListenFor>[Tell me] whats today's date</ListenFor>
+      <Example>tell me the date</Example>
+      <ListenFor>[tell me]  [About] [the] Date </ListenFor>
+      <ListenFor>[tell me] whats today's date</ListenFor>
       <Feedback> Yes Date! Just a second please</Feedback>
       <Navigate Target="MainPage.xaml?CalType=Gregorian"/>
     </Command>
@@ -41,47 +41,47 @@
 
     <Command Name="localWeather">
       <Example>tell me local weather on tommorw</Example>
-      <ListenFor>[Tell me] [about] [local] weather [on] {day}</ListenFor>
+      <ListenFor>[tell me] [about] [local] weather [on] {day}</ListenFor>
       <ListenFor>how is [the] weather [on] {day}</ListenFor>
       <Feedback>Yes! local weather for {day} </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentLocalWeather">
-      <Example>Tell me about weather</Example>
-      <ListenFor>[Tell me] [about] [local] weather [here]</ListenFor>
+      <Example>tell me about weather</Example>
+      <ListenFor>[tell me] [about] [local] weather [here]</ListenFor>
       <ListenFor>how is [the] weather [here]</ListenFor>
       <Feedback>Yes! current weather condition </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="weather">
-      <Example>Tell me about weather in Tehran on Monday</Example>
-      <ListenFor>[Tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
-      <ListenFor>[Tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
+      <Example>tell me about weather in Paris on Monday</Example>
+      <ListenFor>[tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
+      <ListenFor>[tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
       <ListenFor>how is [the] weather in {place} [on] {day} </ListenFor>
       <Feedback>aha! weather for {day} in {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentWeather">
-      <Example>Tell me about weather in Paris</Example>
-      <ListenFor>[Tell me] [about] [the] weather in {place}</ListenFor>
+      <Example>tell me about weather in Paris</Example>
+      <ListenFor>[tell me] [about] [the] weather in {place}</ListenFor>
       <ListenFor>how is [the] weather in {place}</ListenFor>
       <Feedback>Yap! weather for {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
     <Command Name="appointments">
-      <Example>Tell me My next appointments </Example>
-      <ListenFor>[Tell me] [My] [next] appointment</ListenFor>
+      <Example>tell me my next appointments </Example>
+      <ListenFor>[tell me] [My] [next] appointment</ListenFor>
       <ListenFor>what is [My] [next] appointment</ListenFor>
       <Feedback>Yes, I'll check your appointments now</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
       <Command Name="findAppointments">
-      <Example>Tell me when is my birthday </Example>
-      <ListenFor>[Tell me] when is {appointment}</ListenFor>
+      <Example>tell me when is Sara's birthday </Example>
+      <ListenFor>[tell me] when is {appointment}</ListenFor>
       <Feedback>Yes {appointment}. let me check</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
@@ -124,7 +124,7 @@
     </Command>
 
     <Command Name="actionReminder_contact_date">
-      <Example>remind me to call mom on tomorow afternoon</Example>
+      <Example>remind me to call dad on January 1st afternoon</Example>
       <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {month} {number} {dayPart} </ListenFor>
       <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {number} [of] {month} [in the] {dayPart}</ListenFor>
       <ListenFor> reminde me to {reminderAction} {contactLoos} [on] {month} {number} </ListenFor>
@@ -358,87 +358,87 @@
       <Item>29</Item>
       <Item>30</Item>
       <Item>31</Item>
-      <Item>32</Item>
-      <Item>33</Item>
-      <Item>34</Item>
-      <Item>35</Item>
-      <Item>36</Item>
-      <Item>37</Item>
-      <Item>38</Item>
-      <Item>39</Item>
-      <Item>40</Item>
-      <Item>41</Item>
-      <Item>42</Item>
-      <Item>43</Item>
-      <Item>44</Item>
-      <Item>45</Item>
-      <Item>46</Item>
-      <Item>47</Item>
-      <Item>48</Item>
-      <Item>49</Item>
-      <Item>50</Item>
-      <Item>51</Item>
-      <Item>52</Item>
-      <Item>53</Item>
-      <Item>54</Item>
-      <Item>55</Item>
-      <Item>56</Item>
-      <Item>57</Item>
-      <Item>58</Item>
-      <Item>59</Item>
-      <Item>60</Item>
-      <Item>61</Item>
-      <Item>62</Item>
-      <Item>63</Item>
-      <Item>64</Item>
-      <Item>65</Item>
-      <Item>66</Item>
-      <Item>57</Item>
-      <Item>68</Item>
-      <Item>69</Item>
-      <Item>70</Item>
-      <Item>71</Item>
-      <Item>72</Item>
-      <Item>73</Item>
-      <Item>74</Item>
-      <Item>75</Item>
-      <Item>76</Item>
-      <Item>77</Item>
-      <Item>78</Item>
-      <Item>79</Item>
-      <Item>80</Item>
-      <Item>81</Item>
-      <Item>82</Item>
-      <Item>83</Item>
-      <Item>84</Item>
-      <Item>85</Item>
-      <Item>86</Item>
-      <Item>87</Item>
-      <Item>88</Item>
-      <Item>89</Item>
-      <Item>90</Item>
-      <Item>91</Item>
-      <Item>92</Item>
-      <Item>93</Item>
-      <Item>94</Item>
-      <Item>95</Item>
-      <Item>96</Item>
-      <Item>97</Item>
-      <Item>98</Item>
-      <Item>99</Item>
-      <Item>100</Item>
+<!--      <Item>32</Item>-->
+<!--      <Item>33</Item>-->
+<!--      <Item>34</Item>-->
+<!--      <Item>35</Item>-->
+<!--      <Item>36</Item>-->
+<!--      <Item>37</Item>-->
+<!--      <Item>38</Item>-->
+<!--      <Item>39</Item>-->
+<!--      <Item>40</Item>-->
+<!--      <Item>41</Item>-->
+<!--      <Item>42</Item>-->
+<!--      <Item>43</Item>-->
+<!--      <Item>44</Item>-->
+<!--      <Item>45</Item>-->
+<!--      <Item>46</Item>-->
+<!--      <Item>47</Item>-->
+<!--      <Item>48</Item>-->
+<!--      <Item>49</Item>-->
+<!--      <Item>50</Item>-->
+<!--      <Item>51</Item>-->
+<!--      <Item>52</Item>-->
+<!--      <Item>53</Item>-->
+<!--      <Item>54</Item>-->
+<!--      <Item>55</Item>-->
+<!--      <Item>56</Item>-->
+<!--      <Item>57</Item>-->
+<!--      <Item>58</Item>-->
+<!--      <Item>59</Item>-->
+<!--      <Item>60</Item>-->
+<!--      <Item>61</Item>-->
+<!--      <Item>62</Item>-->
+<!--      <Item>63</Item>-->
+<!--      <Item>64</Item>-->
+<!--      <Item>65</Item>-->
+<!--      <Item>66</Item>-->
+<!--      <Item>57</Item>-->
+<!--      <Item>68</Item>-->
+<!--      <Item>69</Item>-->
+<!--      <Item>70</Item>-->
+<!--      <Item>71</Item>-->
+<!--      <Item>72</Item>-->
+<!--      <Item>73</Item>-->
+<!--      <Item>74</Item>-->
+<!--      <Item>75</Item>-->
+<!--      <Item>76</Item>-->
+<!--      <Item>77</Item>-->
+<!--      <Item>78</Item>-->
+<!--      <Item>79</Item>-->
+<!--      <Item>80</Item>-->
+<!--      <Item>81</Item>-->
+<!--      <Item>82</Item>-->
+<!--      <Item>83</Item>-->
+<!--      <Item>84</Item>-->
+<!--      <Item>85</Item>-->
+<!--      <Item>86</Item>-->
+<!--      <Item>87</Item>-->
+<!--      <Item>88</Item>-->
+<!--      <Item>89</Item>-->
+<!--      <Item>90</Item>-->
+<!--      <Item>91</Item>-->
+<!--      <Item>92</Item>-->
+<!--      <Item>93</Item>-->
+<!--      <Item>94</Item>-->
+<!--      <Item>95</Item>-->
+<!--      <Item>96</Item>-->
+<!--      <Item>97</Item>-->
+<!--      <Item>98</Item>-->
+<!--      <Item>99</Item>-->
+<!--      <Item>100</Item>-->
     </PhraseList>
 
   </CommandSet>
   <CommandSet xml:lang="en-in" Name="en-in-1">
 
-    <CommandPrefix>mossi</CommandPrefix>
+    <CommandPrefix>Mosi</CommandPrefix>
 
-    <Example>Tell me my next appointment</Example>
+    <Example>tell me my next appointment</Example>
 
     <Command Name="time">
-      <Example>Tell Me the Time</Example>
-      <ListenFor>[Tell Me] [About] [the] time {*}</ListenFor>
+      <Example>tell me the Time</Example>
+      <ListenFor>[tell me] [About] [the] time {*}</ListenFor>
       <ListenFor> what time is it?</ListenFor>
       <Feedback>Yes Time. I'll check it</Feedback>
       <Navigate Target="MainPage.xaml"/>
@@ -446,17 +446,17 @@
 
 
 <!--    <Command Name="date">-->
-<!--      <Example>Tell me today's date</Example>-->
+<!--      <Example>tell me today's date</Example>-->
 <!--      <ListenFor>{*} [About] [the] Date [in] {CalType}</ListenFor>-->
-<!--      <ListenFor>[Tell me] whats today's date in {CalType}</ListenFor>-->
+<!--      <ListenFor>[tell me] whats today's date in {CalType}</ListenFor>-->
 <!--      <Feedback> {CalType} Date! Just a second please</Feedback>-->
 <!--      <Navigate Target="MainPage.xaml"/>-->
 <!--    </Command>-->
 
     <Command Name="date2">
-      <Example>Tell me the date</Example>
-      <ListenFor>[Tell me]  [About] [the] Date </ListenFor>
-      <ListenFor>[Tell me] whats today's date</ListenFor>
+      <Example>tell me the date</Example>
+      <ListenFor>[tell me]  [About] [the] Date </ListenFor>
+      <ListenFor>[tell me] whats today's date</ListenFor>
       <Feedback> Yes Date! Just a second please</Feedback>
       <Navigate Target="MainPage.xaml?CalType=Gregorian"/>
     </Command>
@@ -470,47 +470,47 @@
 
     <Command Name="localWeather">
       <Example>tell me local weather on tommorw</Example>
-      <ListenFor>[Tell me] [about] [local] weather [on] {day}</ListenFor>
+      <ListenFor>[tell me] [about] [local] weather [on] {day}</ListenFor>
       <ListenFor>how is [the] weather [on] {day}</ListenFor>
       <Feedback>Yes! local weather for {day} </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentLocalWeather">
-      <Example>Tell me about weather</Example>
-      <ListenFor>[Tell me] [about] [local] weather [here]</ListenFor>
+      <Example>tell me about weather</Example>
+      <ListenFor>[tell me] [about] [local] weather [here]</ListenFor>
       <ListenFor>how is [the] weather [here]</ListenFor>
       <Feedback>Yes! current weather condition </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="weather">
-      <Example>Tell me about weather in Tehran on Monday</Example>
-      <ListenFor>[Tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
-      <ListenFor>[Tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
+      <Example>tell me about weather in Tehran on Monday</Example>
+      <ListenFor>[tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
+      <ListenFor>[tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
       <ListenFor>how is [the] weather in {place} [on] {day} </ListenFor>
       <Feedback>aha! weather for {day} in {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentWeather">
-      <Example>Tell me about weather in Paris</Example>
-      <ListenFor>[Tell me] [about] [the] weather in {place}</ListenFor>
+      <Example>tell me about weather in Paris</Example>
+      <ListenFor>[tell me] [about] [the] weather in {place}</ListenFor>
       <ListenFor>how is [the] weather in {place}</ListenFor>
       <Feedback>Yap! weather for {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
     <Command Name="appointments">
-      <Example>Tell me My next appointments </Example>
-      <ListenFor>[Tell me] [My] [next] appointment</ListenFor>
+      <Example>tell me My next appointments </Example>
+      <ListenFor>[tell me] [My] [next] appointment</ListenFor>
       <ListenFor>what is [My] [next] appointment</ListenFor>
       <Feedback>Yes, I'll check your appointments now</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
       <Command Name="findAppointments">
-      <Example>Tell me when is my birthday </Example>
-      <ListenFor>[Tell me] when is {appointment}</ListenFor>
+      <Example>tell me when is my birthday </Example>
+      <ListenFor>[tell me] when is {appointment}</ListenFor>
       <Feedback>Yes {appointment}. let me check</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
@@ -787,87 +787,87 @@
       <Item>29</Item>
       <Item>30</Item>
       <Item>31</Item>
-      <Item>32</Item>
-      <Item>33</Item>
-      <Item>34</Item>
-      <Item>35</Item>
-      <Item>36</Item>
-      <Item>37</Item>
-      <Item>38</Item>
-      <Item>39</Item>
-      <Item>40</Item>
-      <Item>41</Item>
-      <Item>42</Item>
-      <Item>43</Item>
-      <Item>44</Item>
-      <Item>45</Item>
-      <Item>46</Item>
-      <Item>47</Item>
-      <Item>48</Item>
-      <Item>49</Item>
-      <Item>50</Item>
-      <Item>51</Item>
-      <Item>52</Item>
-      <Item>53</Item>
-      <Item>54</Item>
-      <Item>55</Item>
-      <Item>56</Item>
-      <Item>57</Item>
-      <Item>58</Item>
-      <Item>59</Item>
-      <Item>60</Item>
-      <Item>61</Item>
-      <Item>62</Item>
-      <Item>63</Item>
-      <Item>64</Item>
-      <Item>65</Item>
-      <Item>66</Item>
-      <Item>57</Item>
-      <Item>68</Item>
-      <Item>69</Item>
-      <Item>70</Item>
-      <Item>71</Item>
-      <Item>72</Item>
-      <Item>73</Item>
-      <Item>74</Item>
-      <Item>75</Item>
-      <Item>76</Item>
-      <Item>77</Item>
-      <Item>78</Item>
-      <Item>79</Item>
-      <Item>80</Item>
-      <Item>81</Item>
-      <Item>82</Item>
-      <Item>83</Item>
-      <Item>84</Item>
-      <Item>85</Item>
-      <Item>86</Item>
-      <Item>87</Item>
-      <Item>88</Item>
-      <Item>89</Item>
-      <Item>90</Item>
-      <Item>91</Item>
-      <Item>92</Item>
-      <Item>93</Item>
-      <Item>94</Item>
-      <Item>95</Item>
-      <Item>96</Item>
-      <Item>97</Item>
-      <Item>98</Item>
-      <Item>99</Item>
-      <Item>100</Item>
+<!--      <Item>32</Item>-->
+<!--      <Item>33</Item>-->
+<!--      <Item>34</Item>-->
+<!--      <Item>35</Item>-->
+<!--      <Item>36</Item>-->
+<!--      <Item>37</Item>-->
+<!--      <Item>38</Item>-->
+<!--      <Item>39</Item>-->
+<!--      <Item>40</Item>-->
+<!--      <Item>41</Item>-->
+<!--      <Item>42</Item>-->
+<!--      <Item>43</Item>-->
+<!--      <Item>44</Item>-->
+<!--      <Item>45</Item>-->
+<!--      <Item>46</Item>-->
+<!--      <Item>47</Item>-->
+<!--      <Item>48</Item>-->
+<!--      <Item>49</Item>-->
+<!--      <Item>50</Item>-->
+<!--      <Item>51</Item>-->
+<!--      <Item>52</Item>-->
+<!--      <Item>53</Item>-->
+<!--      <Item>54</Item>-->
+<!--      <Item>55</Item>-->
+<!--      <Item>56</Item>-->
+<!--      <Item>57</Item>-->
+<!--      <Item>58</Item>-->
+<!--      <Item>59</Item>-->
+<!--      <Item>60</Item>-->
+<!--      <Item>61</Item>-->
+<!--      <Item>62</Item>-->
+<!--      <Item>63</Item>-->
+<!--      <Item>64</Item>-->
+<!--      <Item>65</Item>-->
+<!--      <Item>66</Item>-->
+<!--      <Item>57</Item>-->
+<!--      <Item>68</Item>-->
+<!--      <Item>69</Item>-->
+<!--      <Item>70</Item>-->
+<!--      <Item>71</Item>-->
+<!--      <Item>72</Item>-->
+<!--      <Item>73</Item>-->
+<!--      <Item>74</Item>-->
+<!--      <Item>75</Item>-->
+<!--      <Item>76</Item>-->
+<!--      <Item>77</Item>-->
+<!--      <Item>78</Item>-->
+<!--      <Item>79</Item>-->
+<!--      <Item>80</Item>-->
+<!--      <Item>81</Item>-->
+<!--      <Item>82</Item>-->
+<!--      <Item>83</Item>-->
+<!--      <Item>84</Item>-->
+<!--      <Item>85</Item>-->
+<!--      <Item>86</Item>-->
+<!--      <Item>87</Item>-->
+<!--      <Item>88</Item>-->
+<!--      <Item>89</Item>-->
+<!--      <Item>90</Item>-->
+<!--      <Item>91</Item>-->
+<!--      <Item>92</Item>-->
+<!--      <Item>93</Item>-->
+<!--      <Item>94</Item>-->
+<!--      <Item>95</Item>-->
+<!--      <Item>96</Item>-->
+<!--      <Item>97</Item>-->
+<!--      <Item>98</Item>-->
+<!--      <Item>99</Item>-->
+<!--      <Item>100</Item>-->
     </PhraseList>
 
   </CommandSet>
   <CommandSet xml:lang="en-gb" Name="en-gb-1">
 
-    <CommandPrefix>mossi</CommandPrefix>
+    <CommandPrefix>Mosi</CommandPrefix>
 
-    <Example>Tell me my next appointment</Example>
+    <Example>tell me my next appointment</Example>
 
     <Command Name="time">
-      <Example>Tell Me the Time</Example>
-      <ListenFor>[Tell Me] [About] [the] time {*}</ListenFor>
+      <Example>tell me the Time</Example>
+      <ListenFor>[tell me] [About] [the] time {*}</ListenFor>
       <ListenFor> what time is it?</ListenFor>
       <Feedback>Yes Time. I'll check it</Feedback>
       <Navigate Target="MainPage.xaml"/>
@@ -875,17 +875,17 @@
 
 
 <!--    <Command Name="date">-->
-<!--      <Example>Tell me today's date</Example>-->
+<!--      <Example>tell me today's date</Example>-->
 <!--      <ListenFor>{*} [About] [the] Date [in] {CalType}</ListenFor>-->
-<!--      <ListenFor>[Tell me] whats today's date in {CalType}</ListenFor>-->
+<!--      <ListenFor>[tell me] whats today's date in {CalType}</ListenFor>-->
 <!--      <Feedback> {CalType} Date! Just a second please</Feedback>-->
 <!--      <Navigate Target="MainPage.xaml"/>-->
 <!--    </Command>-->
 
     <Command Name="date2">
-      <Example>Tell me the date</Example>
-      <ListenFor>[Tell me]  [About] [the] Date </ListenFor>
-      <ListenFor>[Tell me] whats today's date</ListenFor>
+      <Example>tell me the date</Example>
+      <ListenFor>[tell me]  [About] [the] Date </ListenFor>
+      <ListenFor>[tell me] whats today's date</ListenFor>
       <Feedback> Yes Date! Just a second please</Feedback>
       <Navigate Target="MainPage.xaml?CalType=Gregorian"/>
     </Command>
@@ -899,47 +899,47 @@
 
     <Command Name="localWeather">
       <Example>tell me local weather on tommorw</Example>
-      <ListenFor>[Tell me] [about] [local] weather [on] {day}</ListenFor>
+      <ListenFor>[tell me] [about] [local] weather [on] {day}</ListenFor>
       <ListenFor>how is [the] weather [on] {day}</ListenFor>
       <Feedback>Yes! local weather for {day} </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentLocalWeather">
-      <Example>Tell me about weather</Example>
-      <ListenFor>[Tell me] [about] [local] weather [here]</ListenFor>
+      <Example>tell me about weather</Example>
+      <ListenFor>[tell me] [about] [local] weather [here]</ListenFor>
       <ListenFor>how is [the] weather [here]</ListenFor>
       <Feedback>Yes! current weather condition </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="weather">
-      <Example>Tell me about weather in Tehran on Monday</Example>
-      <ListenFor>[Tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
-      <ListenFor>[Tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
+      <Example>tell me about weather in Tehran on Monday</Example>
+      <ListenFor>[tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
+      <ListenFor>[tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
       <ListenFor>how is [the] weather in {place} [on] {day} </ListenFor>
       <Feedback>aha! weather for {day} in {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentWeather">
-      <Example>Tell me about weather in Paris</Example>
-      <ListenFor>[Tell me] [about] [the] weather in {place}</ListenFor>
+      <Example>tell me about weather in Paris</Example>
+      <ListenFor>[tell me] [about] [the] weather in {place}</ListenFor>
       <ListenFor>how is [the] weather in {place}</ListenFor>
       <Feedback>Yap! weather for {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
     <Command Name="appointments">
-      <Example>Tell me My next appointments </Example>
-      <ListenFor>[Tell me] [My] [next] appointment</ListenFor>
+      <Example>tell me My next appointments </Example>
+      <ListenFor>[tell me] [My] [next] appointment</ListenFor>
       <ListenFor>what is [My] [next] appointment</ListenFor>
       <Feedback>Yes, I'll check your appointments now</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
       <Command Name="findAppointments">
-      <Example>Tell me when is my birthday </Example>
-      <ListenFor>[Tell me] when is {appointment}</ListenFor>
+      <Example>tell me when is my birthday </Example>
+      <ListenFor>[tell me] when is {appointment}</ListenFor>
       <Feedback>Yes {appointment}. let me check</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
@@ -1216,87 +1216,87 @@
       <Item>29</Item>
       <Item>30</Item>
       <Item>31</Item>
-      <Item>32</Item>
-      <Item>33</Item>
-      <Item>34</Item>
-      <Item>35</Item>
-      <Item>36</Item>
-      <Item>37</Item>
-      <Item>38</Item>
-      <Item>39</Item>
-      <Item>40</Item>
-      <Item>41</Item>
-      <Item>42</Item>
-      <Item>43</Item>
-      <Item>44</Item>
-      <Item>45</Item>
-      <Item>46</Item>
-      <Item>47</Item>
-      <Item>48</Item>
-      <Item>49</Item>
-      <Item>50</Item>
-      <Item>51</Item>
-      <Item>52</Item>
-      <Item>53</Item>
-      <Item>54</Item>
-      <Item>55</Item>
-      <Item>56</Item>
-      <Item>57</Item>
-      <Item>58</Item>
-      <Item>59</Item>
-      <Item>60</Item>
-      <Item>61</Item>
-      <Item>62</Item>
-      <Item>63</Item>
-      <Item>64</Item>
-      <Item>65</Item>
-      <Item>66</Item>
-      <Item>57</Item>
-      <Item>68</Item>
-      <Item>69</Item>
-      <Item>70</Item>
-      <Item>71</Item>
-      <Item>72</Item>
-      <Item>73</Item>
-      <Item>74</Item>
-      <Item>75</Item>
-      <Item>76</Item>
-      <Item>77</Item>
-      <Item>78</Item>
-      <Item>79</Item>
-      <Item>80</Item>
-      <Item>81</Item>
-      <Item>82</Item>
-      <Item>83</Item>
-      <Item>84</Item>
-      <Item>85</Item>
-      <Item>86</Item>
-      <Item>87</Item>
-      <Item>88</Item>
-      <Item>89</Item>
-      <Item>90</Item>
-      <Item>91</Item>
-      <Item>92</Item>
-      <Item>93</Item>
-      <Item>94</Item>
-      <Item>95</Item>
-      <Item>96</Item>
-      <Item>97</Item>
-      <Item>98</Item>
-      <Item>99</Item>
-      <Item>100</Item>
+<!--      <Item>32</Item>-->
+<!--      <Item>33</Item>-->
+<!--      <Item>34</Item>-->
+<!--      <Item>35</Item>-->
+<!--      <Item>36</Item>-->
+<!--      <Item>37</Item>-->
+<!--      <Item>38</Item>-->
+<!--      <Item>39</Item>-->
+<!--      <Item>40</Item>-->
+<!--      <Item>41</Item>-->
+<!--      <Item>42</Item>-->
+<!--      <Item>43</Item>-->
+<!--      <Item>44</Item>-->
+<!--      <Item>45</Item>-->
+<!--      <Item>46</Item>-->
+<!--      <Item>47</Item>-->
+<!--      <Item>48</Item>-->
+<!--      <Item>49</Item>-->
+<!--      <Item>50</Item>-->
+<!--      <Item>51</Item>-->
+<!--      <Item>52</Item>-->
+<!--      <Item>53</Item>-->
+<!--      <Item>54</Item>-->
+<!--      <Item>55</Item>-->
+<!--      <Item>56</Item>-->
+<!--      <Item>57</Item>-->
+<!--      <Item>58</Item>-->
+<!--      <Item>59</Item>-->
+<!--      <Item>60</Item>-->
+<!--      <Item>61</Item>-->
+<!--      <Item>62</Item>-->
+<!--      <Item>63</Item>-->
+<!--      <Item>64</Item>-->
+<!--      <Item>65</Item>-->
+<!--      <Item>66</Item>-->
+<!--      <Item>57</Item>-->
+<!--      <Item>68</Item>-->
+<!--      <Item>69</Item>-->
+<!--      <Item>70</Item>-->
+<!--      <Item>71</Item>-->
+<!--      <Item>72</Item>-->
+<!--      <Item>73</Item>-->
+<!--      <Item>74</Item>-->
+<!--      <Item>75</Item>-->
+<!--      <Item>76</Item>-->
+<!--      <Item>77</Item>-->
+<!--      <Item>78</Item>-->
+<!--      <Item>79</Item>-->
+<!--      <Item>80</Item>-->
+<!--      <Item>81</Item>-->
+<!--      <Item>82</Item>-->
+<!--      <Item>83</Item>-->
+<!--      <Item>84</Item>-->
+<!--      <Item>85</Item>-->
+<!--      <Item>86</Item>-->
+<!--      <Item>87</Item>-->
+<!--      <Item>88</Item>-->
+<!--      <Item>89</Item>-->
+<!--      <Item>90</Item>-->
+<!--      <Item>91</Item>-->
+<!--      <Item>92</Item>-->
+<!--      <Item>93</Item>-->
+<!--      <Item>94</Item>-->
+<!--      <Item>95</Item>-->
+<!--      <Item>96</Item>-->
+<!--      <Item>97</Item>-->
+<!--      <Item>98</Item>-->
+<!--      <Item>99</Item>-->
+<!--      <Item>100</Item>-->
     </PhraseList>
 
   </CommandSet>
   <!--<CommandSet xml:lang="fr-fr" Name="fr-fr-1">
 
-    <CommandPrefix>mossi</CommandPrefix>
+    <CommandPrefix>Mosi</CommandPrefix>
 
-    <Example>Tell me my next appointment</Example>
+    <Example>tell me my next appointment</Example>
 
     <Command Name="time">
-      <Example>Tell Me the Time</Example>
-      <ListenFor>[Tell Me] [About] [the] time {*}</ListenFor>
+      <Example>tell me the Time</Example>
+      <ListenFor>[tell me] [About] [the] time {*}</ListenFor>
       <ListenFor> what time is it?</ListenFor>
       <Feedback>Yes Time. I'll check it</Feedback>
       <Navigate Target="MainPage.xaml"/>
@@ -1304,17 +1304,17 @@
 
 
 ~1~    <Command Name="date">@1@
-~1~      <Example>Tell me today's date</Example>@1@
+~1~      <Example>tell me today's date</Example>@1@
 ~1~      <ListenFor>{*} [About] [the] Date [in] {CalType}</ListenFor>@1@
-~1~      <ListenFor>[Tell me] whats today's date in {CalType}</ListenFor>@1@
+~1~      <ListenFor>[tell me] whats today's date in {CalType}</ListenFor>@1@
 ~1~      <Feedback> {CalType} Date! Just a second please</Feedback>@1@
 ~1~      <Navigate Target="MainPage.xaml"/>@1@
 ~1~    </Command>@1@
 
     <Command Name="date2">
-      <Example>Tell me the date</Example>
-      <ListenFor>[Tell me]  [About] [the] Date </ListenFor>
-      <ListenFor>[Tell me] whats today's date</ListenFor>
+      <Example>tell me the date</Example>
+      <ListenFor>[tell me]  [About] [the] Date </ListenFor>
+      <ListenFor>[tell me] whats today's date</ListenFor>
       <Feedback> Yes Date! Just a second please</Feedback>
       <Navigate Target="MainPage.xaml?CalType=Gregorian"/>
     </Command>
@@ -1328,47 +1328,47 @@
 
     <Command Name="localWeather">
       <Example>tell me local weather on tommorw</Example>
-      <ListenFor>[Tell me] [about] [local] weather [on] {day}</ListenFor>
+      <ListenFor>[tell me] [about] [local] weather [on] {day}</ListenFor>
       <ListenFor>how is [the] weather [on] {day}</ListenFor>
       <Feedback>Yes! local weather for {day} </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentLocalWeather">
-      <Example>Tell me about weather</Example>
-      <ListenFor>[Tell me] [about] [local] weather [here]</ListenFor>
+      <Example>tell me about weather</Example>
+      <ListenFor>[tell me] [about] [local] weather [here]</ListenFor>
       <ListenFor>how is [the] weather [here]</ListenFor>
       <Feedback>Yes! current weather condition </Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="weather">
-      <Example>Tell me about weather in Tehran on Monday</Example>
-      <ListenFor>[Tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
-      <ListenFor>[Tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
+      <Example>tell me about weather in Tehran on Monday</Example>
+      <ListenFor>[tell me] [about] [the] weather [on] {day} in {place}</ListenFor>
+      <ListenFor>[tell me] [about] [the] weather in {place} [on] {day} </ListenFor>
       <ListenFor>how is [the] weather in {place} [on] {day} </ListenFor>
       <Feedback>aha! weather for {day} in {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
     
     <Command Name="currentWeather">
-      <Example>Tell me about weather in Paris</Example>
-      <ListenFor>[Tell me] [about] [the] weather in {place}</ListenFor>
+      <Example>tell me about weather in Paris</Example>
+      <ListenFor>[tell me] [about] [the] weather in {place}</ListenFor>
       <ListenFor>how is [the] weather in {place}</ListenFor>
       <Feedback>Yap! weather for {place}</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
 
     <Command Name="appointments">
-      <Example>Tell me My next appointments </Example>
-      <ListenFor>[Tell me] [My] [next] appointment</ListenFor>
+      <Example>tell me My next appointments </Example>
+      <ListenFor>[tell me] [My] [next] appointment</ListenFor>
       <ListenFor>what is [My] [next] appointment</ListenFor>
       <Feedback>Yes, I'll check your appointments now</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
       <Command Name="findAppointments">
-      <Example>Tell me when is my birthday </Example>
-      <ListenFor>[Tell me] when is {appointment}</ListenFor>
+      <Example>tell me when is my birthday </Example>
+      <ListenFor>[tell me] when is {appointment}</ListenFor>
       <Feedback>Yes {appointment}. let me check</Feedback>
       <Navigate Target="MainPage.xaml"/>
     </Command>
